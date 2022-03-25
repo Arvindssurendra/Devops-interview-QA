@@ -1,0 +1,81 @@
+1  * Entrypoint in Docker?
+	Similar to commands (CMD), where executable's are set when containers are initiated
+	Unlinke CMD, entrypoint cannot be overridden 
+2  * CMD vs Entrypoint ?
+		CMD --> when we use multiple CMD's in a dockerfile, latest CMD instruction is applied
+		     CMD can also be overridden when CMD is given at run time when initiating a container 
+		Entrypoint --> When given in run time, entrypoint value is appended  
+3  * ADD and Copy ?
+	ADD --> Copy the file and also unzipping/extract a exiting tar/zipped file
+		   If given a link, then it would download the file and copy it to the destination
+	COPY --> It will only the copy the file to the destination 
+4  * At the time of docker build –t cmd execution if you press CTRL+C, what happens ?
+		It will stop the build process 
+6  * Diff bw layers and image ?
+		Each layer is an image itself 
+ 7  * If you give multiple entrypoints in Docker file, which will be executed and what happened to previous ones ?
+		Latest entrypoint value is shown as output, previous entrypoint information is ignored
+	
+8  * By default in which user the container starts to execute cmds ?
+		Root 
+		To change it, we can provide the group and user information in the dockerfile, so containers run via this image will be run/owned by the user mentioned in the dockerfile
+10 * what is container Runtime in Docker ?
+		Docker engine is the container runtime, which creates and runs the contianers
+12 * Write a Dockerfile and push to dockerhub.
+		Example dockerfile
+			FROM  OS
+			RUN 
+			CMD []
+			ENTRYPOINT [] 
+		• First we tag our docker image 
+			docker tag image:tagname
+		• Then we use docker push to push it to docker hub
+			docker push  tagname 
+13 * docker file structure
+			FROM  OS
+			RUN 
+			CMD []
+			ENTRYPOINT []
+		
+21 * difference between cmd and run
+		RUN --> use to install packages and softwares in a image, so when a container is initialized the image will contain the packages and software which was used via 'RUN'
+		CMD --> setting executables when containers are initiated 
+23 * What are security measures you took to secure the docker image
+		Scan for vulnerabilities on a docker image
+		Place the docker image in a private repository
+24 * Which scanning mechanism you are using,to scan the images regularly
+		Docker scan
+			(or)
+		JFROG xray tool  
+29 * How u create docker image from Dockerfile?
+		Syntax:: Docker build -t imagename .   {-t  is for tagname for your image}
+30 * Difference between docker image and container?
+		Docker image is a read only template through which one can deploy/create docker contianers, docker images contain the required configuration to run the containers
+		Docker container --> they are isolated userspace having minimal OS along with required applications 
+32 * I have created a custom container , how can I deliver it to the other users?
+		By pushing the custom container to dockerhub and providing the url to be used by other users
+33 * Where u store docker images in project?
+		Public (or) private repository on a dockerhub
+35 * write the docker file with all the commands and explain
+		FROM  ubuntu
+		RUN  apt updates
+		CMD ["echo", "ls -ltr]
+		ENTRYPOINT ["echo", "ps -ef"]
+
+51 * how will u scan ur docker images for security vulnerabilities?
+		Using docker scan (or) Jfrog Xray tool 
+63 * VM vs Docker
+		VM is based hardware virtualization, it has it's own complete OS and dedicated resources (CPU/RAM/DIsk), Docker is OS virtualization, where underlying OS/Kernel is shared between the containers 
+64 * Why cant we use AWS AMI instead of Docker Image
+		AMI is like a vm template, which is using hardware virtualization, Docker is OS virtualization, where underlying OS/Kernel is shared between the containers
+68 * If you give multiple entrypoints in Docker file, which will be executed and what happened to previous ones ?
+		Latest entrypoint will be executed and the previous ones will be ignored
+69 * By default in which user the container starts to execute cmds ?
+		Root
+78 * What's docker file
+		Docker file is a text file, which contains all commands a user could/can call to build/assemble an image 
+87 * In dockerfile run the application which command u use - entrypoint, CMd
+		FROM  ubuntu
+		RUN  apt updates
+		CMD ["echo", "ls -ltr]
+		ENTRYPOINT ["echo", "ps -ef"]
