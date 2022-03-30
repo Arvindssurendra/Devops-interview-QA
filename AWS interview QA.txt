@@ -1,0 +1,205 @@
+1  * I have an application, how you will setup a VPC ? what all the components you use ?
+	Components of VPC::
+		○ Subnet
+		○ Routing table
+		○ Internet Gateway (IGW)
+		○ Instances
+		○ Security Group
+		○ Network ACL 
+		○ VPC endpoints
+		○ NAT Gateway
+		○ Elastic IP 
+	
+	Setting up VPC  - yes, explain the detailed process of creating subent, IGW, assigning subnet to routing table via subnet association, NAT gateway creation etc… etc..
+	
+2  * Where you will set the Route Table ?
+	Under VPC we will set route table 
+	We will set route table for both private subnet and public route table (or) based on the subnet requirement
+	
+3  * Services used in AWS ?
+		○ IAM
+		○ EC2
+		○ S3
+		○ VPC
+		○ CloudWatch
+		○ CloudTrail
+		○ Route53
+		○ Lambda
+		○ SNS 
+		○ SQS 
+		○ Dynamo DB
+		○ CloudFront
+		○ CloudFormation 
+	
+4  * How can you make any S3 bucket as private ?
+		Bydefault S3 bucket is private 
+		To make it public  { S3 bucket --> Permission --> Uncheck "Block all public access" } 
+
+5  * Cross region replication ? how you apply it ? will it copy automatically ?  -- Do it yourself , try to configure yourself to understand it better 
+
+		○  Cross-Region replication --> Having 2 S3 buckets on 2 different region and data written in source S3 bucket is replicated on destination S3 bucket
+		○  Will it copy automatically ? --> Yes, once replication is enabled, data is copied automatically on destination S3 but for only data which is written after the replication is configured, data present in source S3 bucket prior to replication will not be made available/copied automatically on destination S3 bucket 
+
+7  * Read replica
+		AWS RDS Read Replica is creating one (or) more read only copies of your database in your existing AWS region (or) in a different AWS region 
+
+10 * How to you manage credentials ?
+		AWS Secrets Manager
+
+12 * You are working on EC2 and that goes down and how do you resolve this ?
+		Check your ec2 instance on AWS console
+		Select the instance and under instance state --> decide on the operation to stop (or) reboot the instance (or) terminate 
+	
+
+13 * You want to give a access to a EC2 and you have only pvt
+		Assign the appropriate EC2 policy and  attach to the user
+		
+15 * VPC ? suppose I have a server, need to download the packages from the internet, but sever should not be accessed directly from outside ? how you can do that
+		NAT Gateway  { check Bastion Host also } 
+16 * 2 AWS accounts, my EC2 of 1 account should talk to my another EC2 ? How ?
+		VPC peering  
+17 * IAM ? I have 10 instances, how do you give access to user for only 5 resources ?
+		a. Create custom policy, using AWS policy generator  --> https://awspolicygen.s3.amazonaws.com/
+		b. Add the arn for your instances for which you need to give access to {arn:aws:ec2:<REGION>:<ACCOUNT_ID>:instance/<instance-id>}
+			i. Example arn:: arn:aws:ec2:ap-south-1:892145454499:instance/i-01e8028f2af843ddb 
+		c. Copy the JSON from the policy generator and then copy to the create policy, new policy json 
+		d. Attach the policy then to the user 
+
+	Now login via the user and check the actions that can be performed for the accessible instances 
+
+18 * Cross region Route53 ?
+		○ Answer is Route53 Resolver, inbound endpoints, outbound endpoint 
+		○ Explanation is here --> https://aws.amazon.com/blogs/architecture/using-route-53-private-hosted-zones-for-cross-account-multi-region-architectures/
+	
+19 * Health checks in Route53
+		○ Monitor the health and performance of the endpoints
+		○ Create health check to monitor inbound/outbound endpoints 
+		○ https://www.youtube.com/watch?v=dlaWYedWnb0
+	
+20 * DualStack configuration in Route53  -- Need to check the configuration yourself and get comfortable
+		Both IPv4 and IPv6  records are returned for an EC2 classic instance but dualstack DNS 
+		Configuration needs to be checked
+
+21 * what is S3 and why customer choose S3 ?
+		S3 (Simple Storage Service) is an Object Oriented Storage, we can store any file, any amount of data, anytime from anywhere on the web as an "Object"
+		Why S3:
+			Easily accessible from anywhere (URL can be accessed by end user)
+			Any amount of data can be written to it 
+			Low latency, high performance  
+
+22 * When the jar is created, how will you push it to S3?
+		○ Make sure that AWS cli is installed 
+		○ Run command 
+			"aws  s3  cp  filename  s3://s3bucketname "    
+	
+23 * dynamoDB
+		Serverless NoSQL database fully managed by AWS 
+
+24 * vpc architecture
+		Needs detailed explanation of the components and it's working , Refer notes and prepare on your own 
+			Components of VPC::
+				○ Subnet
+				○ Routing table
+				○ Internet Gateway (IGW)
+				○ Instances
+				○ Security Group
+				○ Network ACL 
+				○ VPC endpoints
+				○ NAT Gateway
+				○ Elastic IP 
+		
+25 * why we need ELB & how you select which type of loadbalancer suitable for my application.
+		• ELB - Elastic Load Balancers , 
+		• we need load balancers to balancer the requests coming to the application servers (or) balance the load of the requests asked to service by the application servers
+								– (or) - 
+		• It automatically distributes incoming application traffic and scales resources to meet traffic demands 
+	
+		• Explain the below and answer will contain the scenario where it would be used 
+			○ Application Load Balancer  
+			○ Network Load Balancer
+			  Gateway Load Balancer
+
+27 * cloudwatch & cloudtrail
+		Cloudwatch --> It collects logs, events and metrics for all AWS resources 
+		Cloudtrail --> It helps in auditing, security monitoring of user activity and API useage 
+
+43 * diff b/w cname and alias?
+		○ CNAME record points a DNS name to another DNS name 
+		○ Alias is similar to CNAME record but when querying it will behave like A record and give the target ip address 
+
+44 * what record used for dns to ip?
+		A record 
+
+
+51 * Security group  ,nacl 
+		○ Security group is configure inbound traffic (outbound traffic is default configured, unless specifically restriced)   {Stateful}
+     		NACL - Network access control list is to control the inbound and outbound traffic on the network (or) VPC where is it configured  (Stateless)
+
+56 * difference between nat instance and nat gateway
+		NAT Gateway -- to allow private subnet to access the pubic network (internet) via outbound traffic, inbound traffic from internet is restricted via NAT gateway
+		
+58 * aws VPC components
+		Subnet, routing table, IGW, NAT Gateway, NACL, Security Group 
+
+59 * what are the DB you are going to use
+		○ Depending on the requirment, structured (or) non-structured DB requirement
+		○ If Structured - SQl, MySQL, Aurora, MariaDB
+		○ Non-Structured - Dynamo DB, MongoDB
+65 * how will you restrict inbound traffic when outbound traffic in open
+		Using Security Groups 
+
+66 * what is vpc and vpc peering
+		VPC - virtual private cloud, VPC peering is method to connect between 2 VPC's 
+
+67 * How will an instance present in Oregon can access a S3 bucket present in Sydney without any manual intervention?
+	 (only the ec2 shd b able to access the S3 without any user involved in it,)
+	
+		Making the S3 bucket as Public  (also check if Assume role can be used or not ) 
+	
+69 * One ALB with 2 instances A and B and ALB is mapped with 2 website site1 and site2, Can we configure requests which comes to site1 mapped to instance A n site2 to instance B,  Can we achieve this behaviour using ALB?
+		ALB configuring Listeners and routing, where port/protocol configured with either A (or) B instance and given the target group 
+
+72 * I have one S3 bucket in which im going to upload 3 files, one with 2TB, 4.9TB and 5.1TB,  So how many files will get uploaded into S3 bucket?
+
+		2 files will be uploaded, 2 TB and 4.9 TB, 5.1TB file will be rejected as 5TB is the maximum size limit of a object
+
+102* how can we connect s3 through vpc privately
+					Create a new access point on S3 and specify the VPC id through which we need to connect 
+
+103* how can we execute round robin waited routing of route53
+
+		Traffic policy --> Create traffic policy --> Weighted rule (either 1 or 3 ) --> specify endpoint
+
+105* Apln load balancer :
+					Create application load balancer 
+					Choose an Application Load Balancer when you need a flexible feature set for your applications with HTTP and HTTPS traffic
+				
+106* User data ,meta data
+					User data is information that we can provide to an instance, which is accessed during the starting of an instance, so if any script needs to be run when instance starts up, we can provide the information in instance user data
+					Meta data --> data about instance, which will help in configuring the instance 
+107* Listener target 
+					 Listener target is the target group that the load balancer needs to send the traffic to 
+					 We specify the type of protocol, port number and the target value (complete path) 
+108* Cross zone load balancing 
+					 Elastic Load balancing -->https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html 
+					 Create a Network load balancer (or) Gateway load balancer and then enable the cross zone load balancing option after the creation of the load balancers 
+109* Application load balancer , classic network; disable ,pricing
+
+				Types of load balancer need to explain, pricing - check aws pricing
+				
+120* SQL vs No SQL
+			Structured DB vs Unstructured DB 
+
+121* In aws, i have an instance which is critical machine that cant go down and its reaching 100% cpu utilisation.
+		            what are the steps that u r going to take to save this machine from going down? 
+			Autoscaling --> add the running instance to an existing AutoScaling group (or) create an autoscaling group based on the running instance 
+			Horizontal (or) Vertical autoscaling can be chosen 
+
+123* I have a ec2 instance, I want to change the private ip of that instance, can I do that?
+			No, private ip address is permanent for the instance lifetime and it cannot be changed 
+
+124* Can I change the private ip of running ec2 instance?
+			No, private ip address is permanent for the instance lifetime and it cannot be changed 
+
+125* I have a S3 bucket, which my client want to track the access for internal audit.
+			CloudTrail is the auditing tool 

@@ -1,0 +1,477 @@
+1  * Explain CI/CD  -- answer from rangaswamy 
+	As soon as developer pushes code to github. Jenkins pipeline job will get triggered, it has three stages, Build, Deploy and test stages.
+	In build stage, It will pull source code from github, compiles it and generates binary. Once build stage is success, deploy stage will get triggered
+	It will deploy war file tom tomcat server and run BVT. Next,test stage will get triggered, it runs test cases given by test team. 
+	if there are any test failures will be taken care by testing team. if there are any integration issues , it will be taken care by dev team.
+									
+									(OR)
+									
+	As soon as a developer pushes the code, the code is reviewed by reviewer {Gerrit tool can be used to perform the code review} and then commit is performed, once a new commit occurs, it triggers a Jenkins job.
+	Jenkins job consists of mainly 3 stages: Build, Deploy and Test stage
+	A webhook tells the CI/CD tool which commit triggers the pipeline, which checks out the source code at the appropriate commit point 
+	Build stage à CI/CD tool needs a build tool ( Maven (or) Gradel ), here it will pull the source code from GitHub, compiles it and generates binary, once build stage is success , Deploy stage is triggered 
+	Deploy state à It will deploy a war file (web archive file) from tomcat server and run BVT (build verification test) 
+	Once BVT is successful, it will then move on to next phase, Test phase
+	Test Phase à Here test cases are run as provided by test team (sonarcube is used to validate the quality of the code) 
+		If any test failures then it will be checked by testing team, if there are any integration issue, it will be checked by development team 
+	Post which artifacts are passed into JFrog artifatory, from there UAT (User acceptance test) is performed, Selenium (or) cucumber can be used to perform the acceptance test.
+	
+	
+2  * How u setup cicd for these different features like u maintain separate jobs for separate feature branches 
+		Pipeline Job - jenkins file, write groovy code 
+3  * 	1 feature has 50 components how u test that in ur pipeline
+		Don't know 
+
+4  * Declarative pipeline? What all the components in it ?
+		Pipeline script with SCM
+			Pipeline block
+				Agent 
+				Stages 
+5  * Shared Libraries ?
+	Jenkins shared library is the concept of having common pipeline code in the version control system that can be used by any number of pipelines just by referring it. 
+	Eg – if we have 10 java micro services pipelines the maven build step will be duplicated in all 10 pipelines. On addition of new services, we have to copy paste pipeline code again. If we want to change some parameter we will need to do it in all the pipelines manually. 
+	When we use the shared library all the common code is kept there and if we update the code there it will appear in all the 10 pipelines. 
+	Jenkins shared library
+	1. vars – This directory holds all the global shared library code that can be called from a pipeline. It has all the library files with .groovy extn.
+	2. src – It’s a regular java source directory. It is added to the class path during every script compilation. Here we can add the custom groovy code to extend the shared library code.
+	3. Resources – all the non-groovy files required for the pipeline can be managed from here. Like jenkinsfile, xml etc. 
+	 
+6  * When to use free style and pipeline job
+	Free style job -- for Single purpose project 
+	Pipeline job - To run multiple tasks which are independent/dependent in an automated way 
+	
+7  * Is it possible that one stage fails and continue the execution to next stage ?
+	Option present in Build trigger 
+		Build after other projects are built 
+		
+		 
+8  * Write a jenkinsfile which pull the code from git repo and push the jar file to AWS S3?
+         (This jenkins file shd work on all environments)
+
+10 * In Jenkins, do you know how to write custom functions in groovy?
+		Yes -- pipeline block (agents, stages) -- need to practice 
+
+16 * sonarqube integration
+	Qualitygate plugin 
+
+17 * what are the jenkins plugin have you used
+	Ssh, parameterized, gearman, maven, github, sonarcube, blueocean 
+	Also explain why these plugins are used
+		Gearman -  Creates a backup jenkins prod server, so when primary server is down, jenkins services are available via secondary server
+		Maven - to integrate builds
+		Sonarcube - To integrate testing of code 
+		BlueOcean - Integrate dashboard, which allows us to create a pipeline and see through it 
+
+19 * webhooks
+		It is a mechanism to automatically trigger the build of a jenkins project upon a commit is pushed in a Git repository
+		Need to make sure that we have GitHub plugin installed on Jenkins server
+		On Project --> Source Code Management --> select Git --> Give Repository URL 
+		Enable "GItHub hook trigger for GITScm Polling" and "Poll SCM"
+		On GitHUb --> Settings --> WebHook--> Add webhook --> Payload URL  (your repo link)--> Content type 'application/json' --> which even should trigger this webhook 'Just the push even' --> add webhook 
+
+21  how to send email notification to jenkins
+
+		 Dashboard --> Manage Jenkins --> Configure System --> Extended E-mail Notification
+		Maven Build command in java - DO not know 
+			We have to run "maven clean package" from where ever we have our project/files but after that steps are longer and need to be practiced and done to explain
+	
+21 * how to take backup of jenkinfile
+	Clone the Jenkins home directory/installation folder and then push to GitHub repository 
+
+23 * How you schedule builds
+	Build Trigger periodically 
+
+24 * How you have integrated each tool in CiCd explain configuration
+	Yes, Docker, Sonarcube, BlueOcean, TinyBackup 
+
+25 * Explain jenkinsfile
+		File containing declarative script in groovy 
+		This file contains the configuration to run the pipeline 
+		Script is written within the pipeline block 
+
+ 36 * Pipeline with stage 1 n stage2, calculate a value of a variable in stage 1 and pass that value in stage2. 
+	Declarative script in groovy
+	Example script:: 
+		pipeline {
+		    agent 
+		    environment {
+		        DISABLE_AUTH = 'true'
+		        DB_ENGINE    = 'sqlite'
+		    }
+		
+		    stages {
+		        stage('Build') {
+		            steps {
+		                echo "Database engine is ${DB_ENGINE}"
+		                echo "DISABLE_AUTH is ${DISABLE_AUTH}"
+		                sh 'printenv'
+		            }
+		        }
+		    }
+		}
+		
+37 * how can i share the value btn two stages in pipeline?
+	Using Declarative script in groovy 
+	Example script::
+		pipeline {
+		    agent 
+		    environment {
+		        DISABLE_AUTH = 'true'
+		        DB_ENGINE    = 'sqlite'
+		    }
+		
+		    stages {
+		        stage('Build') {
+		            steps {
+		                echo "Database engine is ${DB_ENGINE}"
+		                echo "DISABLE_AUTH is ${DISABLE_AUTH}"
+		                sh 'printenv'
+		            }
+		        }
+		    }
+		}
+		
+38 * Have you created any pipeline and type of pipeline ?
+	Yes, explain Pipeline job , creation of pipeline job 
+	Pipeline --> pipeline script  and Pipeline script with SCM 
+	Also give example declarative script (or) pipeline script 
+
+39 * Explain about the diff stages of pipeline
+		Explain about Build, Deploy, Test
+
+40 * Which artifactory are you using ?
+	Jfrog artifactory -- Need to collect info on Jfrog 
+
+41 * Explain about agents ?
+	Agents define the execution scope of the stage
+			(or)
+	specifies where the entire Pipeline, or a specific stage, will execute in the Jenkins environment depending on where the agent section is placed
+	
+42 * Have you created dynamic agents
+	Need to check, if it is similar to Agents any (or) none 
+
+43 * Jenkins Code as a Service?
+	Using pipeline script with SCM --> Jenkins file in groovy script, this is what Jenkins Code as a Service will be 
+
+45 * If you want to write something new thing in Declarative script which you don’t know, how you will be doing it?
+	We would go to pipeline syntax --> Snippet generator  (or) Declarative Directive Generator 
+
+46 * Feature Flag in CICD
+	is a technique that will help you integrate code into a shared repository at least once a day and ship it, even if you haven't finished the feature yet.
+
+58 * U have some issues in applications in Jenkins how will u find out 
+		/var/log/jenkins  
+
+60 * Deployment strategies
+		Blue-Green deployment
+		Canary Deployment 
+		Rolling deployment
+		Shadow deployment 
+
+63 * what is that you use in Jenkins for ensure 	all the integration part and test part
+	Maven for build, Jenkins Pipeline for integration, Sonarcube for integration testing, selenium for blackbox testing (part of UAT) 
+
+64 * what are the plugins you are using for cicd setup in current company
+		○ BlueOcean
+		○ Gearman
+		○ Git integration
+		○ GitHub 
+		○ Parameterized
+		○ Role-based authorization stratergy 
+		○ Maven
+		○ Quality gates (sonarcube)
+		○ Selenium RC and Selenium Builder
+		○ docker
+
+65 * what kind of environment you created for Jenkins cicd setup
+		○ QA
+		○ Dev
+		○ UAT
+		○ Prod
+
+71 * Parallel block inside stage
+	Build and Test are happening parallel in the below pipeline block 
+		pipeline {
+			agent { label 'master' } 
+			stages {
+				stage('Both build and test') {
+					parallel {
+						stage('Build') { 
+							steps {
+								sh 'sleep 15; echo "This is a Build stage"'
+							}
+						}
+						
+						stage('Test'){
+							steps {
+								sh '''
+									sleep 15
+									echo "This is a Test stage"
+								'''	
+								git branch: 'main', url: 'https://github.com/jaintpharsha/devops-jan-22.git'
+							}
+						}
+		
+72 * how to send email notification to jenkins
+	Post build actions --> Editable email notification 
+
+73 * what is the deployment strategy that is used in ur company and other stratgies that u know?
+		Blue-Green deployment
+		Canary Deployment 
+		Rolling deployment
+		Shadow deployment
+		
+76 * How are u managing the code quality of ur application. 
+		Code quality is managed via Sonarcube 
+
+86 * Benefits of Blue green deployment?
+		https://www.flagship.io/blue-green-deployment-pros-and-cons/
+		Rapid Releasing
+		Simple Rollbacks
+		Built in disaster recovery
+		Load balancing
+
+93 * When to use free style and pipeline job
+		Freestyle project à is for more simple tasks, we cannot use freestyle project for multiple jobs and complex tasks 
+		Pipeline Project à We use this to create multiple jobs which may/may not be independent to achieve a release in an automated manner
+				With pipeline project we have more control, you can choose which stage of the pipeline can be used in which manner 
+
+95 * when there is no internet connection can you install jenkins 
+		If you have downloaded the dependencies and the Jenkins installation package, then yes, you can install Jenkins without internet
+
+96 * no backup & installed lot of plugins & jobs. now installed one more plugin and crashed my whole jenkins. now ui is down..how do you uninstall plugins.
+             Go to à /var/lib/jenknis/plugin  and then remove the plugin binary ( *.hpi (or)  *.jpi ) and the folder from the location 
+
+97 * difference between freestyle & pipeline job
+		Freestyle project à is for more simple tasks, we cannot use freestyle project for multiple jobs and complex tasks 
+		Pipeline Project à We use this to create multiple jobs which may/may not be independent to achieve a release in an automated manner
+				With pipeline project we have more control, you can choose which stage of the pipeline can be used in which manner 
+	
+98 * which you can't do in freestyle. which can be done pipeline technical difference
+			With pipeline project we have more control, you can choose which stage of the pipeline can be used in which manner 
+
+100* pipeline syntax
+		Declarative script in groovy
+		Example script:: 
+			pipeline {
+				agent 
+				environment {
+					DISABLE_AUTH = 'true'
+					DB_ENGINE    = 'sqlite'
+				}
+			
+				stages {
+					stage('Build') {
+						steps {
+							echo "Database engine is ${DB_ENGINE}"
+							echo "DISABLE_AUTH is ${DISABLE_AUTH}"
+							sh 'printenv'
+						}
+					}
+				}
+			}
+	
+101* which pipeline you are using in your company
+		Multibranch pipeline, pipeline script with SCM 
+
+
+102* custom build of a core plugin
+	 -- Question can be rephrased as -- how to install/unisntall plugin without Jenkins GUI
+			Stop jenkins process
+			Download the .hpi/.jpi plugin and save it to /var/lib/jenkins/plugin folder (or) Jenkins_home directory plugins folder 
+
+103* have you are checked code quality
+		Yes, via Sonarcube , by integrating qualitygates plugin on Jenkins
+
+104* process to integrate git with jenkins
+		--> Install the GitHUb Plugin, GitHub API, GitHub Client, GitHub BranchSourceCode plugin
+		--> Create a Jenkins project 
+				Go to--> Source Code Management --> Git 
+				Enter --> Repository URL and credentials 
+
+106* whats the use of pom.xml file
+		==>  POM.xml is a xml file, which contains the project details along with configuration information which is used by Maven to perform builds
+		==> When "maven install" is done, maven creates a dependency tree based on the information from PO.xml and then downloads/compiles all the needed components    into a directory ".m2" under the user's fodler
+107* maven build lifecycle
+	 
+	Maven Lifecycle steps
+	----------------------
+		Validate -->  If project is correct and has all necessary information 
+		
+		Compile  -->  Compile the source code of the project 
+		
+		Test      -->  Test the source code without packaging (or) deploying it, using a unit testing framework 
+		
+		Package  --> Package the source code into .jar, which is the distributed format
+		
+		Integration Test --> Testing of various software modules as a group 
+		
+		Verify --> Check the results of integration testing and ensure quality is met
+		
+		Install  --> Install the package into local repository 
+	
+		Deploy  --> Copies final package to remote repository for sharing with other developers done in build env 
+		
+112* why do we need continuous integration and continuous deployment in jenkins, what are the advantages.
+		 CI - You need CI so the developers can get immediate feedback on their code quality and build
+		CD - Once the code is build, tested successfully, It can be pushed to the production environment 
+		There is a continuous feedback loop on the code builds and testing which is being done
+	
+113* How to select slaves in jenkins file
+
+		using agent none and assigning the label, so the specific stage can be run on specific agent (slave agent) 
+		
+115* How webhook triggers
+		• Need to make sure that we have GitHub plugin installed on Jenkins server
+		• On Project --> Source Code Management --> select Git --> Give Repository URL 
+		• Enable "GItHub hook trigger for GITScm Polling" and "Poll SCM"
+		 
+		• On GitHUb --> Settings --> WebHook--> Add webhook --> Payload URL  (your repo link)/git-webhook --> Content type 'application/json' --> which even should trigger this webhook 'Just the push even' --> add webhook 
+
+ 116* How authentication of Jenkins and git is done
+	Jenkins authentication 
+		○ Matrix based security
+		○ Project based matrix authorization stratergy 
+		○ Role based authentication/strategy -- need to install plugin for this
+		By saving the credentials in Git Credential storage   --> https://www.shellhacks.com/git-config-username-password-store-credentials/
+	Git Credentials binding plugin on jenkins 
+		Here we can give Git username and password 
+117* What kind of credentials used - same as previous question 
+		
+118* What build tool ? how build happen?
+		Build Tools ==>  Maven, Make, Gradel 
+		Explain Maven Lifecycle 
+			Maven Lifecycle steps
+		
+				Validate -->  If project is correct and has all necessary information 
+				
+				Compile  -->  Compile the source code of the project 
+				
+				Test      -->  Test the source code without packaging (or) deploying it, using a unit testing framework 
+				
+				Package  --> Package the source code into .jar, which is the distributed format
+				
+				Integration Test --> Testing of various software modules as a group 
+				
+				Verify --> Check the results of integration testing and ensure quality is met
+				
+				Install  --> Install the package into local repository 
+				
+				Deploy  --> Copies final package to remote repository for sharing with other developers done in build env
+
+124* CICD set up
+		CI/CD pipeline, Jenkins configuration , Multibranch pipeline/pipeline script with SCM 
+
+125* Difference between CI and CD
+		CI - continuous integration 
+			Integrating changes from development team without manual intervention and giving immediate feedback to the development team 
+		CD -- Continuous Delivery
+			Testing the changes immediately post pushing of code by development team 
+		CD -- Continuous Deployment
+			Deploying to production environment post testing 
+
+126* Branching strategies means git work flows
+		 Feature Branching 
+		 Releasing branching
+		 
+131* Tomcat troubleshooting steps
+	 Check if the tomcat service is running (or) not
+		Sudo systemctl tomcat status 
+		Sudo systemctl tomcat start 
+	If it fails to start then check the logs
+		/var/log/messages
+		
+133* Where is jenkins set up
+	  On-premise (or) Containers (or) Cloud 
+
+138* In maven, explain how you download dependencies
+	 "maven build"  --> this command is run, it downloads all the dependency jars into the local repository 
+		So basically maven will check pom.xml file and check for the jar file information and then download the dependency to the local repository accordingly 
+
+140* Explain your deployment strategy
+	Choose any one and explain in details 
+		○ Blue-Green deployment
+		○ Canary Deployment 
+		○ Rolling deployment
+		○ Shadow deployment
+		
+141* I want two stages to execute at a time in jenkins, can I do that... How?
+	Using Jenkins file by utilizing parallel script 
+		Example::
+		Jenkins Parallel script 
+		
+		pipeline {
+			agent { label 'master' } 
+			stages {
+				stage('Both build and test') {
+					parallel {
+						stage('Build') { 
+							steps {
+								sh 'sleep 15; echo "This is a Build stage"'
+							}
+						}
+						
+						stage('Test'){
+							steps {
+								sh '''
+									sleep 15
+									echo "This is a Test stage"
+								'''	
+								git branch: 'main', url: 'https://github.com/jaintpharsha/devops-jan-22.git'
+							}
+						}
+					} 
+				}
+				stage('Deploy'){
+					steps {
+						sh '''
+							sleep 5
+							echo "This is a Deploy stage"
+						'''
+					}
+				}
+				
+				stage('My-stage'){
+					steps {
+						sh '''
+							sleep 5
+							echo "This is a My-stage stage"
+						'''
+					}
+				}	
+			}
+		}
+		
+142* I want to select particular version for build, how can i do that during CI CD
+		==> Jenkins project # tag build version, we chose the build version from there 
+										(or)
+		==> Jenkins file, pipeline script, node information 
+
+
+146* How you configured webhooks, which URL you used there
+		Jenkins Payload URL 
+
+149* if your jenkins agents are setup for 20 build capacity, and suddenly 50 builds comes in how will you handle the situation?
+		○ Need to install the Amazon EC2 plugin in Jenkins 
+		○ Manage Jenkins --> Configure System --> Cloud section --> Add a new cloud button --> Select "Amazon EC2" option  
+		 Check the link for further understanding ==> https://plugins.jenkins.io/ec2/ 
+		○ So this will provide Jenkins with option of identifying cluster overload and deploy ec2 instances with Jenkins agents on them, once the cluster load is reduced , then it will delete the ec2 instnaces 
+
+153* which instance type u r using for jenkins master, its details
+		Amazon ec2 ==>  c4.large, c4.xlarge
+
+156* explain stages in cicd
+		Build, Deploy, Test 
+
+
+158* how your implementing QA in your cicd
+		By integrating Sonarcube and selenium in Jenkins
+		Installing Quality Gates in sonarcube and also selenium plugins 
+
+161* multibranch pipeline ?
+		The Multibranch Pipeline project type enables you to implement different Jenkinsfiles for different branches of the same project.
+		In a Multibranch Pipeline project, Jenkins automatically discovers, manages and executes Pipelines for branches which contain a Jenkinsfile in source control.
+
+162* How to setup multiple Java or Maven or Git versions in Jenkins server?
+		Manage Jenkins --> Global Tool configuration --> install the tool versions accordingly  
+
