@@ -1,0 +1,227 @@
+1 * how do you disable swap memory through cmd line and it should not get added to the system ?
+
+      swapoff -a
+	  
+2 * how to make sure that file system does'nt get mounted upon the reboot ?
+
+		The simplest way to force fsck filesystem check on a root partition 
+		eg. /dev/sda1 is to create an empty file called forcefsck in the partition's root directory. 
+		This empty file will temporarily override any other settings and force fsck to check the filesystem on the next system reboot
+		
+3 * have you created a file system and how you ensure those file systems are available after reboot (etc filesystems)? (need to check in youtube)
+
+
+
+ 4 * after mounting EBS to instance, weather that will be still available after reboot ?
+    
+     
+
+
+5 * init levels implements in linux ?
+     
+     Init is the parent of all processes, executed by the kernel during the booting of a system.
+
+
+ 6 * CMD check the load of the system ? 
+     
+	 4 different commands to check the load average in linux
+      Command 1: Run the command, “cat /proc/loadavg” .
+      Command 2 : Run the command, “w” .
+      Command 3 : Run the command, “uptime” .
+      Command 4: Run the command, “top” . See the first line of top command's output.
+
+7 * CMD check usage of memory / ram of the system ? 
+
+     top/ free -m
+	  
+8 * CMD to check how many CPU cores are there in system ?
+ 
+    cat /proc/cpuinfo or lscpu
+	
+9 * Suppose I have 100 servers, each server has username and password, 
+     if i want to install packages in all those servers remotely without logging in how i will be able to do this using shell script.
+	 
+	 
+	 
+10* Using Top command how will you control all process running.
+
+     
+
+11* Write shell script to print all alternative lines
+
+    
+
+12* script to sort all file in logs and sort it according to top memory consuming and copy it to another file
+
+
+
+13* runlevel commands explain
+
+     A runlevel is an operating state on a Unix and Unix-based operating system that is preset on the Linux-based system.
+	 
+	 Runlevel 0
+
+shuts down the system
+
+Runlevel 1
+
+single-user mode
+
+Runlevel 2
+
+multi-user mode without networking
+
+Runlevel 3
+
+multi-user mode with networking
+
+Runlevel 4
+
+user-definable
+
+Runlevel 5
+
+multi-user mode with networking
+
+Runlevel 6
+
+reboots the system to restart it
+
+
+14* how you'll find complete details of linux version you are using
+
+    cat /etc/os-release
+	
+15* Ps -ef
+
+    'ps' Linux Command is used to display the current process on the terminal
+
+16* Kill -9 processname
+
+   Kill -9 is used to kill the process
+   
+ 17* $? $* $0
+    
+	$?--->used to check status of last executed command, 0 means success and non-zero is failure
+	
+	$*--->All args passed to script
+	
+	$0--->name of the script itself
+	
+18* Ssh
+
+   SSH, also known as Secure Shell or Secure Socket Shell, is a network protocol that gives users, particularly system administrators
+   port --22
+   
+ 19* what is port no of ssh,http and https
+ 
+   SSH-22,HTTP-80,HTTPS-443
+   
+  20* how to list the process running
+  
+    ps -ef or ps -aux
+	
+21* how to login ec2 if pem key lost
+
+    Accessing the EC2 instance even if you loose the pem file is rather easy.
+
+1. First, create a new instance by creating new access file, call it 'helper' instance with same region and VPC as of the lost pem file instance.
+
+2. Now stop the lost pem file instance. Remember not to terminate instance but to stop it.
+
+3. Goto EBS volumes, select the root volume of the lost pem file instance and detach.
+
+4. Now again select the detached volume and this time you have to attach this volume to helper instance which we created before. Since helper instance already has a root volume by default as /dev/sda1, the newly attached volume will be secondary(eg: /dev/sdf).
+
+5. Login to your helper instance with its pem file.
+
+6. Execute below commands:
+
+
+Talk to our Experts!
+# mount /dev/xvdf1 /mnt
+# cp /root/.ssh/authorized_keys /mnt/root/.ssh/
+# umount /mnt
+7. Detach the secondary volume from helper instance. 
+
+8. Again attach the volume back to our recovery instance. Start the instance. Terminate the helper instance.
+
+Use helper instance pem file to log into recovery instance.
+   
+22* how to check the memory in  linux server
+
+   cat /proc/meminfo  (or) top (or) free -make
+   
+23* how to get the IP address of server
+
+
+    ifconfig
+	
+24* how do I find available storage on the server using linux cmds?
+
+    df 
+	
+25* how to identify/find files which are more than 10GB in size ?
+
+     find . -type f -size +90M
+	
+26* Git merge and rebase
+
+27* ssh, keygen
+
+   ssh-keygen -t rsa
+   
+ 28* Cmd and entrypoint ,run
+ 
+ 29* Basic command on Linux
+ 
+ 30* linux server goes down what action you are going to take.
+ 
+  31* How to start the script at boot level
+  
+  32* How to start a service at boot level
+  
+  33* What is way to run script on background
+     
+	 "&" at the end of the script
+	 
+ 34* How do you check open ports
+ 
+    netstat -l
+	
+35* How you see no of arguments
+
+    echo "$#"
+	
+36* What's k statement in shell script
+
+37* How to establish password less connection
+
+38* Shell script for prime numbers for a given range.
+
+39* Linux boot process, 20 linux commands with explanation
+
+40* Linux commands - related to memory and system ram
+
+41* which scripting you are comfortable with?
+
+42* script  to find the port number
+
+43* namespaces in Linux 
+
+44* linux booting process
+
+45* types linux os you have used and what is package manager for Ubuntu
+   
+   sudo apt-get install
+
+46* $? and $!
+	 
+	 $?-used to check status of last executed command, 0 means success and non-zero is failure
+ 
+     $!-PID of last command went into background
+
+	
+	 
+	 
+   
