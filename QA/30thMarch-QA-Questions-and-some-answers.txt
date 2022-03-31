@@ -1,0 +1,113 @@
+
+
+
+
+1) Explain Namespace and Cgroup 
+2) Difference between bind mount and volume 
+3) Explain docker networking
+4) Difference between Publish and Expose
+5) How to add user in container
+6) What is docker registry 
+7) How to list shutdown containers
+8) Can you add volume to running containers
+9) How to troubleshoot if the container is shutting down after every 5 mins
+		Check the application logs within container
+		check contianer logs 
+10) How to check the container logs 
+11) Explain the difference between vm and container 
+12) If we have a vm of 10GB and we need to deploy 2 container of 5GB, can we do it ?
+13) When you run a container, you get error that contianer already exists 
+14) Can you rename a container ?
+15) How do you login to a container 
+16) Difference between exec and attach command 
+17) Difference between CMD and ENTRYPOINT 
+18) Why we use "." when building docker image 
+19) how to create a user defined bridge network
+	docker network create --driver bridge my_bridge 
+20) what are the S3 classes
+		Standard, Intelligent-Tiering, Infrequent access, One-Zone Infrequent access, Glacier  
+21) Have you worked with any DB ? if yes, then explain 
+22) What is healthcheck in ELB ?
+		Need to check 
+23) How do you map ip address to DNS ? 
+24) How do you take the back up of entire EC2 instance ?
+		AMI 
+25) What is VPC ?
+26) What are types of Queues in SQS ?
+		Standard and FIFO 
+27) What is the difference between Roles and Policies in IAM ?
+28) How do you monitor EC2 (or) amazon resources 
+		CloudWatch 
+29)How to do you monitor the application ?
+		CloudTrail 
+30) What is Docker file and Docker image 
+31) How do you create Dockerfile (what all are present in dockerfile) 
+32) Can you stop a running container 
+33) What is a zombie process 
+34) What is docker namespace
+35) What are the commands used in docker file
+36) How to expose a port
+37) What is the default ip of  host in docker
+		172.17.0.0 
+38) What are docker components
+		Explain the architecture  , refer Harsha docker architecture image 
+39) How many containers can you create in the host machine
+		Depending on the host resources 
+40) How many S3 buckets can you create in AWS
+		100 by default and capcity to scale to 1000 by limit increase (added payment) 
+41)How do you create a repository in Git 
+		Git init (initializing Git) 
+42) Why do you use GitClone 
+=======================================================================
+
+                         video interview 
+
+===========================================================================
+
+1.What is hypervisor
+2. Diff between virtualization and containerzation
+3. Which type of ec2 instance u are using in ur project
+4. What is vpc
+5. Y do we use branch in git 
+6. Y do we use clone in git 
+7. How do u create container using dockerfile
+8. How to pull image
+9. What is dockerhub
+10. Diff between git stash and index
+
+100) - How to add user to container and give permissions to the user 
+	We add the following to the dockerfile 
+		
+		For user and group
+		
+		FROM ubuntu:20.04
+			RUN  apt-get update && apt-get install git -y
+			RUN  groupadd sriram
+			RUN  useradd  panda
+			RUN  usermod -aG sriram panda
+		ENTRYPOINT ["/bin/sh"]
+		
+					(or) 
+		
+		For just the user 
+		
+		FROM ubuntu:20.04
+		RUN  apt-get update && apt-get install git -y
+		RUN  useradd  wasaa
+		ENTRYPOINT ["/bin/sh"]
+		
+		
+	
+	RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1001 ubuntu
+	USER ubuntu
+	WORKDIR /home/ubuntu
+	
+	RUN useradd -ms /bin/bash newuser
+	
+101) What is Docker registry
+	
+	A Docker registry is a system for storing and distributing Docker images with specific names, similar to DockerHUB
+	Docker registry is to only store images and NOT containers 
+
+	102)  How to rename a container 
+	docker rename old-name new-name

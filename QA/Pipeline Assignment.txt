@@ -1,0 +1,42 @@
+1.execute the script on the the c server and 2stages in pipeline 
+stage1;build c programs in search.c,sort.c,input.c,output.c(4files need to build)
+stage2:test bvt test for these builds on server; test server
+
+pipeline
+{
+   agent none
+   stages
+   {
+           stage('Build')
+           {
+           agent {label 'c server'}
+       		steps
+                {
+                     sh'git clone https://github.com/ba1997/c-project1.git'
+                     sh '''
+                     ABC.exe:output.o search.o sort.o input.o
+                             gcc -o ABC.exe output.o search.o sort.o input.o
+		     output.o:output.c
+                             gcc -c output.c
+                     search.o:search.c
+                             gcc -c search.c
+                     sort.o:sort.c
+                             gcc -c sort.c
+                     input.o:input.c
+                             gcc -c input.c
+                     '''
+                     sh'make'	
+                     
+                 }
+        }
+       stage('test')
+       {
+       agent {label 'test'}
+       steps
+       {
+          sh 'make check'
+          junit 'reports/**/*ABC.exe'
+        }
+    }
+  }
+}  

@@ -1,0 +1,37 @@
+1.Explain and show process of mulitbranch pipeline?-----yes
+2.Have you have any experience on lambda function and give example?-----should check
+3.how will set the quality gates in sonar qube and how will you check quality of source code?---should check
+4.how will you migrate the app from on prime to AWS cloud?----should check
+5.i want to two stages to execute at a time in jenkins can i do that ...how?---yes
+6. explain the different kinds of load balancer----yes
+7.explain the difference b/w public subnet and privatesubnet?---yes
+8.How does s3 bucket talk to NAT Gateway?---uncheck the block public access in s3 bucket
+9.you want to give to ec2 and you have only pvt key and how do you enable him to access the EC2?---Assume role
+10.which you can't do in freestyle job,which can be done pipeline technical difference?---yes
+11.Difference b/w virtuvalization and containarization in docker?---yes
+12.tell me about cross region replication ? how you apply it? will it copy automatically?---
+13.is it possible that one stages fails and contious the execution to next stage? if yes how ?if no why?
+14.explain the branching strategy?
+
+pipeline {
+    agent any
+    stages {
+        stage('1') {
+            steps {
+                sh 'exit 0'
+            }
+        }
+        stage('2') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "exit 1"
+                }
+            }
+        }
+        stage('3') {
+            steps {
+                sh 'exit 0'
+            }
+        }
+    }
+}
