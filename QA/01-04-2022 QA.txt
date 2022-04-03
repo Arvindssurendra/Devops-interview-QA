@@ -1,0 +1,29 @@
+1st April B3 - QA questions::
+1) diff b/w CMD and ENTRYPOINT
+2) Can you add volume to a running container
+3) How can you mount volume to a container
+4) Explain CI/CD with explanation of tools in each stage
+5) Explain docker architecture
+6) Explain VPC architecture
+7) How can you reduce your image layers 
+8) Explain docker networking
+9) explain the plugins that you have integrated with Jenkins
+10) Diff between security groups and NACL
+11) What is stateful and stateless
+12) Diff between vm and a container
+13) Explain Namespace and Cgroups
+14) Explain the commands/instructions in a docker file
+15) Diff between Publish and Expose
+
+1st April B4 - QA questions::
+
+1) Diff b/w ENV & ARG
+2) Diff b/w CMD & ADD
+3) Diff b/w COPY & ADD
+4) How do you debug a docker container
+5) Why do you use ECR instead of docker hub
+    https://cloudonaut.io/amazon-ecr-vs-docker-hub-vs-github-container-registry/
+6)explain write a docker file
+7)How you will push the images into a docker hub
+8)how will you Build Docker Image Using Jenkins Pipeline & Push to AWS ECR 
+9)Microservice and Monolithic
