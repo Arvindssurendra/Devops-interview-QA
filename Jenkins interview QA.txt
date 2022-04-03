@@ -485,8 +485,19 @@
 
 
 1) Jenkins is building on dev branch and someone else is pushing the code, but the build is in progress.  If someone pushes the code, it triggers another build, so what will u do to stop the parallel build?
-        ---disable concurrent build in freestyle job
-2) How do you disable it in groovy script?
+        Declarative Script
+        pipeline {
+            options {
+                disableConcurrentBuilds()
+            }
+        }
+
+    Scripted 
+        node {
+          properties([disableConcurrentBuilds()])
+        }
+
+2) How do you disable it in groovy script?(continue from above question)
 
        Declarative Script
         pipeline {
@@ -494,6 +505,7 @@
                 disableConcurrentBuilds()
             }
         }
+
     Scripted 
         node {
           properties([disableConcurrentBuilds()])
@@ -503,26 +515,27 @@
 
 3) How frequently u release a new feature ?  -- confirm the answer 
 		
-        if its prod env (based on the application requirement--monthly) 
-         fortnight (every 15 days)
-       
-       --for test env (weekly)
-        --Based on the application/project
+        Based on the application/project
 		There are major release and minor release 
 			Major updates may be quarterly (or) yearly depending on the application and project that we are associated with
 		           For test environment we release it frequently and it is deployed immediate, since we have a pipeline created
-       
 
-4) when we use process of creating multibranch pipeline in jenkins -- Confirm the answer and possible Can skip this question 
-		Option present in Build trigger 
-			Build after other projects are built
-5) how do you use function in groovy script
+4) when we use process of creating multibranch pipeline in jenkins ?
+                
+                    its depending upon the project most of the cases we won't use it
+                     if it's require to build for all banches for every commit to all baranches then we use it.
+
+		
+5) how do you use function in groovy script?
 
   @Library('Shared library') _
   greetUser 'USERNAME' 'DESIG'
      
 6) how will set the quality gates in sonar qube and how will you check quality of source code
        go for any video in youtube for better clarification--jfrog xray,sonarqube,sonar runner,sonar scanner
+
+         https://www.youtube.com/watch?v=Spzk1lrCgNY
+
 7) How you will do insights and analysis of your CICD?
      
        will identify the tools stack (or) technology--ex:maven
@@ -538,7 +551,7 @@
 Multi-master cluster 
 		Minimum 3 master 
 	We setup via either AWS (or) Kubernetes 
-	Based on available compute resources,we can have 12 slaves 
+	Based on available computer resources,we can have 12 slaves 
 	In our company we have around 400-500 builds depending upon the teams, we have around 10 slaves 
 	For testing builds, where we can go upto 800 builds, we can stretch our slaves upto 12, also we do have process to have slaves spinned up when required
  
@@ -546,6 +559,7 @@ Multi-master cluster
       harsha sir will explain in k8's
 
 11) What is the default deployment strategy?
+              k8's
      
 12) Is it possible that one stage fails and continue the execution to next stage ?
          yes,using try catch block
