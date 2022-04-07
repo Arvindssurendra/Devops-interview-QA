@@ -359,6 +359,18 @@
 				
 				Deploy  --> Copies final package to remote repository for sharing with other developers done in build env
 
+                     make---
+                                ABC.exe:output.o search.o sort.o input.o
+                             gcc -o ABC.exe output.o search.o sort.o input.o
+		     output.o:output.c
+                             gcc -c output.c
+                     search.o:search.c
+                             gcc -c search.c
+                     sort.o:sort.c
+                             gcc -c sort.c
+                     input.o:input.c
+                             gcc -c input.c      
+
 124* CICD set up
 		CI/CD pipeline, Jenkins configuration , Multibranch pipeline/pipeline script with SCM 
 

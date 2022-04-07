@@ -1,0 +1,101 @@
+Today QA from B3 Batch
+==================================================================================
+1.Differnce b/w Docker and V/M?
+
+2.How you scale up in K8's?
+
+3.Differnce b/w CMD & ENTRYPOINT?
+
+4.k8's architecture?
+
+5.how to check docker logs?
+
+ANS:docker logs <container id>
+
+6.how to check deployment events?
+
+ANS:kubectl get events <deployment_Name>
+
+  or
+  kubectl describe deployment 
+  
+7. how to check which image is using in deployment
+
+ANS: kubectl describe deployment <deployment_pod_name>
+
+8.How to change image name once the pod created? tell me the command?
+
+ANS:kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.16.1
+ 
+9.difference b/w annotations and labels?
+
+10.difference b/w replicaset and replica controller?
+
+11.How to delete dangling images?
+
+ANS:docker image prune
+
+12.how to delete unwanted volume or deduse the container size?
+ 
+ANS:docker volume prune
+
+13.what happens when you run system Prune in docker
+
+14.write a groovy script to run a paralle build in jenkins
+
+pipeline {
+	agent { label 'master' } 
+	stages {
+		stage('Both build and test') {
+			parallel {
+				stage('Build') { 
+					steps {
+						sh 'sleep 15; echo "This is a Build stage"'
+					}
+				}
+				
+				stage('Test'){
+					steps {
+						sh '''
+							sleep 15
+							echo "This is a Test stage"
+						'''	
+						git branch: 'main', url: 'https://github.com/jaintpharsha/devops-jan-22.git'
+					}
+				}
+			} 
+		}
+		stage('Deploy'){
+			steps {
+				sh '''
+					sleep 5
+					echo "This is a Deploy stage"
+				'''
+			}
+		}
+		
+		stage('My-stage'){
+			steps {
+				sh '''
+					sleep 5
+					echo "This is a My-stage stage"
+				'''
+			}
+		}	
+	}
+}
+
+15.what parameters you used in jenkins? explain them?
+   
+16.what plugins you used in jenkins? explain them?
+
+17.what are the network types in docker?explain them?
+
+18.why we use None n/w type?
+
+19.How will you check different status of Pod? explain Pod life cycle?
+
+  Waiting,Running,Terminated
+
+20.what are the worker componends?k8's
+
