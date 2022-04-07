@@ -102,4 +102,22 @@ pipeline {
 21.what are the ways to trigger jenkins job?
  
  web-hooks,pollSCM,build periodically
+=====================================================
+Today QA from B6 Batch
+=======================================================
+22.Explain docker architecture?
+
+23.How docker and K8s integrate in your ci CD?
+
+24.how u persistent data in docker?
+
+using Docker volume
+
+25.how to delete dangling images. 
+
+docker image prune
+
+26.suppose your container is full, how to make a container free space
+
+ Dokcer container prune
 
