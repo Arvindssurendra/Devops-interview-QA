@@ -97,5 +97,9 @@ pipeline {
 
   Waiting,Running,Terminated
 
-20.what are the worker componends?k8's
+20.what are the worker componends?k8's?
+
+21.what are the ways to trigger jenkins job?
+ 
+ web-hooks,pollSCM,build periodically
 
