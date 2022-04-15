@@ -1,0 +1,41 @@
+12th April- B6 QA by Deepa 
+==================================================
+1. Docker Architecture.
+2. k8s architecture.
+3. Difference between replica set & replica controller.
+4. Diff BW docker & Kubernetes.
+5. Container monitoring tools.
+6. What is container orchestration.
+7. Namespace & types
+8. Stateful set
+9. What is a node.
+10. Docker commands
+11. What are k8s controllers explain each of them
+12. Services & types
+=====================================================
+12th April- QA B3 & B4 QA by Ramesh
+--------------------------------------------------
+1) Explain k8s architecture
+2) What is difference between Relica Set and Replcation controller
+3) What is replication controller do ? 
+4) How do you set up a k8s cluster 
+5) How do you connect worker node to Master node 
+6) What are the services provided by K8s
+7) If i have an application, which i need to give external network access, how do i do that ?
+8) Explain skeleton of any Deployment script 
+9) Difference between RC and RS  {Replication Controller vs Replication Set}
+10) Difference between Docker and K8s 
+11) What is rollback, how is it achieved, what is the command for Rollback
+--------------------------------------------------------------------------
+-------------------------------------------------------------------------
+12th April- B1 QA by Harsha
+===========================================================================
+1. Which language have u used to configure microservice
+2. How can u get logs of pods 
+3. K8s architecture
+4. What is volumes
+5. What are the network used in deployment
+6. Service types
+7. Controllers
+8. Statefull & stateless
+9. My application is running in container level tool how do u migrate that application to k8s level ...& While migrating that application what all the requirements u asked with developer ?

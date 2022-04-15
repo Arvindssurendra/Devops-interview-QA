@@ -2,11 +2,58 @@ Today QA from B3 Batch
 ==================================================================================
 1.Differnce b/w Docker and V/M?
 
+    
+			VM                    vs 		Containerisation	 
+	1. Virtualization at hardware level  		1. Virtualization at OS level 
+	2. Heavyweight - consume more host 	        2. Lightweight
+	   resources 	
+	3. VM useses hypervisor 		        3. containerisation tool is used 
+	4. limited performace - Boot up time            4. Native performace - usualy boot in seconds.
+		is more which is in minutes 		5. Shares OS storage means only uses required storage.   
+	5. Cosumes more storage 			6. Supports on Linux		 											   
+	6. Supports all OS 							
+
 2.How you scale up in K8's?
 
+  kubectl scale deployment.v1.apps/deployment.yml --replicas=10
+
 3.Differnce b/w CMD & ENTRYPOINT?
+ 
+   	
+		- Both CMD and ENTRYPOINT are used to define the execution command of the container which will be created 
+		  from this image.
+		- If we use multiple CMD or ENTRYPOINT in the same Dockerfile only the latest one will be considered 
+		  and all the other CMD or ENTRYPOINT will be ignored.	
+		- If we use both CMD and ENTRYPOINT in the same Dockerfile, ENTRYPOINT will get the 
+		  higest priority and the command of CMD will become as argumetns to ENTRYPOINT	
+		  
+		 Difference  
+		  -	CMD command can be overridden at the runtime.	
+		  - ENTRYPOINT can't be overridden at the runtime but the runtime command
+		    will become parameters to ENTRYPOINT command.
 
 4.k8's architecture?
+     
+   K8's has master node and nodes
+   master nods components are 
+
+ API server:   1.its a main point and brain of the cluster
+               2.all the componends are directly connected to API server,they communicate though API server only
+                   None of the components are directly connected with each other
+               3.this is the only component which has access to atcd and writes the cluster data into etcd data base.
+               4.all the cluster requests will be authenticate and authorized by API server
+               5.it has a watch mechanism for watching the changes in the cluster.
+ etcd:
+              1.etcd is a distributed and consisten key,value store for storing all the cluster data.
+              2.it stores and maintainers cluster data.
+
+shedular:    1.shedular is responsible for monitoring API server for any New pod request.
+             2.it communicates to API server for every 5 sec.
+             3.shedular main work is to decide in which node the pod should be created based on the
+                worker node load,affinity,anti-affinity.
+
+control manager:
+
 
 5.how to check docker logs?
 
@@ -102,6 +149,9 @@ pipeline {
 21.what are the ways to trigger jenkins job?
  
  web-hooks,pollSCM,build periodically
+
+22.difference b/w namespaces and cgroups
+
 =====================================================
 Today QA from B6 Batch
 =======================================================

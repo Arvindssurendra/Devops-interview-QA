@@ -1,0 +1,22 @@
+13th apr QA B2 & B3 QA
+===========================================================================================
+1) what is daemon set
+2) how is log collected via Pod using daemon set 
+3) Difference between Replica set and Stateful set 
+4) How do you onboard applications
+5) Whare are Services (or) explain services  
+6) what is health check 
+7) what is side-car container 
+8) what are storage classes 
+9) Can you provide what are the networking solution we have in k8
+10) How can my application communicate with another Pod? what if it's in a name space? how then can they communicate?
+11) What is micro-services ?
+12)can you explain the role of a daemonset?
+13)roles of a probe?
+14)explain role of a master components?
+15)explain about name space in k8's?
+16)types of namespaces and what is the use of those?
+17)explain volumes in k8?
+18)can you explain our application, or service ..how those identify the pod?
+19)How your our application will communicate with other components of your in the cluster?
+
