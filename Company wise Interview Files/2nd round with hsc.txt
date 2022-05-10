@@ -1,0 +1,28 @@
+1. roles and responsibility
+2. day to day activity
+3. if i start a new project then will do a jenkins configuration
+4. wirte a simple groovy script of any pipeline job
+5. i want to deploy that container image on AWS 
+6. write a terraform script pull that image and deploy that image to aws
+7. write a terraform script to create VPC  and attach to an already running instance to on aws
+8. what is ur experience on terraform
+9. what is terraform compliance
+10. terraform validate
+11. terraform plan
+12. what is experience on AWS
+13.  are u work with aws inspectore
+14. do you have written a lambda code
+15. what is cloudformation 
+16. cloudwatch
+17. i want to intergrate cloud watch to my on prime monitoring tool datadoc how u will do
+18. handler in ansible
+19. roles in ansible
+20. i have 200 machines of centos ubuntu redhat i don't know them which is centos ubuntu and redhat all machines need to installed with nginx so how can i do that
+21. what is ansible galaxy
+22. in k8s waht is the name space
+23. what is git stash
+24. what is git merge
+
+
+
+    

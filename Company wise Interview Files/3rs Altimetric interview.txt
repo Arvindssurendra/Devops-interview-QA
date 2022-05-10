@@ -1,0 +1,57 @@
+resounrs AWS_ec2_instance {
+  ami "1111111111"
+type=t2.micro
+ 
+}
+
+{
+
+tags
+  name: my-first-ec2
+}
+
+resounres "sg" {
+    ssh=22
+    tcp=22
+}
+
+
+
+providers "aws" {
+  alias= region1
+  region=us-east-1
+}
+
+providers "aws" {
+  alias= region2
+  region=us-west-1
+} 
+
+1.What is headless service,
+2. have one instance want to take that in diffrent region what will you do
+3 how you take the s3 bucket storage data to from one region to another region
+4. What are all the aws services you are using in your company?
+5. Have you worked on k8s?
+6.Have you worked on terraform?
+7.Have you worked on ansible?
+8.i am giving a git url and  how you deploy build on jenkins jobs
+9. u have artifactory packages and how you deploy in jenkins
+10. replication controller and replica set
+11. probes 
+13. k8s services
+14. how to check the logs in perticular container 
+13. which types of intsances have u used 
+14. do u know about sticky notes in AWS 
+15. s3 bucket storage classes
+16. u have experience on scripting? what type of script u have written?
+17. what all are the daily activity on k8s yoy will do?
+19. git pull and git fetch and git rebase
+20. load balncer and types of load balancer in aws?
+21. one of the my pod is in worker node is terminated what u will do?
+22. in jenkings job build to excute automatically when the code is push to git hub
+23. what is ssl in aws?
+24. after some days dode is pushes to git hub but job is not executed what is is the resion n how will you fix it?
+25. create a instance in terraform with differnt regions
+26. can you run a two application on single cluster
+27. vpc components 
+28. 

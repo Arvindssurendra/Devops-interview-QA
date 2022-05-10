@@ -1,0 +1,21 @@
+standard chartered research and technology india pvt. ltd====on==02/05/2022
+
+1. difference b/w eks and fargate
+2. explain auto scalling
+3. how will you deploy ur application with zero down time
+4. how to set static ip in k8 cluster
+5. how to setup jenkins jobs
+6. how restart jenkins manually
+7. difference b/w git clone and pull
+8. how to clone git project to jenkins jobs
+9. what is ansible galaxy
+10. command to build image from running container
+11. how to migrate instence from one region to another
+12. how to display last line of a file in linux
+13. tell me about ur self
+14. you have knowledge in kafka?
+15. i have 3 containers who to login to a container?
+16. what is spot instence and on-demand instence?
+
+
+

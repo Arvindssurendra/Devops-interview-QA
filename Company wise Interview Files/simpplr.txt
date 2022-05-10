@@ -1,0 +1,23 @@
+Simpplr
+
+Introduce yourself. Explain your roles and responsibility
+
+Difference between deployment and statefulset
+
+Difference between service and headless service
+
+How do you make sure you're application is running always in k8s cluster? 
+
+What do you know about pod disruption budget? 
+
+How you give access to k8s cluster? 
+
+How does my ec2 instance access to k8s cluster? 
+
+How does my application running in ec2 instance access to s3 service? 
+
+How to block incoming traffic for single ec2 instance? suppose I've 10 instances, I need to block for single instance
+
+Write script to display square of the number from 1 to 10
+
+Some other scenario based questions

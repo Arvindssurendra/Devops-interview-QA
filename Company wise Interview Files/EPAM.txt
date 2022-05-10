@@ -1,0 +1,55 @@
+	EPAM
+=========================================================================================================
+1)How many aws account you have managed?
+   3
+   
+2)client has different data centers on different locations. if your client has 50 aws accounts now there is a requirement to establish a connectivity so that the application which is hosted in data centers servers can easily communicate with applications (or) resources which are hosted on different vpc and diff aws accounts so how you are going to establish the connection
+    using Resource Access Manager 
+	
+3) customer has 50 (or) 100 odd aws accounts they are looking for a solution so that each and every single vpc can communicate with each other how you are going to establish that connectivity?
+     using Resource Access Manager
+	 
+4) customer has a physical side production environment (or) workloads are running on aws there is 1 particular Ip/CIDR which is continously hitting their environment multiple times in a day they are suspecting that a malicious activity they are asking you to block any kind of a traffic from a Ip/CIDR how you will going to block them?
+      block that ip in security groups ex: 192.17.12.1/32
+	  
+5) CIDR for 15 ec2 instances , 2 subnets 1 private and 1 public , write CIDR ranges 
+    2^5=32
+	
+6) you have created one server in a private subnet now you have given the Ip address to me. I am the person who will install some softwares (or) configurations on that server. I am siting infront of my laptop i am complaining you that i am not able to access the machinefrom my laptop how you can resolve it?
+    will check the NATGATE way connection or will implement boston method
+	
+7) how you can access a machine without a .pem key?
+    AWS console---EC2 instance connect option or we create a .pemkey using helper instance
+	
+8) if you create a transit gateway what exactly you will define in attachments?
+     Attachment type: VPC,VPN,Peer connection,connect and VPC Attachment: DNS,IPv6
+	 
+9) how your sharing the key  for a group of 4 members & these 4 members will be logged in from same username after 4/5 days customer complaining that a file deleted how can you track back who did what?
+      to share a key will create a group and 4 users, then attach the users to that group and mail the same key to all 4 people,.....Next will track the user using cloud trail service in AWS
+	  
+10) what instances you are using in your project? why particular those instances?
+     we are using c2x.large and c5x.large it has good CPU and RAM (check the CPU and RAM size)
+	 
+11) customer is asking you to change the instances family to 2 ec2 instances which are part of the autoscalling groups siting on a load balancer & the condition is they are not looking for new instances and none of the instances to be deleted how your going to change the instance family of these 2 instances?
+12)what kind of individual contribution load that you have played in your experiance on aws? what kind of issues you have resolved? what kind of troubleshooting you have performed?
+13) pre signed url in s3?
+      By default, all S3 objects are private. Only the object owner has permission to access them. However, the object owner can optionally share objects with others by creating a presigned URL, using their own security credentials, to grant time-limited permission to download the objects
+	  
+14) different routing policies in aws? which policy you have used for your project?
+
+15) diff b/w cname and alias?
+           lias Record: points a host name to AWS Resource ex: myapp.mydomain.com to us-east.2.elb.amazonaws.com 
+16) what record used for dns to ip?
+        
+17) what kind of monitoring experiance you have?
+18) customer is asking you to monitor RAM of a particular instance how you are going to do that?
+19) any experiance with lambda? any experiance inwriting lambda functions?
+20) what is API gateway why we need it ?
+21) diff b/w cmd & entrypoint
+22) are you provisioning infrastructure for k8s or you are maintaining the k8s cluster?
+23) there are 3 replicas sets of the service that is frontend service for an application customer complaining that they cannot see the home page of the application but you check on the k8s you come to know that respective pods are coming and dying very frequently within frequent seconds how you will resolve and troubleshoot it?
+24) are you managing the application deplouyment as in ci/cd devops pipeline or there is a different team managing the application deployments?
+25) customer is looking for microservice which is exposed to internet so what are the diff manifest files to support this behavior?
+26) which ingrss controller your using?
+27) any experiance in dynamodb?
+28) terraformmodule code for ec2 instances, vpc, 2 subnets and s3 bucket?

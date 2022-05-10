@@ -1,0 +1,125 @@
+Accolite
+
+1. Introduce yourself 
+    
+2. Explain your cicd
+   
+3.Can we secure Jenkins? How?
+     
+4. K8s Architecture
+
+5. what is kubectl?
+    
+6. What is EC2? What are placement groups?
+    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html
+	
+7. What is s3? What are groups in IAM?
+      
+    Amazon S3 has a simple web services interface that you can use to store and retrieve any 
+amount of data, at any time, from anywhere on the web.
+ 
+8. What is docker and docker images?
+       
+9. EBS types, S3 storage classes
+
+  1. Solid state drives (SSD) 2. Hard disk drives (HDD)  3.Previous generation
+  
+  https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html       
+  
+10.VPC and its components
+       
+11. VPC peering
+
+12. Loadbalancer and types of Loadbalancers
+
+13. Dynamodb, Route 53
+
+ Amazon DynamoDB is a fully managed, serverless, key-value NoSQL database designed to run high-performance applications at any scale.
+ DynamoDB offers built-in security, continuous backups, automated multi-Region replication, in-memory caching, and data export tools.     
+ 
+14. What is API gateway? 
+
+15. What is Cloudwatch? list different Metrics of Cloudwatch
+    EC2---
+    1. CPUCreditBalance --IN EC2
+	2. CPUUtilization --IN EC2
+    3. CallCount --IN logs
+    4. BucketSizeBytes--IN S3
+    5. NumberOfObjects--IN S3
+	6. Diskread -- IN EC2
+
+	
+16. What is lambda? What is SNS?
+  lamda:   Used to run the code with out thinking of other code it's a server less service.
+	SNS:  It provides a low-cost infrastructure for the mass delivery of messages, predominantly to mobile 
+                                                                                                           users   
+																										   
+17. What is Autocaling? Types of autoscaling ?
+        Used to monitor the applications which automates the capacity of the application study,stabilized and predictable performence
+		Horizontal
+		vertical
+		
+		
+		
+
+Accolite digital
+1) Introduce yourself
+
+2) $#
+ 
+3) $? 
+
+4) $@
+ 
+5) what is jenkins pipeline
+
+6) what r the stages of declerative piple line 
+          
+7) what ci tool u r using 
+      
+8) apart form jenkins? 
+    circle ci, Team city,GitLab CI
+9) write groovy script for deplyoing to k8s 
+   
+10) write shellscript to it should username and reflect user id 
+      
+11) copy and add 
+12) how do u pass environment variable in cli
+     docker run -it -d -e env1=test1 -e env2=test2 --name container_name image_name
+	 export PATH=$PATH:/usr/src......
+	 
+	 
+13) roles and cluster roles 
+     
+14) daemon set
+    
+15) configmaps 
+
+16) how do u create a docker image from a dockker container 
+
+       docker commit contaier_id image_name
+	   
+17) how do u deploy in maven 
+
+      mvn clean install deploy
+	  
+18) probes and types of probes 
+     
+19) sidecar container 
+
+20 ) how do check logs of a sidecar container of node in a particular namespace 
+
+      kubectl logs pod -c container_id -n namespace_name
+	  
+21) I have specifide 5 resources in terraform block I want to execute only one resource from that, how to do that. 
+
+        in main.tf will call only that particular resource 
+		
+22) where do u store ur images 
+
+     dockerhub,ECR,JFROG-Xray
+	 
+23) in linux explain array format
+     ARRAYNAME=(value1 value2  .... valueN)
+	 
+He asked 10-15 more questions I don't remember them all

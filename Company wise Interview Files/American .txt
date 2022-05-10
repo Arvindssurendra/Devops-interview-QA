@@ -1,0 +1,12 @@
+American india pvt 
+
+1. Roles and responsibilities
+2. 3 tier architecture
+3. How to stop autoscaling in aws
+4. How to shift to other branch in terraform file
+5. Monitoring tools
+6. How to autoscale pods
+7. How to make my file run every  5 min 
+
+
+And Few practical que

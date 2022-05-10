@@ -1,0 +1,56 @@
+2nd round with persistent
+
+Person A
+**********************
+1. role and responsibilities
+2. which automation tool ur using jenkins 
+3. tell me about groovy language why we are using that
+4. tell me the steps to install a jenkins in ur linux machine
+5. what is the supporting tools for jenkins 
+6. how ur experiance with docker
+7. different between VM and container
+8. ur having one container how many processor are running in that
+9. what is difference between docker deamon login and container login 
+10. why we are using docker deamon
+11. docker container life cycle
+12. docker compose file there is two containers one container is the data base container and one  is a application container you need to start the data base container first and then  to start the application container how you will do that
+13. docker image u want to delete it how you will delete it
+14. what is k8s
+15. what is kube scheduler
+16. what is the differnce between cluster ip and node port
+17. what is ingress
+18. what are the monitoring tools u have used in k8s
+19. port  of prametheous 
+20. what is the exporter name in k8s
+21. ur running  one application in linux server want to check the port number how you will check
+22. what about ansible
+23. u have any experiance with scripting 
+
+ 1. count
+ 2. histogram
+ 3. summery
+ 4. gauge
+ 
+person B
+*****************
+1. how many year  experiancing with linux 
+2. how do you chcek the load avarage in linux 
+3. there are 10 servers u need to ping those servers and u need to store ping response to the file wrire a script
+#!/bin/bash
+date
+cat /var/tmp/servers.list |  while read output
+do
+    ping -c 1 "$output" > /dev/null
+    if [ $? -eq 0 ]; then
+    echo "node $output is up"
+    else
+    echo "node $output is down" | mailx -s "$output not pinging" xyz@klm.com
+    fi
+done
+
+4. do you know anythinga bout swap memory in linux server
+
+
+server= serv1,ser2....
+
+if [ $ser -nq 0 ]

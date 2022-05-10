@@ -1,0 +1,33 @@
+Talent Track services
+=================================================================================
+
+1. how to add a volume to an ec2-instance if its reaches 80% in a automated way?
+
+  1. Monitoring application detects 80% and triggers automation
+  2. API GATE WAY POST method integrates with Lamda function and 
+  3. Assume role action allows lamda to execute state machine in other accounts
+  4. retrive AWS volume ID
+  5. Take a snapshort of volume
+  6. To expand AWS layer, we should check the operating system if its windows
+      1. we write power shell scripts to expand the volume size
+	  2. if its linux we write bash scripts to expand the size of volume
+  7. check status and send mail
+  
+  https://aws.amazon.com/blogs/storage/automating-amazon-ebs-volume-resizing-with-aws-step-functions-and-aws-systems-manager/
+ 
+  
+2. explain the encryption in s3, root volume ?
+       Amazon S3 uses AES-256 bit encryption to encrypt the data 
+	   with the customer provided key and removes the key  its memory post completion of the encryption process
+	   
+	ex: Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)
+	                     (or)
+	    Server-Side Encryption with KMS keys Stored in AWS Key Management Service (SSE-KMS)
+		
+3. how you are taking backup of ebs?
+          create a AMI for the instance 
+		  create a snapshort for volume
+		  keep in aws life cycle manager
+		  
+4. How ur monitoring the ec2-instances?
+    cloud watch

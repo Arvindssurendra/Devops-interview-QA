@@ -1,0 +1,15 @@
+Searce - 02/05/2022
+
+1) When I push a docker image into ECR if it has any vulnerability I have to receive a notification, how will you configure it ??
+2) What are cloud watch rules?
+3) I have written a blog, I want to host it on cloud, how can I do it. What will be your approach ?
+4) What is cloud front ?
+5) What is the difference between Application and network load balancer ?
+6) I have 2 instances & I have hosted my application on them and I have a load balancer which points to my instances, if I want to expose my application to internet which type of load balancer should I use ?
+7) How to provision a EKS cluster ?
+8) Explain the CI CD in your project 
+9) How you are deploying your docker images into your kubernetes cluster ?
+10) How you are updating the image tag into the deployment file ?
+11) Explain blue green deployment 
+12) What are the things you have worked on in ansible 
+13) What setup you have in place to achive locking in statefile
