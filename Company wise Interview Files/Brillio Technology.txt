@@ -1,0 +1,16 @@
+Company name: Brillio Technology
+*tell me about your self
+1)How do you handle looping in terraform?
+2)If there are 10members in project if both person made changes at time what will happen?
+3)what is exactly mean by state lock file in terraform?
+4)how do u forcefully make changes in terraform?
+5)explain working of master node components?
+6)what are types of provisioner and difference between local and remote provisioner
+7)what is terraform init?
+8)what are the types of state file? Explain provider!
+9)How much time will you take to set 10cloud watch alarms in terroform by using terraform code?
+10) what is workspace in terraform?
+11)explain upstream and downstream in jenkins!
+12)if I have 10jobs running if 5th job failed how do u continue build?
+13)if I getting older information with particular application what is the reason for that?
+14)what is load balancer? Explain application load balancer

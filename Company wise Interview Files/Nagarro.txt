@@ -1,0 +1,15 @@
+Nagarro
+
+1. Roles and responsibilities
+2. Exact build integration
+3. What is slave in Jenkins? Y do we need that ? How do we configure that
+4. Explain monitoring tool
+5. Explain sonarqube ? Differences between sonarqube and sonarcloud
+6. Volume parameter in dockerfile
+7. What is jenkins credentials group ? Y do we use that ? How do we use that 
+8. How do u deploy build to qa and uat ? Exact explanation
+9. Cloudfront
+10. Explain about Database
+11. Playbook file
+
+il share other que once i remember

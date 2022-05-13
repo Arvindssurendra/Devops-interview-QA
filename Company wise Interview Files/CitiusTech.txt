@@ -1,0 +1,9 @@
+CitiusTech
+==================================
+1. introduce your self?
+2. Explain CI/CD?
+3. Explain build stage and how your pushing the image to jfrog artifactory
+      tell me the command or steps?
+4. what is statefull set and deployment in k8's?
+5. i deployed a pod but the status is crashloopbackoff error, why i am getting this? what is the root cause?
+6. 

@@ -1,0 +1,85 @@
+bigbasket
+
+1. roles and responsibilies?
+2. have u worked on linux environment. what kind work u did on linux?
+3. how to check mount volume disk size 
+3. how to monitor the cpu  memory ?
+4. do u know special persions in linus n do you have any idea about swigy bit ?
+5. do you know about u mask?
+6.what u did in aws?
+7. EBS volume types
+8. can we block the ip adress through security groups
+9. have u worked on IAM ? what is in line policy? 
+10. how do u rate urself on docker and k8s?
+11. architecture of k8s
+12. my etcd server got down what is impact on k8s cluster?
+13.during down time any application will get impact and  can we do deployment during this time?
+14. what is taint and tolaration ?
+15, any idea about jenkins?
+16. i have java application in scm and i want to deploy in k8s cluster xould you expalin the each stage?
+17. in terraform wt kind of things what you did 
+18. in ansible also
+19. what is dynamic inventry
+
+suremind
+1. what is ur total expirience
+2. what is ur CTC
+3. what is the expected?
+4. having offer in hand?
+5. tell me brief about urself 
+6. how will do the unit testing 
+7. maven lifecycle happens
+8. what is differnce between install n packages in maven
+9. can u write any docker file 
+10. what all are the different deployment statergy 
+
+
+hsc
+1. briefly tell me about urself and ur company and roles and resposibilities
+2. have you worked on terraform?
+3. terrafom working on which platform
+4. most usefull commands u have used in day to day bases on terraform
+5. which is existing resources after destroy the ec2 instance the VPC id is remain same or it will change
+6. what are modules in terraform 
+7. what exactly terraform commnd will do
+8. whether terraform is that open-source
+9. in aws u can use cloudformation also 
+10. what is major differnce between cloudformation and terraform
+11. what is terraform backbend
+12. do you know statelocfile . what exactly it will do
+13. in terrafom do you have used any plugin 
+14. which is the command with that help u can intsalll the dependecy packages
+15. Docker network types
+16. docker volumes types   
+17. how to expose the port numbers tell me the command
+18. explain one simple docker file
+20. tell me about k8s
+21. tell me about all controller types and explain
+22.what all are the services you have used in k8s
+23. i have created som pods and check the details the pod is pending what will be the reason behind it?
+24. what is a headless services and why we use?
+25. the pod is went down for some reason u want to know the exact reson it what u will do how you will you check ?
+26. rollback and rollout?
+27. how the two pods are communicate with each other?
+28. default types of namespaces?
+29. exaplin me about deployment yaml file
+30. do you have expeience with ansible ?
+40. so u have 50 ubuntu servers u want to install tomcat on each servers how u will do and befor writting a playbook what all are things u need to done with ansible 
+server
+41 . do you have experience on jenkins 
+42. what is aritfactory  did u used ?
+43. what is defualt jenkins port number
+44. how  to change the jenkins port number
+45. do u have experience on aws n what all are the services u have used
+46. explain the SNS n did you configure anything with SNS
+48. what all the globelly accessible services and region accessible services
+
+simplrr
+1. roles and resposibilites
+2. how to deploy a pod on production environment
+3. can write a simple shell srcipt  which give sqaure value of the numbers
+
+after this i am not remembring those questions bcz i did not undertsood the qusetions  
+
+
+ 

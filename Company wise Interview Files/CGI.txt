@@ -1,0 +1,9 @@
+first round with "cgi"
+
+1. roles and responsibilities 
+2. what is the difference between terraform and ansible
+3. in terraform what do you understand by secrets
+4. in asnible what are playbook u have written 
+5. what is roles and modules in play book
+6.  what is different between declarative and scripted pipeline jobs
+7. terraform commands and explain

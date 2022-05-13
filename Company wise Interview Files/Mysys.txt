@@ -1,0 +1,38 @@
+mysys technologies
+
+1)tell me about ur self and roles and resonsibilities
+1. K8s architcure
+2. how to integrate the k8s  with jenkins for deployment
+3. what is role structure in ansible
+4. to write a docker file  with centos and install the apache and use the command ping
+5. create one pod using yaml 
+6. write any one shell scripting code
+
+
+apiVersion: v1
+kind: Pod 
+metadata: 
+    name: my-first-pod	
+spec: 
+    containers:
+       - name: my-nginx 
+         image: nginx:latest
+		 ports: 
+		    - containerPort: 80
+
+#!/bin/bash
+echo "enter a filename"
+read = name
+
+if [ -s  $name  ]      
+ echo " file is does not empty"
+else
+   echo" file is empty"
+fi
+
+FROM ubuntu
+RUN apachetomcat9
+COPY /home/ubuntu/tomcat/webapps
+ENTRYPIONT ["ping"]
+
+above docker file is not currect dont refer 

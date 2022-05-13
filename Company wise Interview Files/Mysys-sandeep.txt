@@ -1,0 +1,16 @@
+Company name: MSys technologies
+
+Questions:
+
+1. Introduce yourself
+2. Roles and responsibilities.
+3. After build has been done, ru storing anywhere.
+4. Before storing the code, any scan ll be done for vulnerability.
+5. Explain the setup how ur code will go to the vulnerability scan.
+6. How do you integrate the sonarqube in Jenkins.
+7. I have 4 applications running, which I need to restart by using ansible playbook, explain the process.
+8. I need to first restart tomcat first then remaining 3 applications, how will you do?
+9. I have a piece of code() which I need to host in AWS, the code is for the shopping application, every once in a year we will be having sale, can you explain me the AWS infrastructure setup required.
+10. I have 10 pods, if any pod goes down notification has to come, it has to be automated, how will you do..?
+11. Explain blue green deployment.
+12. Any scripting language do you know?
