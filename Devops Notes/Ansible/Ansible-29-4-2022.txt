@@ -1,0 +1,234 @@
+Ansible common modules
+
+System- User,Group,Hostname,service,Mount, Ping
+Command- Command,Expect, Shell, script
+Files- Archive, File, Find, replace,Copy
+Databse- Mongo, mysql, postgress
+Cloud- AWS
+
+Some example modules-
+
+setup- ansible test-servers -m setup -u ec2-user
+
+copy - ansible test-servers -m copy -a 'src=/home/knoldus/Personal/blogs/blog3.txt dest=/tmp' -u ec2-user
+
+
+
+
+
+
+Asible facts
+	- Asible facts are the variable which contains the details of target hosts
+	- all the facts are prefixed with ansible_ word
+    - setup module is used to gather all facts (ansible all -m setup)	
+	
+Install package on both ubuntu and redhat by refering the facts
+---
+ - name: Play_1
+   hosts: all
+   tasks:
+     - name: Install git (frontend)
+       become: true
+       apt:
+          name: "{{ item }}"
+          state: present
+          update_cache: yes
+       when: 
+	      - ansible_distribution == "Ubuntu"
+		  - ansible_pkg_mgr == "apt"
+       with_items:
+           - git
+           - nginx
+           - memcached
+           - jq
+           - curl
+           - wget
+     - name: Install git (frontend)
+       become: true
+       yum:
+          name: "{{ item }}"
+          state: present
+          update_cache: yes
+       when: ansible_distribution == "RedHat"
+       with_items:
+           - git
+           - nginx
+           - memcached
+           - jq
+           - curl
+           - wget	
+	
+Ansible run a task only if previous is success 
+	- using register we can able to achive this condition 
+	- register will save the output in a variable in JSON format only if the task executes
+	  successfuly 
+	- we can register the output of task which we want check the status and on another task 
+      we can check register variable got values or not 
+---
+ - name: Play_1
+   hosts: all
+   tasks:
+     - name: Install multiple packages on Ubuntu
+       become: true
+       apt:
+          name: "{{ item }}"
+          state: present
+          update_cache: yes
+       when:
+         - ansible_pkg_mgr == "apt"
+         - ansible_distribution == "Ubuntu"
+       with_items:
+           - git
+           - nginx
+           - memcached
+           - jq
+           - curl
+           - wget
+       register: result
+
+     - name: Print debug message
+       debug:
+          var: result
+          verbosity: 0
+	   when: result is changed 	  
+	  
+Ansible debug 
+	- print output of a task with register varibale 
+	---
+ - name: Play_1
+   hosts: all
+   tasks:
+     - name: Install multiple packages on Ubuntu
+       become: true
+       apt:
+          name: "{{ item }}"
+          state: present
+          update_cache: yes
+       when:
+         - ansible_pkg_mgr == "apt"
+         - ansible_distribution == "Ubuntu"
+       with_items:
+           - git
+           - nginx
+           - memcached
+           - jq
+           - curl
+           - wget
+       register: result
+
+     - name: Print debug message
+       debug:
+          var: result
+          verbosity: 0
+		  
+Ansible Run specific tasks / plays 
+	 - Using tags we can run specific task or play in a playbook
+  Example:	 
+---
+
+ - name: Play_1
+   hosts: all
+   tasks:
+     - name: Install git on Ubuntu
+       become: yes
+       apt:
+         name: git
+         state: present
+         update_cache: yes
+       tags:
+         - ubuntu_pkg
+     - name: Install curl
+       become: yes
+       apt:
+         name: curl
+         state: present
+         update_cache: yes
+       tags:
+         - curl_pkg
+
+ansible-playbook playbook.yaml --tags="ubuntu_pkg"
+ansible-playbook playbook.yaml --skip-tags="ubuntu_p
+
+      
+	 To run only task with the tag
+		ansible-playbook playbook.yaml --tags="tag_name1,tag_name2"
+		ansible-playbook playbook.yaml --tags="ubuntu_pkg"
+	
+         To skip a tagged play / task 
+		ansible-playbook playbook.yaml --skip-tags="tag_name1,tag_name2"
+		ansible-playbook playbook.yaml --skip-tags="ubuntu_pkg"
+		
+		
+Ansible Roles
+	- Roles are better way of organizing my playbooks
+	- Instead of defining everything play, handlers, templates etc. in a single file 
+	  we can define it in a proper folder structure using roles 
+	- default location od roles is /etc/ansible/role (if directory is not present create it)  
+	- ansible-galaxy is the tool which ansible gives us to create a role 
+            ansible-galaxy init <role_name>
+        - Download the roles from ansible galaxy 
+           ansible-galaxy install <role_name>	
+	- Role directory structure
+		roles
+			└── install_pkg
+				├── README.md
+				├── defaults
+				│   └── main.yml
+				├── files
+				├── handlers
+				│   └── main.yml
+				├── meta
+				│   └── main.yml
+				├── tasks
+				│   └── main.yml
+				├── templates
+				├── tests
+				│   ├── inventory
+				│   └── test.yml
+				└── vars
+					└── main.yml
+
+	tasks - Conatins the main list of task that we want to execute by the role.
+			main.yml is where we put our tasks 
+	handlers - Contains tasks which are executed only if it is notified by other task after 
+			   successful execution (if there is change from the notifing task).
+        defaults - It contains default variables for the role and it is the least precedence 
+				varible in ansible.
+	vars  - The variables which will be used by role. These variable can be defined in our       
+			playbook also. (task/play variables)
+	files - Contains static file that can be coppied to hosts by role 
+			In task I don't need use the complete path just filename is used to copy.
+	templates - used to define dynamic value in files and copy it to host with values defined.
+				this uses jinja2 format templating.
+	meta - To define role dependencies.			
+     			
+Ansible Vault
+
+ ansible-vault create vault.yml
+
+ ansible-vault  encrypt inventory.txt
+
+ ansible-vault view vault.yml
+ 
+ ansible-vault edit vault.yml
+
+ ansible-vault decrypt vault.yml
+
+
+Ansible variables
+---
+- hosts: all
+  vars:
+    hello: world
+  tasks:
+  - name: Ansible Basic Variable Example
+    debug:
+      msg: "{{ hello }}"
+
+ansible-playbook <file> --extra-var hello=123
+
+Assignment:
+1. write a single playbook which install java, git, wget on ubuntu machine and curl, python, tomcat on redhat machine.
+2. Write a playbook which accepts command line arguments and print it to the console
+3. create a vault and store the password. Demonstrate all relevant commands.
+4. Create a role.

@@ -1,0 +1,31 @@
+Trainz Questions ( Shivakumar ).
+
+1) Tell me about your self.
+2) Have you worked on ansible
+3) Explain Ansible role with structure.
+4) write ansible code to create a file from one destination
+   and copy to other destination.
+- name: copy module demo
+  hosts: all
+  vars:
+    myfile: "{{ ~/example.txt }}"
+  tasks:
+  - name: create a text file
+    ansible.builtin.copy:
+      dest: "{{ myfile }}"
+      content: |
+        line 1
+        line 2 
+5) how you secure ansible playbook.
+6) how u create different environment in Git Hub ( Dev Test Etc ).
+7) what are the basic requirment for setting up ansible.
+8) Which version of phython will support for ansible.
+9) do you know how to create container user playbook.
+10) how to resolve merge conflict.
+11) explain jenkins master slave configuration.
+12) What and all services you created in Terraform.
+13) how you will executes tasks in parallel.
+14) in ansible role you have default and var, which is having highest priority.
+15) what are ansible common modules.
+16) have you setup CI / CD in windows.
+17) Which version of ansible you using.

@@ -1,0 +1,31 @@
+Laerdal-
+
+1 k8 architecture
+
+2 services
+
+3 pod communicatipn between different namesspaces
+
+4 what happens if my master goes down
+
+5 what happens if my worker node is down, how will traffic be routed
+
+6 what is pod eviction
+
+7 what happens if pod is down
+
+8 Docker file
+
+9 deployment file
+
+10 helm structure and its usage
+
+11 helm install why
+
+12 use of values. Yml file
+
+13 Jenkins-cloud node? 
+
+14 issues with production or how can it be resolved.
+ 
+15 challenges faced during k8 deployment?

@@ -1,0 +1,286 @@
+QA list from MK Half centuary rampage 
+===================================================================================
+1.k8 architecture?
+2. how to check the particular container logs?  
+
+ANS:kubectl logs pod_name -c container_id
+
+3. how to clear the dangling images in docker?  --->docker prune image
+
+4. what are dangling images?
+
+  ANS:dangling images will be created at the build time, most of the time docker will automaticlally deletes, 
+       if not we need use the " docker image prune"
+  
+5. what is the command to create docker image? 
+
+   ANS:docker build -t image_name .
+ 
+6. difference b/w entry point and CMD?
+       ANS:1.both are used to define the execution time of a container 
+	       2.if we use multiple CMD and ENTRYPOINT only last command will be considered
+		   3.If we use both CMD and ENTRYPOINT in the same Dockerfile, ENTRYPOINT will get the 
+              highest priority and the command of CMD will become as argumetns to ENTRYPOINT	
+			  
+7. how to over write the CMD?
+   
+   Docker run -it container name imagename CMD 	["bin/bash"]
+   
+8. what are the container status? 
+
+     ANS:created
+	     Running
+		 paused
+		 restarting
+		 
+9. docker container logs? 
+    
+	ANS:docker logs container_id
+	
+10. how do you check file size in linux?
+     
+	du -sh filename
+	
+11. how to check server flavour?
+
+      ANS:hostnamectl , uname -v ,cat /etc/os-release
+	 
+12. how to install packages in red hat and ubuntu?
+
+      sudo yum install package_name,sudo apt install package_name
+	  
+13. what are the commands you used in docker file?
+
+           FROM
+		   WORKDIR
+		   RUN
+		   CMD
+		   ENTRYPOINT
+           COPY
+           ADD ---->   
+		   ARG--->Using ARG we can pass parameters to Dockerfile as user inputs...ARG <var_name>=<default_value>
+ 
+		   
+14. how to install package inside a container?  
+
+    ans:RUN apt install package_name inside Docker fiele
+        then run docker build -t IMAGE_NAME .  "where you are docker file present"
+		
+	
+15. Multi-stage docker file? ---->not covered
+
+16. what are namespace in k8s and why do we use it ?
+   
+    namespaces is a way of applying isolation  to support multiple clusters of K8 in the physical namespace
+	we have 4 types
+	 1.default
+	 2.Kube-system
+	 3.kube-public
+	 4.kube-node-lease
+	 
+17. how you will you deploy an object in a namespace?
+
+   kubectl create namespace test
+   kubectl apply -f deploy.yml -n test
+
+18. how to create name space?
+      ANS:kubectl create namespace test
+
+19. What type of probes have you used in your applciaton?
+     ANS: explain liveness with yml file
+	      better to know how livemess probe will work
+		  
+20. What are probes and explain types of probes?
+      probes are used to check the application status 
+	   for example liveness and Readiness Probe 
+        take any one probe explain which method method you used
+		
+21. livenessProbe, what happens when I give "/health" in httpGet:
+
+22.difference B/w liveness and Readiness probe?
+    
+23 what happens when Readiness  fails?
+   
+    ANS:the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod
+	
+24.How do you take backup of docker container?
+
+  we create volume with docker create volume vol1
+  the we attach the volume to a container
+  
+    or
+  
+  we create a image from the container 
+    docker commit con_id image_name
+	login to docker hub by providing credentials
+	retag the image
+	docker tag older_image ne_image
+	docker push retaged_image:tag_name
+	
+	or
+	login to docker hub by providing credentials
+	run docker build -t docker_username/image_name:latest .
+	docker push docker_username/image_name:latest
+	
+25.how to push and pull to docker hub?
+
+     login to docker hub by providing credentials
+	run docker build -t docker_username/image_name:latest .
+	docker push docker_username/image_name:latest 
+	
+26.why do we need to use sidecar contianer?
+
+     to moniter the application container using monitor tools like promethus,grafana, kubernetes dashboard,CAdvisor
+	 
+27.how to give sudo access to specific user?
+     we create a user with 
+	    sudo create user user_name
+		sudo passwd user user_passwd
+		add the user to sudoers file with all the permisions
+		
+28. what is taint and tolerence in k8?
+        taint is used to taint a node and tolerence will be given in the pod spec fiele
+		when the shedular assigns a pod to the node..if the taint and toleration matches the pods will be created or assigns to that node
+		we use two types in the taint configuration effect
+		
+		1.Noschedule: if there is at least one un-ignored taint with effect NoSchedule then Kubernetes will not schedule the pod onto that node
+		2.NoExecute:if there is at least one un-ignored taint with effect NoExecute then the pod will be evicted from the node (if it is already running on the node), 
+		             and will not be scheduled onto the node (if it is not yet running on the node)
+
+29. if i want to deploy a application to that node, how to do that?
+       explain node selector
+		
+30. explain service types?
+    ClusetIP
+	NodePort
+	Loadbalencer
+	
+31.when we use clusterIp and load balancer?
+     CLusterIp for internal communication inside the cluster
+	 Loadbalencer userd for external communication using external load balancer
+	 
+32.deployed one application trying to access that but not able to connect explain trouble shooting steps?
+    should ask harsha sir
+
+33.What is service endpoints?
+  
+    An endpoint is an resource that gets IP addresses of one or more pods dynamically assigned to it,
+	along with a port. An endpoint can be viewed using kubectl get endpoints
+
+34.what is headless service?
+    headless services used to avoild load balancing for the applications which is running inside a container
+	and we usually use this service for statefull application to stick to a pod or application
+
+35.what is difference B/w statefullset and deployment?
+     deployment is nothing but stateless application
+	 explain statefull vs stateless
+	 
+36.when do we use daemonset?
+    daemonset always carries a copy of pod to all the running and newly created nodes
+	
+	usage is to monitor the node metrics
+	
+37.how do you delete the docker container which are existed state?
+     
+	 docker rm $(docker ps -q --filer status=exited)
+	 
+38. How do you deploy a pod to master node? is it possible ? if not why?
+
+     we can't assign a pod to a master node untill and unless we match the taint of master node 
+	 to pod tolerance.
+	 ex: kubectl describe node <master_node_name> | grep Taint
+	 
+39.command to create the docker volume?
+    docker create volume volume_name
+	
+40.how to delete the unused docker images and container ? tell me the command?
+
+    docker system prune
+	
+41.explain helm file structure?
+
+    chart.yml:This is where you put all the information about the chart you are packaging ex:apiversion,name,discription,appversion,load dependencies
+	charts:this where we store other charts ex: downloaded charts will be present
+	templates:
+	  manifestfiles:deployment.yml,service.yml,configmap.yml,secrets.yml etc...
+	   _helper.tpl:which containes a functions we use those functions in the manifest files to create a templates
+	     NOTE.txt: gives a release information
+    Values.yaml: This is where you define all the values you want to inject into your templates
+	.helmignore: This holds all the files to ignore when packaging the chart. Similar to .gitignore, if you are familiar with git
+	
+42.how to check deployment history in helm?
+    
+	helm history release_name 
+	
+43. what is the difference B/w CMD and RUN?
+
+44.how do you manage dependencies  in helm?
+    we load dependencies in chart.yml file
+	
+45. in k8, why do we need to have the master node as a odd number?
+	
+46.how to run command inside the pods?
+     
+	 kubectl describe pod pod_name "copy the container name"
+	 kubectl exec -it container_name /bin/bash
+	 
+47.what is init container?
+
+48.write a jenkins pipeline , it has 4 stages..1st stage on master 2nd & 3rd on slave1 parallelly 4th on any availability node?
+     ============similar to this===================
+	 
+	 pipeline {
+            agent { label 'master' }
+			   stages {
+			        stage('SCM') {
+					  steps{ 
+					      sh 'echo "this is SCM stage"'
+						  
+						  }   
+				
+					}
+					agent {label ' slave 1'}
+					
+					paralle
+					
+					   {
+ 					     stages
+						 {
+						  }
+						  stage( 'Build and test')
+						  {
+						   steps {
+						   sh 'echo "this is Build stage" 
+						 
+						 }
+					}
+                        stage( 'Build and test')
+						  {
+						   steps {
+						   sh 'echo "this is Build stage"
+                					
+				 }
+				 
+	   }					 
+				
+                agent any 
+				  stages {
+				        stage ("deploy stage")
+						  steps {
+						     sh ' echo "this deploy stage"'
+							 
+                     }
+                       					 
+				}
+			}	
+			
+			
+			}
+   
+49. How to pass the env variables to a job?
+    You can use Environment Injector Plugin to set environment variables in Jenkins at job and node levels
+	
+50.how to restrict the node to run any job in jenkins?
+   
+   https://plugins.jenkins.io/job-restrictions/
+

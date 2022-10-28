@@ -1,0 +1,97 @@
+---
+ - name: play_1
+   hosts: all
+   vars:
+      name: [git,npm,wget,openjdk-11-jdk]
+   tasks:
+    - name: Install npm,wget,java on Ubuntu
+      become: true
+      apt:
+        name: "{{ name }}"
+        state: latest
+        update_cache: yes
+      when:
+          - ansible_distribution == "Ubuntu"
+          - ansible_pkg_mgr == "apt"
+    - name: Install curl,python,tomcat on Redhat        
+      become: true
+      yum:       
+          name: [pip,python3,tomcat9]   
+          state: latest 
+          update_cache: yes           
+      when:
+               - ansible_distribution == "Redhat"
+               - ansible_pkg_mgr == "yum" 
+               
+----Ansible module for ssh connection--------
+
+
+---
+  - name: play1
+    hosts: all
+    tasks: 
+      - name: install key..
+        authorized_key: 
+           user: root
+           state: present
+           key: "{{lookup('file','/root/.ssh/id_rsa.pub)}}"
+           
+           54.210.91.163
+           
+           
+
+
+- name: Run Tomcat
+  shell: ./startup.sh
+  args:
+    chdir: /opt/apache-tomcat-9.0.1/bin
+	tags:
+	   - tomcat_restart
+  tasks:
+     - name:install git
+	   become: true
+	   apt: 
+	      - name: installing on ubuntu
+		    
+	    
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+               
+               
+               
+    
+    
+    
+    
+    
+    
+
+  
+  ansible-playbook assignment_1.yml -i static_inventory
+
+   ansible-playbook  assignment_1.yml --extra-var name=nginx
+   
+    ansible-playbook  assignment_1.yml --extra-var name=pip
+    
+    13.233.104.27 ansible_user=ubuntu ansible_become_user=root    
+   
+   
+1. installed java,git,wget on ubuntu and curl,python,tomcat redhat-- ansible-playbook assignment_1.yml
+
+2. written a playbook to accept argument to  install pip from the  command line installation and print to console --ansible-playbook  assignment_1.yml --extra-var name=pip
+
+3. created vault and file, encrypted and decrypted the file  store ipaddress and store the password   -- ansible-vault create staticfile and ansible-vault decrypt staticfile
+ 
+4. created role ----ansible-galaxy init DEV_ROLE 

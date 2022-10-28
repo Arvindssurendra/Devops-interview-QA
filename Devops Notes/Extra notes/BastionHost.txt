@@ -1,0 +1,29 @@
+Bastion Host
+
+1. Create Bastion Host
+Launch system --> Amazon ec2 --> storage --> configure 
+vpc --> myvpc
+subnet --> pub-subnet
+make sure assign public ip is enabled
+--> security group 
+security group name (BastionHost) and description (BastionHost)
+ssh(must) and All traffic (optional)
+launch the instance
+
+2. create private server
+launch system --> amazon ec2 -->  storage --> configure
+vpc --> myvpc
+subnet --> priv-subnet
+make sure assign public ip is disabled
+--> security group 
+security group name (priv-server) and description (priv-server)
+ssh and in source select security group of BastionHost
+save and launch the instance
+
+Login to BastionHost server through putty.
+Copy pem key to Bastion server through winscp
+ls and makesure pem key is present
+chmod 400 pemkey
+ssh -i pemkey ec2-user@privateip of private server
+
+ 

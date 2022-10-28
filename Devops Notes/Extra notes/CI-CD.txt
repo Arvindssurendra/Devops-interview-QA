@@ -1,0 +1,265 @@
+To do build, we use build script
+
+-------------------------build.sh-------------------------------------------------------
+
+#!/bin/bash
+
+git pull url
+
+if [ $? -ne 0 ];then
+ 
+  git clone url
+fi
+
+cd /repo/
+
+mvn clean deploy
+if [ $? -eq 0 ];then
+echo "build is success"
+scp file.war user@server:/webapps
+else
+echo "build failed"
+fi
+--------------------------------------------------------------------------
+
+CI ---> integrate changes from dev team continuously without manual intervention. we can give quick feedback to developers 
+
+CD (continuous deployment)---> deploy tested build to PROD environment as early as possible
+
+CD (Continuous delivery) ---> each change from dev team should built and deployed to test env to test changes 
+
+
+CI/CD tool -->Jenkins
+
+
+Build periodically ---> it will trigger jenkins job based on time whether commit or no commit
+
+poll SCM  --> it will trigger jenkins job only there are commit within specified time period
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+install jenkins 
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+sudo yum install epel-release # repository that provides 'daemonize'
+sudo yum install java-11-openjdk-devel
+sudo yum install jenkins  --nobest
+
+
+
+sudo service jenkins start
+
+ps -ef | grep jenkins 
+
+
+go browser
+
+serverIP:8080
+
+click "install suggested plugins"
+--------------------------------------------------------
+
+Assignment : create jenkins and do build for C project and Java project.
+--------------------------------------------------------------------------------------------
+build periodially --> it trigger jenkins job at specified time whether commit or no commit
+
+poll scm --> it triggers jenkins job if there are commits within specified time.
+
+--------------------------------------------------------------------------------------------------
+
+master- slave  ---> used to distribute load different servers and also we can specific job on specifi server.
+for example, java job can run on the server which provide java environment for compilation
+
+server on which jenkins is installed called as master. 
+
+go to manage jenkins  ---> manage Nodes and clouds  ---> new node ----> give node name 
+
+
+it take you to configure page of node
+
+number of executor: it indicates how many jobs we can run on that server parallely
+
+root directory: indicats on which path we need to jenkins job on this server
+
+how do you run jenkins job on available server?
+
+using lable, give same label name to similar servers. go jekins job and give label name instead of server name 
+
+
+how do you connect from jenkins server to slave machine?
+
+via ssh
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------- 
+Assignment : add two slave machines and run two different jenkins jobs on that two machines
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+How do you take jenkins backup??
+
+take backup of /var/lib/jenkins and store it in separate github repo for jenkins.
+incase if current jenkins server goes down.. clone it from github and  copy it to /var/lib/jenkns
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+plugins
+
+go to manage jenkins ---> manage plugins ---> go to Advanced Tab ---> upload plugin (.hpi file)
+
+you can download jenkins from jenkins update center 
+
+------------------------------------------------------------------------------------------
+
+what kind of plugins you installed
+
+
+1)  parameterised plugin --> used to pass parameters to jenkins job at run time.
+2) gearman plugin --> it's high availability plugin.. if jekins master goes down, other server acts master. so that jenkins is available always.
+
+both servers will be in sync when jenkins master is running. 
+
+Assignment: install below plugins
+
+1) upstream
+2) downstream
+3) quality gate
+4) selenium
+5) artifactory
+6) parameterised
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+how do you take jenkins backup?
+
+we need to take backup of /var/lib/jenkins and store it in separate git repo.
+
+we have written script to take backup automatically 
+
+------------------------------------------------------------------------------
+
+How do you secure jenkins?
+
+we use matrix based security. It allows us to provide permissions by using checkboxes. 
+
+----------------------------------------------------------------------------------------------------------
+go to manage jenkins ---> configure global security ---> jenkins own user database --> check allow users to sign up
+
+select matrix based security----> add users and provie permission
+------------------------------------------------------------------------------------------------------------------------------
+
+how you define env variable in jenkins?
+
+go to manage jenkins ---> configure system --> gloabl properties ---> select environment variable and add 
+-----------------------------------------------------------------------------------------------------------------------
+
+Assignement3:
+
+Add two users. provide full permission for one and provide only job read permission for other user. 
+
+login and check how jenkins page look like
+
+-------------------------------------------------------------------------------------------------------
+
+
+Explain CI/CD? or what is CI/CD? or explain ur project responsibilities?
+
+As soon as developer pushes code to github. Jenkins pipeline job will get triggered, it has three stages, Build, Deploy and test stages.
+In build stage, It will pull source code from github, compiles it and generates binary. Once build stage is success, deploy stage will get triggered
+It will deploy war file on tomcat server and run BVT. Next,test stage will get triggered, it runs test cases given by test team. 
+if there are any test failuvres will be taken care by testing team. if there are any integration issues , it will be taken care by dev team.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+fork --> replica of central repo
+------------------------------------------
+PR (pull request)
+
+developer will fork central repo and makes changes to source code, then he will raise PR, PR should be reviewed by reviewer and merge it to central repo.
+
+once code get merged to central repo. jenkins pipeline job will get trigered.
+-------------------------------------------------------------------------------------------------------------------------------------------------- 
+
+
+
+
+Assignment:
+
+practice with your friends before you raise PR to below repos.
+
+fork below repos, add C source and java, raise PR to merge to central repo
+
+https://github.com/mohammadakmal6964/test-C-project.git
+
+https://github.com/mohammadakmal6964/test-java.git
+
+------------------------------------------------------------------------------------------------------------
+
+assignment2: 
+configure jenkins job based on commit or push to github repo. (webhooks)
+
+as soon as dev team pushes code to github, jenkins pipeline job should get triggered automatically
+
+in github, go settings---> webhooks--> add webhooks and configure
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Sonarqube---> used to check quality of source code. if quality of sorce code is more than 70%, then quality of source code is good.
+
+need to create quality gate and mention all rules under quality gate. Intgrate quality gate with jenkins
+
+--------------------------------------------------------------------------------------------------------------------------------
+Artifactory
+JROG artifactory is used to store binaries or build 
+
+------------------------------------------------------------------------------------------------------
+
+
+explain branching startegy of your project? or explain branching startegy?
+
+-------------------------------------------------------------------------------------------------------------------
+
+Assignment:
+
+you should fork from this repo https://github.com/rohanrajsn1208/java-test1.git and add source code.. raise PR
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

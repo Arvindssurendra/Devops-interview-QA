@@ -1,0 +1,25 @@
+2nd round for ness
+
+1. can u introduce briefly
+2. which tools u have used
+3. what is ur day to day activity in previous project 
+4. do you terraform in ur previous project
+5 what is ur paltform u have user for project 
+6.how do you used jenkins in this project
+7. interms of jenkins what is job ? define
+8. what types of there in jenkins
+9. in ur current project which job u have used
+10. when it comes to pipeline which one u have used declarative pipeline or scripted and what is the difference
+11. take ur project how you configure cicd in declarative what are the stages u have used for continuous integration and continous delivery with continuous testing 
+12. what is agent u have used here
+13. how many masters and how many slaves u have used in ur project 
+14. what if jenkins agent is offline what u will do and what are the steps u will do
+15. what are ways to trigger the pipeline job 
+16. webhook is plugin or software
+17. can u rate urslef 1 to 5 in docker ,k8s, ansible terraform , aws
+18. do you have use k8s, docker and ansible, terraform in ur current project how u will use all tols in ur project
+19. what all are services u have used in ur project
+20. how many layers in ur project . what are the layers
+21. what are the servers u have using give some example of web servers
+22. written any script automation in ur project 
+23. what is differnce between grep and find command 

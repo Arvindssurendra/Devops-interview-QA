@@ -1,0 +1,33 @@
+1) cloudfront
+2)cloud formation
+3)AMI
+4)Autoscalaing 
+5)i have 2 VPC's which r running in different regions can we have connection b/w them
+6)what is NAT gateway where we use it
+7)i want to deploy 4 node cluster in ECS what type of instance i need for that
+8)can i have a back up of RDS
+9)what is snapshot
+10)can we take a snapshot od RDS and S3
+11) what is cloud watch
+12)i want to upload 120mb of data which is in multipal files how can i upload them to s3
+13)how many loadbalancers  we have in AWS
+14)what is server loadbalancer
+15)what is TCP loadbalancer
+16)what is round robin loadbalancer
+17)what is stickey section
+18)what is the path where we set env variables in ansible
+19)where will the configuration file  exist and how do you configuer it
+20)how can i list the ansible variables
+21)how can i access a variable from the host
+22)how can i copy a file to a target host
+23)what is the state file
+24)what is state file lock
+25)what is terragrunt
+26)version of terraform u r using
+27)what is pod
+28)i have 2 containers running in a pod  nodejs and nginx how can they have connection between each other
+29)i have a master node which have worker nodes running  init what happens if master node fails
+30)i want to test a manifest without executing it how can we do it
+31)what is api cashing
+32)how will api work with lambda
+ 

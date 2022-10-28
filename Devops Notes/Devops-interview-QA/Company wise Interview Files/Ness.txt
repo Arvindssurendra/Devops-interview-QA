@@ -1,0 +1,171 @@
+1) What is autoscaling ? 
+       
+	  AWS Auto Scaling monitors your applications and automatically adjusts capacity to maintain 
+steady, predictable performance at the lowest possible cost. 
+    Horizontal Auto scale: it is used to scale the instances, if the CPU Utilization is meet the thershold 
+	Vertical Auto Scale:it is used to scale the Power for the existing instance
+      
+2) User has setup an autoscaling group but group fails to launch instance for 24 hours, what happens in this scenario ? How can we resolve it ?
+      we have to check the instance configuration
+
+	    1. The requested configuration is currently not supported.
+        2. The security group <name of the security group> does not exist. Launching EC2 instance failed.
+        3. The key pair <key pair associated with your EC2 instance> does not exist. Launching EC2 instance failed.
+        4. The requested Availability Zone is no longer supported. Please retry your request...
+        5. Your requested instance type (<instance type>) is not supported in your requested Availability Zone (<instance Availability Zone>)...
+	  
+	  
+3) Can we have a backup of EBS volume ?
+       yes,using snapshort
+4) If we delete this snapshot how to retrive it back ?
+       we have an option in AWS we can keep the deleted snapshorts and AMI in AWS recylic bin
+	   with retention period of time 
+	   
+5) Diff between RDS & Dynamo DB ?
+
+    RDS:                                   Dynamo db:
+
+	Relational data base                 Fully managed key-value and document (NoSQL) database
+	MySQL,MariaDB, Oracle Database,       Delivers single-digit millisecond performance at any scale.
+	and SQL Server.
+	Supports the use of SSL to             DynamoDB encrypts data at rest by default using encryption keys stored in AWS KMS.
+     	secure data in transit.
+	
+6) What is edge location ?
+          An edge location is where end users access services located at AWS, 
+		  the cloud computing division of US-headquartered Amazon. 
+		  They are located in most of the major cities around the world
+		  and are specifically used by CloudFront (CDN) to distribute content to end users to reduce latency
+		  
+7) Diff between Network load balance & application load balancer ?
+
+ Network load balance: it mainly uses TLS/TCP/UDP traffic to  forward the request to the application through port number
+	                           here we can define the different ports for multiple paths to route the traffic.
+							   
+ application load balancer: An Application Load Balancer makes routing decisions at the application layer (HTTP/HTTPS),
+	                  supports path-based routing, and can route requests to one or more ports on each container instance in your cluster. 
+					  Application Load Balancers support dynamic host port.
+ 
+
+
+8) What is round robin ?
+
+          Round robin is a process used for network communication and operating system load balancing. 
+		  A system that works in a round robin fashion distributes load based on the round robin algorithm.
+      
+9) What is reverse proxy server ?
+
+         Reverse proxy as the name suggests does the opposite of what a forward proxy can do.
+		  It takes requests from the user and forwards them to the host web servers acting as a load balancer
+		  
+10) What if load balancer gets failed?
+     If one load balancer fails, the secondary picks up the failure and becomes active.
+	 They have a heartbeat link between them that monitors status.
+     
+11) How will you know if the load balancer has failed ?
+     
+	 A target generates an HTTP error
+	 The load balancer generates an HTTP error
+	 Clients cannot connect to an internet-facing load balancer
+     
+12) What is sticky session ?
+        sticky session: it removes load balcer and it ensure that a user stick to particular server
+		
+13) What is TCP load balancer ?
+      explain Network load balance
+          
+14) How can i copy files into target using ansible ?
+       keep the files in file  dir of our role
+	     then use the command ansible-galaxy install <role_name>
+		 
+15) What is terrafrom statefile ?
+      Terraform stores information about your infrastructure in a state file.
+	  This state file keeps track of resources created by your configuration and maps them to cloud resources.
+	  
+16) Where we will store it ?
+      we store it in remote location 
+	   curretly we are storing in AWS S3 bucket with help of Dynamo db
+	   
+17) I'm working on a terraform statefile and all of a sudden it got lock and im not able to make changes, why it got lock and how to unlock it ?
+         
+		 force-unlock
+		 
+18) Can terraform be used for onpremisis ?
+          yes...
+             
+19) Lets say we have applied terraform and we got some error, How can we recover from that ?
+
+          before apply.. i will use plan command to check the errors or the executive plan
+		  lets say i forgot to plan and applyed it
+		  but we usually keep the code in SCM, i will roll back to the previous state 
+		  before the changes ..using SCM commit id.
+		  
+		  but we can't say i will get the exact thing but most of the changes will get
+		  there is no command or steps better than this.
+		  
+		  
+20) What is kuberneties POD ?
+          K8 Pod is a smallest  object, it contains one or more containers
+		  where all the pods can communicate internally with Cluster IP
+		  
+21) Can we run multiple containers inside the POD ?
+           yes..
+		   
+22) Can we run 2 or 3 applications inside a POD ?
+               yes..but auto scalling and upgrades colud be a bit challenge
+			   
+23) How can we make containers communicate with each other ?
+        using Cluster IP
+		
+24) What is Master and worker node 
+        exoplain k8 architecture
+		
+25) What is the significance of etcd ?
+          explain etcd
+		  
+26) Lets say there is a kuberneties job which should be finished in few seconds, How can i make sure to stop the application if it exists for more than 40 seconds ?
+                  use the activedeadlineseconds in cronejobs while configuring the job
+				  
+27) Lets say we have 2 containers i need one container to run first and the other to run second How can i achive this ?
+          
+28) How will you push docker images into ECR ?
+         create ECR in AWS
+		 docker login
+		 use the docker image_name with AWS region and account id in the command line 
+		 
+29) Can we run this container serverless in AWS ?
+            
+30) How do you deploy docker container into AWS ?
+        
+31) How do you trigger a jenkins pipeline ?
+         
+32) How will you configure webhooks ?
+       goto--github
+	   open settings
+	   search for weebhooks
+	   mention the jenkins payload url with webhook
+	   select the events ,in which way to trigger
+	   ex:push,tag,branch,merge etc
+	   
+33) How will jenkins know when to execute the job ?
+        using triggering methods like webhook,Poll SCM,build periodically
+		
+34) If i want to execute the job at particular time how can i do this ?
+         use Build Periodically(its like a cronetab)
+		 
+35) Have you worked on API gateways ?
+     yes.
+
+
+
+Ness-
+
+1. Ansible playbook files.
+2 if you want to run a specific IP which is not defined in the grp how will you define in inventory file.
+3. Ssl certification how can you give Ssl certification in load Balancer.
+4 how is pod communication happens.
+5 can we add a vpc later to a Load balancer and which one?
+6 storage classes.
+7. Terraform taint. And destroy difference
+8. If there is team a which did some configuration in aws and now team b wants to do the same resources how that can be done?
+Many more

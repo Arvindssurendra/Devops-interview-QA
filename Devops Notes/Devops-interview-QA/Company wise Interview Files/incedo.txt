@@ -1,0 +1,28 @@
+incedo IT service===on===02/05/2022
+
+1. introduce your self with experience?
+2. command to print the 3,4 line seperated by ; 
+      ANS:awk -F ";" '{print $3,$4}' data
+3. difference b/w add andd copy?
+4. Entrypoint and CMD ?
+5. differnce b/w expose and publish?
+6. what are intermediate images?
+7. do have certicate in k8?
+8. what are the master components?
+9. what is kube-shedular in k8?
+10. if cluster goes down can we able to access ur aplication? is it running?
+11. what is unknown status in nodes? why is the issue how u will reslove it?
+12. you deployed a application but you can't see the pod, what you will do ? nothing there in logs
+13. what are deamon set,deployment and statefull set
+14. have u worked on cloudfront? can we change the url of once the endpoints is created by AWS?
+15. what is terraform backend?
+16. what is tegarnt ?
+17. what is terraform import?
+18. How to delete a resouce in terraform?
+19. explain CI/CD
+20. what are the plugins you used in jenkins?
+21. what is the difference B/w git rebase and merge?
+22. what is the difference b/w helm 2 and heml 3?
+23. explain helm charts file structure?
+24. explain services in k8?
+

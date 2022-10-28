@@ -1,0 +1,333 @@
+build tools
+
+make is build toold used for C/C++. make looks for Makefile
+Maven and ANT used for java. Maven looks for pom.xml and ANT looks for build.xml
+
+c/c++ ----> make--> .exe
+
+java ---> maven/ANT ---> jar or war or ear
+-----------------------------------------------------------
+
+
+
+-------------makefile for two files f1.c, f2.c and f3.c---------------------------------
+
+ABC.exe: f1.o f2.o f3.o
+	gcc -o ABC.exe f1.o f2.o f3.o
+f1.o:f1.c
+	gcc -c f1.c
+f2.o:f2.c
+	gcc -c f2.c
+f3.o:f3.c
+	gcc -c f3.c
+
+-----------------------------------------------------
+
+-----------syntax of makefile--------------
+
+target: dep1 dep2...
+<TAB> system commands 
+---------------------------------------------------------
+
+------------------main.c--------------------------------
+#include<stdio.h>
+main() {
+
+         biggest();
+         factorial();
+        reverse();
+}
+--------------------------------------------------------------
+---------------------big2.c--------------------------------
+#include <stdio.h>
+biggest()
+{
+    int num1, num2;
+    // Ask user to enter the two numbers
+    printf("Please Enter Two different values\n");
+    // Read two numbers from the user
+    scanf("%d %d", &num1, &num2);
+    if(num1 > num2)
+    {
+        printf("%d is Largest\n", num1);
+    }
+    else if (num2 > num1)
+    {
+        printf("%d is Largest\n", num2);
+    }
+    else
+    {
+        printf("Both are Equal\n");
+    }
+   // return 0;
+}
+---------------------------------------------------------------------------
+
+---------------------------------------------fact.c------------------------------------
+#include <stdio.h>
+ factorial() {
+    int n, i;
+    unsigned long long fact = 1;
+    printf("Enter an integer: ");
+    scanf("%d", &n);
+
+    // shows error if the user enters a negative integer
+    if (n < 0)
+        printf("Error! Factorial of a negative number doesn't exist.");
+    else {
+        for (i = 1; i <= n; ++i) {
+            fact *= i;
+        }
+        printf("Factorial of %d = %llu", n, fact);
+    }
+
+   // return 0;
+}
+--------------------------------------------------------------------------------------------
+
+----------------------------------------rev.c--------------------------------------------------
+#include <stdio.h>
+reverse()
+{
+  char str[1000], rev[1000];
+  int i, j, count = 0;
+printf("\nEnter string to reverse");
+  scanf("%s", str);
+  printf("\nString Before Reverse: %s", str);
+  //finding the length of the string
+  while (str[count] != '\0')
+  {
+    count++;
+  }
+  j = count - 1;
+
+  //reversing the string by swapping
+  for (i = 0; i < count; i++)
+  {
+    rev[i] = str[j];
+    j--;
+  }
+
+  printf("\nString After Reverse: %s", rev);
+}
+----------------------------------------------------------------------------------------------------
+
+------------------------------------------makefile------------------------------------------------------
+ABC.exe:main.o big2.o fact.o rev.o
+        gcc -o ABC.exe main.o big2.o fact.o rev.o
+main.o:main.c
+        gcc -c main.c
+big2.o:big2.c
+        gcc -c big2.c
+fact.o:fact.c
+        gcc -c fact.c
+rev.o:rev.c
+        gcc -c rev.c
+clean:
+        rm -rf *.o
+-----------------------------------------------------------------------------------------------------
+
+run bwlow command
+make
+
+delete all .o files
+
+make clean
+----------------------------------------------------------------------------------------------------------------------
+
+Assignment1
+
+include below faetures to ABC.exe
+
+big2
+fact
+reverse
+pallindrome
+big3
+sum of two numbers 
+fibanaci
+sorting numbers
+--------------------------------------------------------------------------------
+Assignment2:
+create github account and create separate repo for c project
+
+push all source code to this repo
+(make sure you are not adding .o and .exe file to github repo)
+
+
+git clone url  on server 
+
+copy all .c and makefiles to this repo
+git add 
+git commit
+
+push it to repo
+
+username :
+password : (give token)
+
+how to generate token
+
+go to github account ---> seetings --> developers settings  --> personal access tokens ---> generate tokens ---> enter name and select repo--> generate
+
+copy token and keep it in separate file
+ 
+
+
+------------------------------------------------------------------------------
+build ---> executable/binary before testing
+
+release ---> tested build which is ready to release to customer 
+
+BVT or snaity test ---> Basic functionality of a build which should never break.
+
+--------------------------------------------------------------------------------------------
+JIRA
+open --> assigned --> in progress --> resolved/fixed---> testing (repopne if testig fails) --> closed
+
+jira ticket priority
+
+1.Critical
+2.Major
+3.Minor
+----------------------------------------------------------------------------------------------------------
+
+Assignment1
+
+install tomcat on ec2 instance and deploy any war(calendar.war) file to web-apps folder.
+
+ipaddress:8080
+change tomcat to other availble port 
+
+Assignment2:
+
+download java project with pom.xml... build it (make sure u installed java and set JAVA_HOME)
+
+cd place where pom.xml is present
+
+mvn clean deploy
+
+learn what are maven targets and explain each goal
+
+
+--------web-app servers------
+Apache tomcat
+JBOSS
+websphere 
+
+--------------------------------------------------------------------------------------------------------
+explain deployment process
+
+
+we deploy war file to tomcat server. we have shell script to deploy war file to tomcat automatically
+script will 
+1) stop tomcat services
+2) take backupd application logs
+3) take backup of current build
+4) copy new build build
+5) start tomcat services
+
+we deploy war file to QA, UAT and prod environments. We need manager's approval to deploy to QA and UAT. 
+but need CAB(Change advisory Board) to deploy to production.
+------------------------------------------------------------------
+if deployment fails, we will try to debug and fix issues within deployment window
+if I am not able to fix that issue. I will rollback to previous build.
+
+(rollback means deploying old build if new build is not working or deployment fails when deploy new build)
+
+
+1) stop tomcat services
+2) copy new build build
+3) start tomcat services
+
+-----------command to start/stop/restart tomcat----------------------------------------
+sudo service tomcat start
+sudo service tomcat stop
+sudo service tomcat restart
+----------------------------------------------------------------------------------------
+once deployment is done, we can one round of sanity test or BVT before handover environment for testing 
+
+sanity test or BVT: basic functionality of build which should never break.
+
+------------------------------------------------------------------------------------------------------------------
+makefile  --> works on timestamp basis. if target's time is less than it's dependencies time, make will regenerate target.
+if dependecy's time is less than taget's, make will not regenarte target.
+
+------------------------------------------------------------------------------------------------
+patch build or hotfix ---> critical fix which needs to be delivered to customer within few hours.
+only required files will be changed and compile chnaged files to do build. so it takes less time.
+
+------------------------------------------------------------------------------------------------------------
+load build ---> compile source code from scratch by deleting all intermeditae files.so it takes more time.
+
+-------------------------------------------------------------------------------------------------------------------------
+
+QA ---> UAT --> Prod
+-----------------------------------------------------------------------
+
+pull source code ---> trigger build --> deploy--> run BVT --> run test cases
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------build.sh----------------------------------
+
+#!/bin/bash
+
+git pull github-url
+
+if [ $? -ne 0 ];then
+
+git clone github-url
+
+fi
+
+cd github-url (cd to location where makefile present)
+
+make target
+
+if [ $? -eq 0 ];then
+echo "build is sucessful"
+
+deploy.sh target
+
+else
+echo "build failed "
+fi
+
+------------deployment.sh------------------------------------------
+#!/bin/bash
+
+
+for i in serv1 serv2.... serv10
+do
+sudo service stop $i
+
+done
+
+mv *.log /temp/
+mv *.war /old_builds/
+
+scp user@server2:/home/builds/*.war web-apps/
+
+for i in serv1 serv2.... serv10
+do
+sudo service start $i
+
+done
+
+--------------------------------------------------------------------------
+assigment1: 
+take one server 
+install tomcat on that server 
+download any war from google
+copy this war to webapps folder 
+restart 
+check that application 
+--------------------------------------------------------------
+
+download java project along with pom.xml... compile java source code using maven
+what are maven targets? explain 
+
+go to place where pom.xml
+
+mvn clean deploy install 

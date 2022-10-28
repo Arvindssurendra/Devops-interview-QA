@@ -1,0 +1,23 @@
+Nagarro
+Introduce yourself. 
+Roles and responsibility
+Explain your cicd
+What services you used in aws? 
+How ec2 instance can access s3 bucket in private network? 
+How do you make use of cloudwatch for sending alerts? 
+Some scenario questions on cloudwatch
+Which lb you used? Difference between application and network loadbalancer
+What services you created on aws? 
+Docker add and copy command difference
+Have you written dockerfile ? Where you're storing images? 
+What's the use of volume parameter in docker? 
+What is terraform state file? Where you stored this? 
+What is backend? What happens if you delete terraform state file? How you will recover that
+Have you used sonarqube? How you integrated with jenkins? 
+What's your jenkins architecture? Master slave and which slave instance you're using? 
+Can we use spot instance for slave machine? 
+Have you configured s3 cross region replication? Between which region you configured? 
+If someone pushed file to s3 bucket, I want to get alert, how do you configure? 
+Kubernetes architecture
+Explain master and worker node components
+Have you used codedeploy?

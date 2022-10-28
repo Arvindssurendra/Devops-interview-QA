@@ -1,0 +1,354 @@
+	1  * I have an application, how you will setup a VPC ? what all the components you use ?
+		Components of VPC::
+			○ Subnet
+			○ Routing table
+			○ Internet Gateway (IGW)
+			○ Instances
+			○ Security Group
+			○ Network ACL 
+			○ VPC endpoints
+			○ NAT Gateway
+			○ Elastic IP 
+		
+		Setting up VPC  - yes, explain the detailed process of creating subent, IGW, assigning subnet to routing table via subnet association, NAT gateway creation etc… etc..
+		
+	2  * Where you will set the Route Table ?
+		Under VPC we will set route table 
+		We will set route table for both private subnet and public route table (or) based on the subnet requirement
+		
+	3  * Services used in AWS ?
+			○ IAM
+			○ EC2
+			○ S3
+			○ VPC
+			○ CloudWatch
+			○ CloudTrail
+			○ Route53
+			○ Lambda
+			○ SNS 
+			○ SQS 
+			○ Dynamo DB
+			○ CloudFront
+			○ CloudFormation 
+		
+	4  * How can you make any S3 bucket as private ?
+			Bydefault S3 bucket is private 
+			To make it public  { S3 bucket --> Permission --> Uncheck "Block all public access" } 
+
+	5  * Cross region replication ? how you apply it ? will it copy automatically ?  -- Do it yourself , try to configure yourself to understand it better 
+
+			○  Cross-Region replication --> Having 2 S3 buckets on 2 different region and data written in source S3 bucket is replicated on destination S3 bucket
+			○  Will it copy automatically ? --> Yes, once replication is enabled, data is copied automatically on destination S3 but for only data which is written after the replication is configured, data present in source S3 bucket prior to replication will not be made available/copied automatically on destination S3 bucket 
+
+	7  * Read replica
+			AWS RDS Read Replica is creating one (or) more read only copies of your database in your existing AWS region (or) in a different AWS region 
+
+	10 * How to you manage credentials ?
+			AWS Secrets Manager
+
+	12 * You are working on EC2 and that goes down and how do you resolve this ?
+			Check your ec2 instance on AWS console
+			Select the instance and under instance state --> decide on the operation to stop (or) reboot the instance (or) terminate 
+		
+
+	13 * You want to give a access to a EC2 and you have only pvt
+			Assign the appropriate EC2 policy and  attach to the user
+	
+	
+	14 * EKS ?
+		Elastic Kubernetes Service --> need to go through	
+
+	15 * VPC ? suppose I have a server, need to download the packages from the internet, but sever should not be accessed directly from outside ? how you can do that
+			NAT Gateway  { check Bastion Host also } 
+
+	16 * 2 AWS accounts, my EC2 of 1 account should talk to my another EC2 ? How ?
+			VPC peering  
+
+	17 * IAM ? I have 10 instances, how do you give access to user for only 5 resources ?
+			a. Create custom policy, using AWS policy generator  --> https://awspolicygen.s3.amazonaws.com/
+			b. Add the arn for your instances for which you need to give access to {arn:aws:ec2:<REGION>:<ACCOUNT_ID>:instance/<instance-id>}
+				i. Example arn:: arn:aws:ec2:ap-south-1:892145454499:instance/i-01e8028f2af843ddb 
+			c. Copy the JSON from the policy generator and then copy to the create policy, new policy json 
+			d. Attach the policy then to the user 
+
+		Now login via the user and check the actions that can be performed for the accessible instances 
+
+	18 * Cross region Route53 ?
+			○ Answer is Route53 Resolver, inbound endpoints, outbound endpoint 
+			○ Explanation is here --> https://aws.amazon.com/blogs/architecture/using-route-53-private-hosted-zones-for-cross-account-multi-region-architectures/
+		
+	19 * Health checks in Route53
+			○ Monitor the health and performance of the endpoints
+			○ Create health check to monitor inbound/outbound endpoints 
+			○ https://www.youtube.com/watch?v=dlaWYedWnb0
+		
+	20 * DualStack configuration in Route53  -- Need to check the configuration yourself and get comfortable
+			Both IPv4 and IPv6  records are returned for an EC2 classic instance but dualstack DNS 
+			Configuration needs to be checked
+
+	21 * what is S3 and why customer choose S3 ?
+			S3 (Simple Storage Service) is an Object Oriented Storage, we can store any file, any amount of data, anytime from anywhere on the web as an "Object"
+			Why S3:
+				Easily accessible from anywhere (URL can be accessed by end user)
+				Any amount of data can be written to it 
+				Low latency, high performance  
+
+	22 * When the jar is created, how will you push it to S3?
+			○ Make sure that AWS cli is installed 
+			○ Run command 
+				"aws  s3  cp  filename  s3://s3bucketname "    
+		
+	23 * dynamoDB
+			Serverless NoSQL database fully managed by AWS 
+
+	24 * vpc architecture
+			Needs detailed explanation of the components and it's working , Refer notes and prepare on your own 
+				Components of VPC::
+					○ Subnet
+					○ Routing table
+					○ Internet Gateway (IGW)
+					○ Instances
+					○ Security Group
+					○ Network ACL 
+					○ VPC endpoints
+					○ NAT Gateway
+					○ Elastic IP 
+			
+	25 * why we need ELB & how you select which type of loadbalancer suitable for my application.
+			• ELB - Elastic Load Balancers , 
+			• we need load balancers to balancer the requests coming to the application servers (or) balance the load of the requests asked to service by the application servers
+									– (or) - 
+			• It automatically distributes incoming application traffic and scales resources to meet traffic demands 
+		
+			• Explain the below and answer will contain the scenario where it would be used 
+				○ Application Load Balancer  
+				○ Network Load Balancer
+				  Gateway Load Balancer
+
+	27 * cloudwatch & cloudtrail
+			Cloudwatch --> It collects logs, events and metrics for all AWS resources 
+			Cloudtrail --> It helps in auditing, security monitoring of user activity and API useage 
+	
+	31 * customer has 50 (or) 100 odd aws accounts they are looking for a solution so that each and every single vpc can communicate with each other how you are going to establish that connectivity?
+	
+		Using VPC peering along with cross-account role
+		Using AWS CloudFormation and creating templates having restrictive policies
+		https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/peer-with-vpc-in-another-account.html
+	 
+    32 * customer has a physical side production environment (or) workloads are running on aws there is 1 particular Ip/CIDR which is continuously hitting their environment multiple times in a day they are suspecting that a malicious activity they are asking you to block any kind of a traffic from a Ip/CIDR how you will going to block them?
+	
+		By adding the ip/CIDR in NACL inbound traffic rule to DENY 
+
+	33 * CIDR for 15 ec2 instances , 2 subnets 1 private and 1 public , write CIDR ranges 
+	
+		10.5.1.0/27 - 15 ec2 instance 
+		10.5.2.0/27  - 1 private
+		10.5.3.0/27 -  1 public 
+	
+	35 * how you can access a machine without a .pem key?
+	
+		==>  Go to AWS console use EC2 connect to access the ec2 instance 
+		==> 
+		Accessing the EC2 instance even if you loose the pem file is rather easy.
+		1. First, create a new instance by creating new access file, call it 'helper' instance with same region and VPC as of the lost pem file instance.
+		2. Now stop the lost pem file instance. Remember not to terminate instance but to stop it.
+		3. Goto EBS volumes, select the root volume of the lost pem file instance and detach.
+		4. Now again select the detached volume and this time you have to attach this volume to helper instance which we created before. Since helper instance already has a root volume by default as /dev/sda1, the newly attached volume will be secondary(eg: /dev/sdf).
+		5. Login to your helper instance with its pem file.
+		6. Execute below commands:
+			# mount /dev/xvdf1 /mnt
+			# cp /root/.ssh/authorized_keys /mnt/root/.ssh/
+			# umount /mnt
+		7. Detach the secondary volume from helper instance. 
+		8. Again attach the volume back to our recovery instance. Start the instance. Terminate the helper instance.
+		Use helper instance pem file to log into recovery instance.
+		
+	From <https://micropyramid.com/blog/how-to-access-ec2-instance-in-case-of-loss-of-pem-file/> 
+
+	37 * how your sharing the key  for a group of 4 members & these 4 members will be logged in from same username after 4/5 days customer complaining that a file deleted how can you track back who did what?
+		CloudTrail - auditing tool 
+	
+	38 * what instances you are using in your project? why particular those instances?
+		C5. large, x-large
+		C6.large
+		C4
+		M4, m5 
+		Based on the application requirement, performance, compute optimization
+	
+    39 * customer is asking you to change the instances family to 2 ec2 instances which are part of the autoscalling groups siting on a load balancer
+	 & the condition is they are not looking for new instances and none of the instances to be deleted
+	 how your going to change the instance family of these 2 instances?
+	
+			Update in Launch configuration /Launch template.
+			Afterwards you can terminate the running instances one by one, the auto scaling group will relaunch them with updated properties.
+	
+	41 * pre signed url in s3?
+		To give temporary access of a private S3 bucket to a user 
+		https://youtu.be/h1jP1D-GeBM
+	
+	
+   42 * different routing policies in aws? which policy you have used for your project?
+		• Simple routing policy — Use for a single resource that performs a given function for your domain, for example, a web server that serves content for the example.com website.
+		• Weighted routing policy — Use to route traffic to multiple resources in proportions that you specify.
+		• Latency routing policy — Use when you have resources in multiple AWS Regions and you want to route traffic to the region that provides the best latency.
+		• Failover routing policy — Use when you want to configure active-passive failover.
+		• Geolocation routing policy — Use when you want to route traffic based on the location of your users.
+		• Geoproximity routing policy — Use when you want to route traffic based on the location of your resources and, optionally, shift traffic from resources in one location to resources in another.
+		  Multivalue answer routing policy — Use when you want Route 53 to respond to DNS queries with up to eight healthy records selected at random.
+	
+	43 * diff b/w cname and alias?
+			○ CNAME record points a DNS name to another DNS name 
+			○ Alias is similar to CNAME record but when querying it will behave like A record and give the target ip address 
+
+	44 * what record used for dns to ip?
+			A record 
+	
+	46 * what is API gateway why we need it ?
+	
+		 Choose your own definition and go for it 
+	
+	47 * How you bind role to account ( script explain)
+		 Create custom policy and assign to a role
+ 
+	48 * how you configure autoscaling and cloud load balancer, Where your application is running EC2 or EKS , Why your team went manual instead of using EKS
+	
+		{Possible Answer-- Need to check}
+
+		EKS is expensive and going manual via Kubeadm method on ec2 instance is cheaper for project/application requirement 
+
+	51 * Security group  ,nacl 
+			○ Security group is configure inbound traffic (outbound traffic is default configured, unless specifically restriced)   {Stateful}
+			NACL - Network access control list is to control the inbound and outbound traffic on the network (or) VPC where is it configured  (Stateless)
+
+	56 * difference between nat instance and nat gateway
+			NAT Gateway -- to allow private subnet to access the pubic network (internet) via outbound traffic, inbound traffic from internet is restricted via NAT gateway
+			
+	58 * aws VPC components
+			Subnet, routing table, IGW, NAT Gateway, NACL, Security Group 
+
+	59 * what are the DB you are going to use
+			○ Depending on the requirment, structured (or) non-structured DB requirement
+			○ If Structured - SQl, MySQL, Aurora, MariaDB
+			○ Non-Structured - Dynamo DB, MongoDB
+	
+	61 * difference between network lb and application lb
+			Network LB -- works on connection level (network traffic) 
+			Application LB -- works on request level (application request)
+						HTTP (or) HTTPS 
+	62 * about Route 53
+			Explain Route53 -- DNS server 
+			Maps hostname to ip address and vice versa 
+	
+	63 * about autoscaling
+			Automatically adjusts the capacity of the application 
+			Horizontal scaling  -- adding the number of instances to support the application 
+			Vertical scaling  -- increasing the capacity of the instance (compute, ram etc..)
+
+	65 * how will you restrict inbound traffic when outbound traffic in open
+			Using Security Groups 
+
+	66 * what is vpc and vpc peering
+			VPC - virtual private cloud, VPC peering is method to connect between 2 VPC's 
+
+	67 * How will an instance present in Oregon can access a S3 bucket present in Sydney without any manual intervention?
+		 (only the ec2 shd b able to access the S3 without any user involved in it,)
+		
+			Making the S3 bucket as Public  (also check if Assume role can be used or not ) 
+		
+	69 * One ALB with 2 instances A and B and ALB is mapped with 2 website site1 and site2, Can we configure requests which comes to site1 mapped to instance A n site2 to instance B,  Can we achieve this behaviour using ALB?
+			ALB configuring Listeners and routing, where port/protocol configured with either A (or) B instance and given the target group 
+
+	72 * I have one S3 bucket in which im going to upload 3 files, one with 2TB, 4.9TB and 5.1TB,  So how many files will get uploaded into S3 bucket?
+
+			2 files will be uploaded, 2 TB and 4.9 TB, 5.1TB file will be rejected as 5TB is the maximum size limit of a object
+	
+	74 * I have 10 ec2 with ALB, each of the instance have 100GB EBS vol. One instance memory utilisation has crossed 80%
+	     and manager asked u to increase the vol to 1TB with zero downtime for all instances, how will u do that?
+				Select the volume for the ec2 instance --> Actions --> Modify volume --> change to 1024 GB 
+	
+	77 * I have 2 subnets in VPC, how can I know which subnet is public?
+				Go to Route table --> check for IGW connection --> then validate which subnet is associated to Routetable with IGW 
+
+	78 * There is a public IP and u have to restrict all type of access for this publicIp, how will u do that?
+				In VPC, choose NACL --> edit inbound and outbound rules ,
+	
+	80 * Which AWS service will be best suited for persistent vol for a specific pod in a cluster which will b catering 10000 requests.
+					EKS 
+	81 * Data shd b accessible at all point of time? S3 or EBS or EFS drive
+					S3 
+	
+	86 * why we have to use SSL certificate
+			To have secure authentication
+	
+	98 * how do you configure ec2 for high availability 
+	  
+			○ Elastic Load Balancing—you can launch several EC2 instances and distribute traffic between them
+			○ Availability Zones—you can place instances in different Azs
+			○ Auto Scaling—use auto-scaling to detect when loads increase, and then dynamically add more instances
+			○ create two EC2 instances and use Route 53 DNS failover to resolve to an healthy instance
+	
+	99 * what are options aws provide for highly available ec2 if get trouble in one environment 
+			○ Elastic Load Balancing—you can launch several EC2 instances and distribute traffic between them
+			○ Availability Zones—you can place instances in different Azs
+			○ Auto Scaling—use auto-scaling to detect when loads increase, and then dynamically add more instances
+			○ create two EC2 instances and use Route 53 DNS failover to resolve to an healthy instance
+	
+	100* what are different configuration used for do autoscalling
+	  
+		Step 1: Create a launch template
+		In the Amazon EC2 Dashboard, choose "Launch Templates" to create a launch template, specifying a name, AMI, instance type, and other details. Below are some guidelines on setting up your first launch template.
+			•	Choose an Amazon Machine Image (AMI): We recommend the Amazon Linux 2 AMI (free-tier eligible). 
+			•	Choose an instance type: We recommend the t2.micro (free-tier eligible).
+			•	Security group: You have the option to configure your virtual firewall.
+		
+		Step 2 : Create an Auto Scaling group
+			Using the Auto Scaling wizard, create an Auto Scaling group specifying a name, size, and network for your Auto Scaling group.
+		
+		Step 3: Add Elastic Load Balancers (Optional)
+			When you set up Auto Scaling with Elastic Load Balancing, you can automatically distribute incoming application traffic across Amazon EC2 instances within your Auto Scaling groups to build highly available, fault-tolerant applications.
+			Associate your load balancer with your Auto Scaling group to distribute traffic for your application across a fleet of EC2 instances that can scale with demand.
+			You must first create a load balancer.
+		
+		Step 4: Configure Scaling Policies (Optional)
+			Configure scaling policies for your Amazon EC2 Auto Scaling group.
+
+	102* how can we connect s3 through vpc privately
+						Create a new access point on S3 and specify the VPC id through which we need to connect 
+
+	103* how can we execute round robin waited routing of route53
+
+			Traffic policy --> Create traffic policy --> Weighted rule (either 1 or 3 ) --> specify endpoint
+
+	105* Apln load balancer :
+						Create application load balancer 
+						Choose an Application Load Balancer when you need a flexible feature set for your applications with HTTP and HTTPS traffic
+					
+	106* User data ,meta data
+						User data is information that we can provide to an instance, which is accessed during the starting of an instance, so if any script needs to be run when instance starts up, we can provide the information in instance user data
+						Meta data --> data about instance, which will help in configuring the instance 
+	107* Listener target 
+						 Listener target is the target group that the load balancer needs to send the traffic to 
+						 We specify the type of protocol, port number and the target value (complete path) 
+	108* Cross zone load balancing 
+						 Elastic Load balancing -->https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html 
+						 Create a Network load balancer (or) Gateway load balancer and then enable the cross zone load balancing option after the creation of the load balancers 
+	109* Application load balancer , classic network; disable ,pricing
+
+					Types of load balancer need to explain, pricing - check aws pricing
+					
+	120* SQL vs No SQL
+				Structured DB vs Unstructured DB 
+
+	121* In aws, i have an instance which is critical machine that cant go down and its reaching 100% cpu utilisation.
+						what are the steps that u r going to take to save this machine from going down? 
+				Autoscaling --> add the running instance to an existing AutoScaling group (or) create an autoscaling group based on the running instance 
+				Horizontal (or) Vertical autoscaling can be chosen 
+
+	123* I have a ec2 instance, I want to change the private ip of that instance, can I do that?
+				No, private ip address is permanent for the instance lifetime and it cannot be changed 
+
+	124* Can I change the private ip of running ec2 instance?
+				No, private ip address is permanent for the instance lifetime and it cannot be changed 
+
+	125* I have a S3 bucket, which my client want to track the access for internal audit.
+				CloudTrail is the auditing tool 

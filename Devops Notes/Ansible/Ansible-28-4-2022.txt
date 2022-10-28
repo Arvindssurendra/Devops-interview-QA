@@ -1,0 +1,199 @@
+  What is ansible?
+Ansible is simple, open-source, configuration management tool used for IT 
+automation engine for cloud infrastructure, in-house servers.	
+
+ to provision the underlying infrastructure of your environment, virtualized hosts and hypervisors,
+  network devices, and bare metal servers.
+  
+Ansible push based configuration management system/tool
+   1. ansible dones not require any dedicated agent running on the target host manchines.
+   2. minimun ansible requirement is host machines with pyhton installed on it.
+   3. we only require a proper ssh connection between the controller and the host machines.
+   
+   
+Advantages:
+
+	1. free/open source
+	2. Very simple to steup up
+	3. Agent less CM tool
+	
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Difference between Terraform and Ansible Provisioning
+Let’s see how Terraform vs. Ansible battle differentiates from each other:
+
+                       Terraform                                                                                                   	Ansible
+1) Terraform is a provisioning tool.	                                                            |    Ansible is a configuration management tool.
+2) It is the best fit for orchestrating cloud services and setup cloud infrastructure from scratch. |	 It is mainly used for configuring servers with the right software and updates already configured resources.
+3) Terraform does not support bare metal provisioning by default.	                            |    Ansible supports the provisioning of bare metal servers.
+4) It does not provide better support in terms of packaging and templating.                         | 	 It provides full support for packaging and templating.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Ansible Inventory 
+	 Static Inventory
+		- It is file which contains the ip and configuration of connection to target host machines 
+		  on which we want execute our playbooks
+		- we can group the hosts in inventory.
+		- default location of host file is /etc/ansible/hosts
+		- each line except group name is considered as a single host connection configuration.
+		[frontend]
+		13.233.104.27 ansible_user=ubuntu ansible_become_user=root
+		15.206.185.128 ansible_user=ubuntu ansible_become_user=root
+
+		[backend]
+		15.206.185.128 ansible_user=ubuntu ansible_become_user=root
+                - To pass custom inventory file "ansible -m ping -i <inventoryfile>"
+		
+	 Dynamic Inventory	
+			- Is basically a script which will gives the inventory output.
+			- we can use python, perl, bash 
+                        - script provided by ansible https://github.com/ansible/ansible/blob/stable-2.9/contrib/inventory/ec2.py  Using AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY and command like "ansible-playbook -i ec2.py myplaybook.yml"
+
+To install ansible (Ubuntu)
+
+1. Establish a passwordless connection
+ssh-keygen -t rsa (optional)
+
+use ssh-copy-id username@remote_host (optional) or manually paste
+
+sudo apt update
+
+sudo apt install ansible
+
+
+To setup inventory file
+
+$ sudo nano /etc/ansible/hosts
+
+
+To check ansible inventory
+ansible-inventory --list -y
+
+
+To test connection to host
+
+ansible all -m ping
+
+
+		
+Ansible playbook 
+------------------------------------------------
+	playbook
+		- can contain n numner of play 
+				- each play is designated to run n number task 
+							- each task is designated to execute a module (only one module per task)
+-------------------------------------------------
+
+Some Example Playbooks
+
+#Ansible playbook to install nginx on RHEL distribution
+
+
+tasks:
+ -name:create a directory nginx
+  file:
+    path: /ubuntu/home/nginx
+    state: directory
+
+ -name: Installing nginx
+  yum:
+    name:nginx
+    state:latest
+
+ -name: start nginx
+  service
+    name:nginx
+    state:start
+
+
+
+#Ansible playbook to install tomcat on ubuntu
+
+tasks:
+ -name: installing tomcat
+  apt:
+   name: tomcat
+   state: latest
+ -name: start tomcat
+  systemctl:
+    name:tomcat
+    state: start
+
+ -name: status of tomcat running or not
+  systemctl:
+    name:tomcat
+    state:status
+
+
+#Ansible playbook to install tomcat on server using groupname from inventory
+
+ -name:play_1
+  hosts: frontend
+  tasks:
+   -name: install tomcat
+    apt:
+     name: tomcat
+     state: latest
+   -name: start tomcat
+    systemctl:
+     name:tomcat
+     state:start 
+
+
+ - name: Play_1
+   hosts: backend
+   tasks:
+     - name: Install git (backend)
+       become: true
+       apt:
+         name: git
+         state: present
+         update_cache: yes
+     - name: Install jq (backend)
+       become: true
+       apt:
+         name: jq
+         state: latest
+         update_cache: yes		
+		 
+Installing multiple items with single task 
+
+---
+ - name: Demo
+   hosts: frontend
+   tasks:
+     - name: Install git (frontend)
+       become: true
+       apt:
+         name: "{{ item }}"
+         state: present
+         update_cache: yes
+       with_items:
+           - git
+           - nginx
+           - memcached
+           - jq
+           - curl
+           - wget	
+
+
+
+Assignment: 
+
+1. ansible theory
+
+2. Create static inventory and ping the remote hosts from Ansible --Done
+
+3. Create dynamic inventory by executing python code and ping.--Not Done
+
+link to  python code - https://github.com/ansible/ansible/blob/stable-2.9/contrib/inventory/ec2.py
+
+
+
+---
+- hosts: isrestart
+  become: true
+  become_user: root
+  tasks:
+          - name: Rebooting the cloud server/bare metal box
+            reboot:

@@ -1,0 +1,281 @@
+
+GIT --> version control tool used to keep track of versions of files and directories..
+
+mkdir git_practice
+cd git_practice
+
+git init ---> create git repo
+(ls -a and make sure .git repo is present)
+
+-------------------------------------------------------
+git config --global user.name "abc"
+git config --global user.email "abc@gmail.com"
+--------------------------------------------------------------------
+vi file1
+
+(add two lines )
+
+git status 
+(untracked files )
+
+git add file1 --> move files from local repo to index area 
+
+git status
+git commit -m "added file1" ---> this will move files from index area to git repo.
+
+git status
+(nothing to commit, working tree clean)
+
+git log ---> shows history of repository
+
+git log -2 --> shows you latest two commits 
+
+git log filename ---> shows you all commits on a file
+
+git log -2 filename ---> latest two commits on a file
+
+
+vi file1
+(add extra few lines to it)
+
+git add file1
+git commit -m "modified file1"
+
+git log 
+(u can see two commits)
+
+take previous commit ID 
+
+git checkout Prev-Commit-ID ---> used to switch to previous commit or switch to branch or switch to tag
+
+cat file1
+(check content of a file)
+
+git checkout master  
+(switch to latest commit)
+
+git log 
+
+(u can see all commits)
+
+u can add one more file test and repeat above steps 
+----------------------------------------------------------- 
+
+Branch ---> its for parallel development, two people or two team work on the same piece of code for developing different set of features.
+and intergrate them by merging.
+
+git branch  ---> list branches
+
+git branch branch1 ---> create branch from checked out branch
+
+git branch branch2 branch1  --> create branch2 from branch1
+
+how to delete branch
+
+git branch -d branchname 
+
+--------------------------------------------------------------------------------
+steps to pratice
+git branch branch1  ---> create branch1 from master
+
+git checkout branch1 ---> switch to branch1
+
+add neew file in this branch
+
+git checkout master --> go to master branch
+
+git merge branch1  ---> branch1 will get merged to master
+
+create another branch branch2..
+modify the same piece of code on two different branches... and try to merge .. 
+
+-------------explain merge conflict--------------- 
+Merging Conflict Will occur when the same peace of code is changed on 2 
+different branches, when we try to merge those two brnaches, 
+then merging conflict will occur,
+ To resolve this issue, I don‘t know whose change should I take 
+to merge , so I contact developers changes the code, person 
+who modified code of branch1 and branch2. Then they will 
+decide and tell us whose changes should I take into merge. Then I take that change and I commit it. I get to know who 
+modified the code on branch1 and branch2 using git log 
+command.
+-------------------------------------------------------------------------------------------------------
+
+git tag---> tag is name given to set of versions of files. Its easy to remember in future and it indicates milestone of a project.
+
+git tag --> list tags
+
+git tag tagname --> create tag. tag the latest versions of all files
+
+git tag -d tagname --> delete tag
+
+how do you create branch from tag?
+
+git branch branch-name tagname 
+
+how do create branch and checkout automatically?
+
+git checkout -b branch5 branch1  ---> create branch and switch to new branch 
+
+----------------------------------------------------------------------------
+
+workspace ---> local workspace where we modify project related files
+
+git add
+
+staging area --> its intermediate are where we save changes 
+
+git commit
+git repo --> here version will be tracked
+
+----------------------------------------------------------------------------
+git revert --> used to undo commited changes.. histroty can be tracked 
+
+git revert HEAD  ---> undo latest commit
+
+git revert commitID --> undo particular commit
+
+--------------------------------------------------------------------------------
+git reset ---> undo commited changes but history can't be tracked.
+
+git reset  --> used to reset HAED to particular commit
+
+we use hard reset for it.. git reset --hard previous-commit
+
+
+git reset HEAD ---> move files from staging area back to workspace
+
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww------------------------------------------------------------------------------------------------
+
+git stash :
+
+if you are working on one branch, in between if you get any critical which needs to be fixed on another branch.
+in this case, before I switch to another branch, we need to stash it from current branch (stash will store it in temprory area). After completing work on another branch.
+switch it to back to current branch and get stashed changes using git stash pop.
+
+create some files
+git add *
+git stash 
+git checkout branch
+after completing critical work another branch switch it back to current branch
+git checkout current-brach
+git stash pop
+git reset HEAD
+
+--------------------------------------------------------------------------------------------------------
+
+how do merge particular change or specific commit to branch??
+
+git cherry-pick commitID
+
+----------------------------------------------------------------------------------------------------
+
+git rebase ---> it's nothing but merge. one branch will get added to tip of another branch.
+you can squash and merge versions to another branch.
+
+
+git rebase branch
+
+diff between merge and rebase
+-------------------------------------------------------------------------------------------------------
+
+how do you squash (combine multiple commits) commits?
+
+git rebase -i HEAD~4  
+
+(it will squash latest 4 commits )
+
+s or squash --> squash
+p or pick ---> it will retain that commit 
+---------------------------------------------------
+-----------------
+
+explain merge conflict 
+Merging Conflict Will occur when the same peace of code is changed on 2 
+different branches, when we try to merge those two brnaches, 
+then merging conflict will occur,
+ To resolve this issue, I don‘t know whose change should I take 
+to merge , so I contact developers changes the code, person 
+who modified code of branch1 and branch2. Then they will 
+decide and tell us whose changes should I take into merge. Then I take that change and I commit it. I get to know who 
+modified the code on branch1 and branch2 using git log 
+command.
+
+===============================================================================
+Git clone
+Bringing the remote repo to local workspace for the first time 
+called as git clone.
+Git clone user@servername: /home/path/central_repo/
+
+Git push
+Moving the changes from workspace to remote repo or central 
+repo
+ Git push user@severname: /path.././central_repo
+
+Git pull
+Bring the changes from remote repository and merges to local 
+repo automatically.
+Git pull user@servername: /home/./path/central_repo
+
+fetch
+Bring the changes from remote repo and stores it on a separate 
+branch, you can review the changes and merge it to local repo if it is 
+required.
+Git fetch user@servername:/home.//./central_repo/
+
+Git pull = git fetch + git merge
+
+I am not able to push code to central repo. what is the reason?
+other developer might have changed the same line of code in different way and push already. 
+so if I am trying to push to central repo, I will not able to push.
+in this case, I need to pull it and merge conflict will occur in the local workspace, resolve it,push it back to central repo.
+
+you should pull source code to local repo and resolve merge conflicts if any. then push it to central repo
+
+=============================================================================================================================================
+
+bare repo:
+
+its central repo. we can push and pull code. we can't run any git operations here
+git init --bare
+
+-------------------------------------------------------------------
+
+non-bare: it's local repo where we can run all git operations. 
+when we clone central repo to workspace. it becomes local repo automatically
+git init
+
+-------------------------------------------------------------------------------------
+
+- To go or checkout to 1 commit before the latest commit, we use git checkout HEAD~1
+
+- To uncommit the last 3 commits without losing the changes, we first run git reset HEAD~3. Then we can see the changes made in the last 3 commits and then update it manually and commit it finally.
+
+- In order to uncommit the last 3 commits and also remove the changes, we can run the command: git reset --hard HEAD~3. This command will completely remove all the changes.
+
+- To look into the changes made in the last 3 commits, we can run git diff HEAD~3
+
+- To make a new commit by reverting the last 3 commits, we can run the command: git revert --no-commit HEAD~3...HEAD
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+

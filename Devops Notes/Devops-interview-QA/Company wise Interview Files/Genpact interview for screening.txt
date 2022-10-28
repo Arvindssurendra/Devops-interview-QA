@@ -1,0 +1,14 @@
+Genpact Interview-Questions
+
+1.Introduce Yourself and explain your roles and responsibilities in your company.
+2. What are configmaps and secrets
+3. My application is running inside pod, i want to connect it to the internet. How will you do?
+4. My pod is running out of memory and worker node also don't have resources. How you do handle the situation to take care of pods?
+(let's say pods are configured with autoscaling and resource limits are all set.)
+5. Which type of cluster you're managing in your company? Managed or baremetal server?
+6. Your cluster is single master or multi master? How many worker nodes?
+7. I want to add new worker node to cluster. How you will do?
+8. Explain helm charts with respect to your application.
+9. Why not EKS? Why you're still using self-managed? 
+10. Which version of k8s you are using?
+

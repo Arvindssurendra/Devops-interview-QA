@@ -1,0 +1,15 @@
+JDK & MAVEN INSTALLATION AND PATH SETUP
+==============================================================
+
+https://www.journaldev.com/33588/install-maven-linux-ubuntu
+
+===========================================================
+
+tomcat link to setup
+
+=========================================================
+https://www.youtube.com/watch?v=_d-c9uGcUrU
+==============================================
+hellow world
+=================================
+https://github.com/efsavage/hello-world-war

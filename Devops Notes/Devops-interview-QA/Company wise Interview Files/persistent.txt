@@ -1,0 +1,136 @@
+tomcat is avilable intsall ur application expose the port of the application to web
+doker file 
+
+
+FROM tomcat:8.0-nginx
+COPY example.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD [“catalina.sh”, “run”]	
+
+
+
+FROM ubuntu
+RUN intsall maven
+WORKDIR /usr/src/mymvn/target/exmaple.war
+
+FROM nginx
+COPY --from=maven /usr/src/mymvn/target/exmaple.war tamcat/webapps
+ENTYPIONT curl ipadress:port
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   - name: my-deployment 
+      
+spec:
+     replicas: 3
+     selector:
+        matchlabels:
+             app: my-nginx
+     template:
+	   metadata:
+	      labels:
+	          app: nginx
+     spec:
+      containers:
+         name: nginx
+       - image : nginx:latest
+         ports:
+	       - containerPort: 80
+ 
+
+1. can you explain what kind of work will be doing in currently
+     
+2. how to co-ordinate with devolopers team 
+   
+3. what ur exposer to the docker tools
+   
+4. tomcat is avilable intsall ur application expose the port of the application to web which image is using for tomcat server 
+5. write ant multistage doker file
+6.  do you have exposer in kubernetes platform. what kind of work u have done in k8s?
+      
+7. which k8s flavor u have used? this are the tools used to run and maintain the cluster?
+
+      minicube, kubeadm , kops , k8's version-1.23
+		
+8. did you install k8s by urself ? and which method do you used this instlltion?
+
+   yes,  kubeadm
+	 
+9. what is the role of kube proxy?
+        
+10. write a deployment yml file with 3 replicas 
+
+11. suppose 3 nodes n1 n2 n3 i do have some mantainace in n2 so what kind of activity i need to do before i bring down that node assuming that the pods are running on that n2 aswell.
+           
+12. do you have experience in git ? what kind of work you did ?
+     
+13. git merching how will do ? 
+     yes we do explain...
+	 
+14. do you hv experience on python ?
+     No
+     
+
+Accolite digital
+1) Introduce yourself
+
+2) $#
+ 
+3) $? 
+
+4) $@
+ 
+5) what is jenkins pipeline
+
+6) what r the stages of declerative piple line 
+          
+7) what ci tool u r using 
+      
+8) apart form jenkins? 
+    circle ci, Team city,GitLab CI
+9) write groovy script for deplyoing to k8s 
+   
+10) write shellscript to it should username and reflect user id 
+      
+11) copy and add 
+12) how do u pass environment variable in cli
+     docker run -it -d -e env1=test1 -e env2=test2 --name container_name image_name
+	 export PATH=$PATH:/usr/src......
+	 
+	 
+13) roles and cluster roles 
+     
+14) daemon set
+    
+15) configmaps 
+
+16) how do u create a docker image from a dockker container 
+
+       docker commit contaier_id image_name
+	   
+17) how do u deploy in maven 
+
+      mvn clean install deploy
+	  
+18) probes and types of probes 
+     
+19) sidecar container 
+
+20 ) how do check logs of a sidecar container of node in a particular namespace 
+
+      kubectl logs pod -c container_id -n namespace_name
+	  
+21) I have specifide 5 resources in terraform block I want to execute only one resource from that, how to do that. 
+
+        in main.tf will call only that particular resource 
+		
+22) where do u store ur images 
+
+     dockerhub,ECR,JFROG-Xray
+	 
+23) in linux explain array format
+     ARRAYNAME=(value1 value2  .... valueN)
+	 
+He asked 10-15 more questions I don't remember them all

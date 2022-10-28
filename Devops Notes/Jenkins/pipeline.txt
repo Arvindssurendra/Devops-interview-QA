@@ -1,0 +1,80 @@
+Jenkins pipeline 
+	- This is type of job we got in jenkins where all the configuration of the job 
+	  is done through code.
+	- Groovy is the language used to write pipeline jobs in jenkins.
+    - The main pipeline is writen in a file called Jenkinsfile.	
+
+Types of jenksin pipeline jobs 
+
+scripted pipeline
+	- Old way of defining jenkins pipeline job.
+	- All the code /configuration is writen inside node block 
+		
+		node {
+			
+
+		}
+
+		
+Declarative pipeline
+	- New way of defining jenkins pipeline job.
+	- All the code /configuration is writen inside pipeline block 
+		
+		pipeline {
+			
+			
+		}
+
+How to define a pipeline job ? 
+	1.  - We can directly write the pipeline script inside the job using inline script block.
+		- It is difficult to main the versioning of job.
+		
+	2. we write the script in a file called Jenkinsfile and we source it from a SCM (Source code management).
+		
+	
+Declarative pipeline
+	The required block are AGENT, STAGES - STAGE, STEPS - STEPS
+		pipeline {
+			agent any 
+			stages {
+				stage('Build') {
+					steps {
+					
+					}
+				}
+				stage('Test'){
+					steps {
+					
+					}
+				}
+				stage('Deploy'){
+					steps {
+					
+					}
+				}
+				stage('My-stage'){
+					steps {
+					
+					}
+				}	
+			}
+		}
+		
+	AGENT 
+		- An agent is used to define the execution scope of the stage.
+		- AGENT is used to distribute the workload of different stages.
+		- each stage will be assigned with a executor based on agent configuration.
+		
+		Types of agent 
+			any - Runs pipeline agents on any available executors.
+			none - If we define agent as none at the pipeline level, it means we need to 
+				   define agent at the stage level.
+                 - If we want to control the execution of each stage we need to use agent 
+				   as none at pipeline level and we can define agent for each stage.
+				
+				IQ - How to run a particular stage on a node ?	
+				
+			label - Both at agent and pipeline level we can use this type of agent.	
+			docker - 
+			
+Note: Install blueocen plugin dashborad for pipeline jobs 		

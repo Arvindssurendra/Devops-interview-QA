@@ -1,0 +1,1658 @@
+Kubernetes Installation
+	Minimum system requirement for master nod is 2-core cpu and 4GB RAM
+	
+	1. sudp apt update 
+	2. sudo apt-get install -y apt-transport-https
+	3. sudo su -
+	4. curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add
+	5. echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' > /etc/apt/sources.list.d/kubernetes.list
+	6. sudo apt update 
+	7. sudo apt-get install -y docker.io
+	8. sudo systemctl start docker
+	9. sudo systemctl enable docker.service
+	9. sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+	
+	10. Create a ami from above instance to create workernodes 
+	
+	11. After ami is available, login again to master node 
+		(Make sure docker is running)
+		12. sudo su -
+		13. kubeadm init
+			ERROR1: if we get kubelet isn't running or healthy
+						kubelet doesnt got access to docker engine which means 
+						we need to configure cgroup of docker 
+					create a file /etc/docker/daemon.json with below content
+						{
+							"exec-opts": ["native.cgroupdriver=systemd"]
+						}
+					Reload docker daemon
+						systemctl daemon-reload
+						systemctl restart docker
+						systemctl restart kubelet
+					
+			Run kubeadm init again	
+			
+			ERROR2: if we get fileavailable error just delete those files 
+			ERROR3: if kubelet is running kill it 
+						lsof -i :<kublet_port>
+						kill -9 <process_id>
+			
+			Run kubeadm init again	
+				if we get kubeadm join command at the end means master node 
+				setup is successful and save the join command.
+
+		14. configure K8S kubectl 		
+			- exit from the root 
+			- copy the default k8s conf file to our home directory 
+					mkdir -p $HOME/.kube
+					sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+					sudo chown $(id -u):$(id -g) $HOME/.kube/config
+		
+		15. We install k8s CNI Driver
+			sudo sysctl net.bridge.bridge-nf-call-iptables=1
+			kubectl apply -f "https://cloud.weave.works/k8s/v1.13/net.yaml"
+			
+			check for node status - kubectl get nodes
+		
+		16.	Login to worker node 
+			sudo su -
+			create a file /etc/docker/daemon.json with below content
+				{
+					"exec-opts": ["native.cgroupdriver=systemd"]
+				}
+			Reload docker daemon
+				systemctl daemon-reload
+				systemctl restart docker
+				systemctl restart kubelet		
+				
+			Now open ports of master nodes 
+			
+			Run the join command with token which we got from master node 
+			
+			Repeat the same steps in other worker nodes
+			
+kubernetes Architecture 	
+	The architecture of k8s differs from master and worker node 
+
+	Master node components 
+		1. Api Server / kube-api-server
+			- It is the main managemnet point of the cluster and also called 
+			  as brain of the cluster.
+			- All the components are directly connected to API serve, they 
+			  communicate through API server only and no other component will 
+			  communicate directly with eachother.
+			- This is the only component which connects and got access to etcd.
+			- All the cluster requests are authenticated and authorized by API server.
+			- API server has a watch machanism for watching the changes in cluster.
+			
+		2. etcd 
+			- ectd is a distributed , consistent key value store used for 
+			  storing the complete cluster information/data.
+			- ectd contains data such as configuration managemnet of cluster,
+              distributed work and basically complete cluster information.			
+			
+		3. scheduler / kube-scheduler
+			- The scheduler always watches for a new pod request and 
+			  decides which worker node this pod should be created.
+			- Based on the worker node load, affinity and anti-affiny, taint configuration 
+			  pod will be scheduled to a particualr node.
+			  
+		Controller manager /control manager / kube-controller 
+			- It is a daemon that always runs and embeds core control loops known as controllers. 
+			- K8s has some inbuild controllers such as Deployment, DaemonSet, ReplicaSet, Replication controller,
+			  node controller, jobs, cronjob, endpoint controller, namespace controller etc.	
+			
+		Cloud controller manager 
+		
+		
+		
+	Worker node components 
+		kubelet 
+			- It is an agent that runs on each and every worker node and it alsways watches the API 
+			  server for pod related changes running in its worker node.
+			- kubelet always make sure that the assigend pods to its worker node is running.
+			- kubelet is the one which communicates with containarisation tool (docker daemon)
+              through docker API (CRI). 	
+			- work of kubelet is to create and run the pods. Always reports the status of the worker node 
+			  and each pod to API server. (uses a tool call cAdvisor)
+			- Kubelet is the one which runs probes.	
+		
+		kube service proxy 
+			(in k8s service means networking)
+			- Service proxy runs on each and every worker node and is responsble for watching API 
+			  server for any changes in service configuration (any network related configuration).	
+			- Based on the configuration service proxy manages the entire network of worker node.
+
+		Container runtime interface (CRI)
+			- This component initialy identifies the container technology and connects it to kubelet.
+			
+			
+		pod
+			- pods are the smallest deployable object in kuberntes.
+			- pod should contain atleast one container and can have n number of containers.
+			- If pod contains more than one container all the container share the same memory assigned to that pod.
+			
+			
+YAML file 
+	- Filetype .yaml / .yml 
+	- YAML file will contain key value pairs where key is fixed and defined by the tool and value is 
+	  user defined configuration. 
+    - values supports multiple datatypes - string, Integer, Boolean, Array, List and dictionary.
+
+	example:
+		1)	name: Harsha
+			hobbies: ["Driving","coding"]
+			
+				(or)
+				
+			name: harsha
+			hobbies: 
+				- Driving
+				- coding
+			
+		2)  candidates: 
+			   - name: a
+			      firstname:
+			      lastname: 	
+			     age: 25
+			   - name: b
+			     age: 29
+				 
+example pod
+	apiVersion: v1
+		- This is used to specify the version of API t create a particular k8s object.
+		- The field is casesentive, it will be in camelcase 
+		- The types of API we have in k8s are alpha, beta and stable versions.
+		
+	kind: Pod 
+		- used to specify the type of k8s object to create.
+		- Always object name first letter is capital.
+		
+	metadata: 
+		contains the information that helps us to uniquely identify the object.
+		There are 3 types of metadata 
+			1. name 
+			2. labels 
+				- k8s labels us used to identify the object.
+				ex: name, evironment, tier, release.
+			3. annotations
+
+	spec: 
+       - actual configuration of the objects 	
+	   
+	   
+apiVersion: v1
+kind: Pod 
+metadata: 
+    name: my-first-pod	
+spec: 
+    containers:
+       - name: my-nginx 
+         image: nginx:latest
+		 ports: 
+		    - containerPort: 80
+	
+TO create / apply a configuration 
+	kubectl apply -f <file>.yml	
+	
+To list objects 
+	kubectl get <obeject_type>
+		ex: List pods - kubectl get pods 
+		    List deployment - kubectl get deployments
+			
+To delete objects 
+	kubectl delete <object_type>
+
+
+Assignment: What happens if we create a pod with kubectl ?
+	
+K8S Labels and selectors 
+	- K8S labels is a metadata key value which can be applied to any object in k8s.
+	- Labels are used to identify by using selectors.
+	- Multiple objects can have same label, multiple labels to same object and Label lenght should be less that 63 characters.
+	
+	TO list all labels of a object 
+		kubectl get <obeject_type> <obejct_name> --show-labels 
+	
+	
+	Selectors 
+		- Selectors are used to filter and identifly the labeled k8s object.
+		
+		Equality-Based 
+			- It will use only one label in comparision and it will look for objects with exact same 
+			  string in label.
+			- we can use 3 types of operators equal ( = or == ) and not-qual ( != )	
+		
+			example: 
+				selectors: 
+					matchLabels: 
+						app=nginx 
+						   (or)
+						app: nginx   
+		
+		set-based 
+			- This type of selector allows us to filter objects based on multiple set of values to a label key.
+			- 3 types of operators we can use in, notin and exists.
+
+				example: 
+					selectors: 
+						matchLabels: 
+							app in (nginx, my-nginx)
+							app exits (nginx, my-nginx)
+							app notin (nginx, my-nginx)
+Annotations 
+	- These are used for record purpose only and to provide some user information to objects.
+	- These are non-identifying metadata so we cannot use selectors on annotations.
+
+	example: personal_info, phone_number, imageregistry, author	
+	
+Assignment: Difference b/w set-based and equality-based selector.
+			Difference b/w labels and annotations.
+
+ReplicaSet vs Replication Controller
+	- Both ensures that a specified number of pod replicas are alyways running at a given point of time.
+	- Replication controller is a very old way of replicating the pos and now it is replaced by ReplicaSet
+      
+	- The only differenece b/w them is their selector types.
+		Replication Controller supports only equality-based selector. 
+		ReplicaSet supports both equality-based and set-based selectors.
+
+Deployment controller / Deployment / k8s deployment 
+	- Deployment is used to create replicas of pod and it makes sure at a given point of time 
+	  the number of replicas of pod is alway running. 
+	- Deployment internally uses ReplicaSet to replicate the pods.
+	- If we update the configuration in deployment it will automatically updates it to all the pods.
+	- Rollout and Rollback of pod update is possible.
+	- we can pause a deployment whenerver we need.
+	- Deployment has got its own internal autoscaller which is of type horizontal scaller. 
+		To apply calling 
+			kubectl autoscale deployment.v1.apps/<deployment_name> --min=5 --max=20 --cpu-percent=50	
+	- scaleup and scaledown is possible by increasing and decreasing the replica count at any given 
+	  point of time.
+		kubectl scale deployment.v1.apps/<deployment_name> --replicas=10	
+	
+	- deployment is a cluster level object.
+	
+		deployment = pod + ReplicaSet + autoscaling + RollingUpdates 
+	
+	Deployment spec file.
+		
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  name: nginx-deployment-new
+		  labels:
+			app: my-deployment-nginx
+		spec:
+		  replicas: 5
+		  selector:
+			matchLabels:
+			  app=nginx
+		  template:
+			metadata:
+			  labels:
+				app: nginx
+			spec:
+			  containers:
+			  - name: nginx
+				image: nginx:1.14.2
+				ports:
+				- containerPort: 80
+	
+Assignment for me: demo on selectors types 
+	
+DaemonSet
+	- DaemonSet ensures that a copy of pod is always running on all the worker nodes in the cluster.
+	-If a new node is added or if deleted DaemonSet will automatically adds/deletes the pod.
+
+	usage: 
+		- we use DaemonSet to deploy monitoring agents in every worker node.
+		- Log collection daemons: to grab the logs from worker and all the pods running in it.
+		
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-daemonset
+spec:
+  selector:
+	matchLabels:
+	  app: daemonset-nginx
+  template:
+	metadata:
+	  labels:
+		app: daemonset-nginx
+	spec:
+	  containers:
+	  - name: nginx
+		image: nginx:1.14.2
+		ports:
+		 - containerPort: 80		
+		 
+Statefull Applications 
+	- User session data is saved at the server side.
+	- if server goes down, it is difficult to transfer the session data to other server. 
+	- This type of application will not work, if we want to implement autoscalling.
+	
+Stateless Applications
+	- user sessiondata is never saved at the server side.
+	- using a common authentication gateway / client token method to validate the users 
+	  once for multiple microservices.	
+		
+https://medium.com/tech-tajawal/microservice-authentication-and-authorization-solutions-e0e5e74b248a		
+
+Monolothic and Microservice architecture 
+
+	Monolothic architecture
+		- A monolothic application has a single code base with multiple moduels in it.
+		- It is a single build for entire application.
+		- To make minor changes to application, we need to re-build and re-deploy the 
+		  complete application.
+		- scalling is very challenging.
+			
+	Microservice architecture 
+		- A microservice application is composed of small (micro) services. 
+		- Each service will have a different code base.
+		- Application are divided into as small as possible sub applications called services
+		  which are independent to each other which are called loosly coupled.	
+		- Each service can be managed seperately and it is deployable seperately.
+		- Services need not to share same technology stack or frameworks.		 
+
+StatefulSet 
+	- StatefulSet = Deployment + sticky identity for each and every pod replica.
+	- Unlike a deployment a StatefulSet maintains a sticky identity for each of the pod.
+		
+Node controller 
+	- Looks for node statuses and reponds to API server only when a node is down.
+
+Endpoint Controller
+	- Populates the information of endpoints of all the objects.	
+		
+Service (svc)
+	- Service is an REST api objects with set of policies for defining the 
+	  access to set of pods.
+	- Services are the default load balancer in k8s.
+	- services are always created and works at cluster level.
+	- services are the networking configurations which we do in k8s.
+	- k8s prefers to use 30000 - 50000 range of ports to define services.
+
+1. ClusterIP
+	- This is the default type of service which exposes the IPs of pod to the other pods 
+	  with in the same cluster.
+	- ClusterIP cannot be accessed outside cluster.
+	- services are the default loadbalancers of k8s.
+	
+	apiVersion: v1 
+	kind: Service 
+	metadata:
+	     name: my-svc 
+	spec: 
+		type: ClusterIP
+		selector: 
+			app: my-nginx 
+		ports: 
+			- name: http
+			  port: 30080
+			  targetPort: 8080	
+
+2. nodePort 
+	- A nodeport service is the most primitive way to get the external traffic directed to our services / applications 
+	  running inside a pod within the cluster.
+	- By default NodePort acts as a load balancer. 
+	- Automatically a ClusterIP will be created internally. 
+	
+		NodePort = ClusterIP + a port mapping to the all the nodes of cluster.
+		
+	- If we wont specify any port while creating nodeport, k8s will automatically asign a port between the range 30000 - 32767
+	- By default nodeport will open the port in all the node in cluster including master node.	
+	
+	apiVersion: v1 
+	kind: Service 
+	metadata:
+	     name: my-svc 
+	spec: 
+		type: NodePort
+		selector: 
+			app: my-nginx 
+		ports: 
+			- name: http
+			  nodePort:30082	
+			  port: 8080
+			  targetPort: 80
+			  
+3. Load Balancer
+	- It is a tyoe of service which is used to link exernatl load balancer to the cluster.
+	- This type of serviec is used by cloud providers and this service is completely depends on cloud providers. 
+	- K8s now proides a better alternative for this service type which is called Ingress.
+
+Assignment: 
+	
+How to use custom images / connect to a registry through k8s 
+	1. Login to the docker hub account 
+		  docker login 
+	2. Create a app to print ip 
+			using flask 
+	3. 	push the image to your registry 
+	4 use the above custom image in k8s spec file.
+	
+		image: <username>/<regirty_name>:<tag>
+		imagePullPolicy: IfNotPresent
+		
+	5. Create a service of type NodePort attaching the above pods 
+		
+namespaces 
+	- k8s namespaces is a way of applying abstraction / isolation to support multiple 
+	  virtual clusters of k8s objects with in the same physical cluster.
+	- Each and every object in k8s must be in a namespac.
+	- If we wont specify namespace, objects will be created in default namespace of k8s.
+    - namespaces are cluster level.
+	- by default pods in same namespace can communicate with eachother.
+	- Namespace are only hidden from eachother but not fully isolated because one 
+	  service in a namespace can talk to another service in another namespace using 
+	  fullname (service/<service_name>) followed by namespace name
+	
+	usage: we can apply environment based logical separation on cluster. 
+		
+	Type of deafault NS
+	1. default
+	   - This NS is used for all the objects which are not belongs to any other namespace.
+	   - If we wont specify any namespace while creating an object in k8s then 
+         that object will be created in deafult namespace.
+			
+	2. kube-system 
+	   - This namespace is always used for objects created by the k8s system.
+	   
+	3. kube-public 
+	   - The objects in this namespace are available or accessable to all.
+       - All the objects in this namespace are made public.
+
+	4. kube-node-lease 
+	   - This namespace holds lease objects assosiated with each node.
+	   - Node lease allows the kubelet to send heartbeats so that the control palne can 
+		 detect node failure.
+	
+	To list namespace
+		kubectl get namespaces 
+	
+	To list objects in a namespace 
+		kubectl get pods --namepsace <NS_name> 
+					(OR)
+		kubectl get pods -n <NS_name> 
+	
+	To list obects from all namespaces
+		kubectl get pods --all-namespaces
+		
+	To create a namespace 
+		kubectl create namespace <ns_name>
+		
+	To create k8s object in a namespace 
+		1. in the spec file 
+			metadata: 
+				namespace: <ns_name>
+				
+		2. Using the apply command 
+			kubectl apply -n <ns_name> -f <spec>.yml
+		
+		Note: what if we use both inside specfile and also in apply command 
+				- apply command check and compares the namespace and wont allow to create the obejct if the namespace is different.
+
+Assignment: try exec to a pod 				
+	
+	- pod to pod communication is open if the 2 pods are in the same namespace.	
+	- If the pods are in different namespace by default they can't communicate we need a service object for this.
+	
+	How a microservice will communicate with other microservice
+	What is service discovery in k8s 
+		
+Servce Discovery 
+	There are 2 ways of docovering a service 
+		DNS 
+		  - DNS server is added to the cluster in order to watch the k8s service requests.
+		  - API server create DNS record sets for each new service.
+		  - REcord A type is used in k8s service discovery and this DNS is created on service and pod objects.
+		  
+			syntax of DNS 
+					<object_name>.<namespace_name>.<object_type>.<k8s_domain>
+					
+					ex: my-app-svc.default.svc.local 
+					ex: my-app-svc.default.svc.example.com 
+					
+		ENV variables 
+		  - which ever the pods that runs on a node, k8s adds environment variables for each of them to identify the service 
+			running in it.
+		  
+		headless service 
+		  - When we neither need nor want loadbalancig and a single IP point to a service, we need use headless service.
+		  - Headless service returns all the ips of the pods it is selecting.
+		  - headless serivce is created by specifing none for clusterIP 
+		  - headless service is usually used with statefulsets.
+		  
+		apiVersion: v1 
+		kind: Service 
+		metadata:
+			 name: my-svc 
+		spec: 
+			ClusterIP: none
+			selector: 
+				app: my-nginx 
+			ports: 
+				- name: http
+				  port: 30080
+				  targetPort: 80	
+				  
+		nodePort = headless + port mapping 		  
+		
+		apiVersion: v1 
+		kind: Service 
+		metadata:
+			 name: my-svc 
+		spec: 
+			type: NodePort
+			ClusterIP: none
+			selector: 
+				app: my-nginx 
+			ports: 
+				- name: http
+				  nodePort:30082	
+				  port: 8080
+				  targetPort: 80		
+				  
+		1. Create a headless service with statefulsets
+		2. Login to any one of pod 
+		3. apt install dnsutils and do nslookup <service_name>	
+		
+pod phases / status / states / life cycle 
+	1. pending 
+		- This is the status of pod when pod will be waiting for k8s cluster to accept it.
+		- pod will be downloading the image from registry.
+		- pod wiil be in pending till the scheduler assigns a node to the pod.
+	
+	2. Running 
+		- The pod has been assigned a node and all the containers inside the pod is running.
+		- Atleast one container is in running state and others in starting or restarting state then pod will show 
+		  running state.
+
+	3. Failed 
+		- All the container in the pod should not be running and any one container being terminated in failure.
+		
+	4. Succeeded 
+		- ALl the containers in pod have been terminated successfully/gracefully.
+		
+	5. Unknown 
+		- For some reason the state of the pod could not be obtaied by API server.
+		- The status may occur when k8s cannot communicate with the kubelet or the worker node.
+	
+	
+terminating 
+	- when pod is being deleted.
+	
+container status 
+	Running 
+		- Means container is running the process inside without any error 
+	Terminated
+		- Process inside the container has completed the execution or may be failed due to some error.
+	waiting 
+		- If a container is not running or neither in terminated state.
+	
+Common errors
+	ImagePullBackOff 
+		- Docker image registry is not accessible.
+		- Image name / tag version specified is incorrent.
+	CrashLoopBackOff
+        - We get this error when probe check has failed.
+		- Docker image may be faulty.
+	RunContainerError 
+		- Configmap / secrets are missing. 
+		- Volumes are not available 
+		
+		
+k8s volumes 
+	persistent volume (pv)
+		- It is a storage space which can be claimend to any pod in the cluster.
+		- These are cluster level object and not bound to namespace.
+		
+		we can control the access to volume in 3 ways:
+			- ReadOnlyMany(ROX) allows being mounted by multiple nodes in read-only mode.
+			- ReadWriteOnce(RWO) allows being mounted by a single node in read-write mode.
+			- ReadWriteMany(RWX) allows multiple nodes to be mounted in read-write mode.
+		
+		Note: If we need write access to volume from multiple pods scheduled in mulitple nodes then use ReadWrtieMany
+		
+	apiVersion: v1
+	kind: PersistentVolume
+	metadata:	
+		name: my-pv
+		labels: 
+			volume: test
+	spec: 
+		storageClassName: local 
+		accessModes: 
+			- ReadWriteOnce
+		capacity: 
+			storage: 2Gi
+		hostPath: 
+		    path: "/home/ubuntu/my-pv-volume" 
+			   
+	Persistent volume claim (pvc)
+		- This is the object used to claim / mount the required amount of storage from persistent volume to any 
+		  pod in the cluster.
+		- After we create the PersistentVolumeClaim, the Kubernetes control plane looks for a PersistentVolume that 
+		  satisfies the claim's requirements. 
+		- If the control plane finds a suitable PersistentVolume with the same StorageClass, it binds the claim to the volume.
+	
+	apiVersion: v1
+	kind: PersistentVolumeClaim
+	metadata:	
+		name: my-pvc
+	spec: 
+		storageClassName: local 
+		accessModes: 
+			- ReadWriteOnce
+		resources: 
+		    requests:
+                storage: 1Gi 
+        	
+	using this in a pod 
+	
+	apiVersion: v1
+	kind: Pod 
+	metadata: 
+		name: my-pvc-pod	
+	spec: 
+        volumes: 
+		    - name: pvc-volume
+			  persistentVolumeClaim: 
+			       claimName: my-pvc # This name should be same the PVC object name
+		containers:
+		   - name: my-nginx 
+			 image: nginx:latest
+			 ports: 
+				- containerPort: 80
+			 volumeMounts: 
+			    - mountPath: "/usr/share/nginx/html"
+				  name: pvc-volume # This name should be same as the above volume name 
+
+			   
+pod patterns / container types
+	init containers 
+		- init containers are the containers that will run completely before starting 
+		  the main app container.
+		- This provides a lifecycle at the startup and we can define things for 
+          initialization purpose.
+        - kubernetes has stopped support of probes in init containers.
+        - These are pod level objects.
+	    - we can use this container to have some deply on the startup of the main container.
+	
+	These are some of the scenarios where you can use this pattern
+		- You can use this pattern where your application or main containers need some
+		  prerequisites such as installing some software, database setup, permissions on the file
+		  system before starting.
+		- You can use this pattern where you want to delay the start of the main containers.
+
+	apiVersion: v1
+	kind: Pod 
+	metadata: 
+		name: init-container	
+	spec: 
+		containers:
+		   - name: my-nginx 
+			 image: nginx:latest
+			 ports: 
+				- containerPort: 80
+		initContainers: 
+		   - name: busybox
+		     image: busybox 
+			 command: ["/bin/sh"]
+	         args: ["-c","echo '<html><h2>THis is a init container</h2></html>' >> /work-dir/index.html"]
+		     volumeMounts: 
+		       - name: workdir
+		         mountPath: "/work-dir"
+		volumes: 
+           - name: workdir
+             emptyDir: {}		   
+		
+		1. login to pod 
+				kubectl exec -it <pod_name> -- /bin/sh 
+		2. apt update && apt install -y curl 
+		3. curl localhost
+			
+		To check the log of particular container out of multiple in a pod 
+			kubectl logs <pod_name> -c <container_name>
+		
+	Sidecar container 
+		- These are the containers that will run along with the main app container.
+		- we have a app conaitner which is working fine but we want to extend the 
+		  functionality without changing the existing code in main container for this 
+          purpose we can use sidecar container.
+        - we use this container to feed the log data to monitoring tools.	
+		
+		These are some of the scenarios where you can use this pattern
+			- Whenever you want to extend the functionality of the existing single container pod without
+			  touching the existing one.
+			- Whenever you want to enhance the functionality of the existing single container pod
+			  without touching the existing one.
+			- You can use this pattern to synchronize the main container code with the git server pull.
+			- You can use this pattern for sending log events to the external server.
+			- You can use this pattern for network-related tasks.
+
+	apiVersion: v1
+	kind: Pod 
+	metadata: 
+		name: init-container	
+	spec: 
+		containers:
+		   - name: my-nginx 
+			 image: nginx:latest
+			 ports: 
+				- containerPort: 80
+             volumeMounts: 
+		       - name: workdir
+		         mountPath: "/var/log/nginx"
+		   - name: sidecar-busybox
+		     image: busybox 
+			 command: ["/bin/sh", "-c","while true; do cat /var/log/nginx/access.log /var/log/nginx/error.log; sleep 15; done"]
+		     volumeMounts: 
+		       - name: workdir
+		         mountPath: "/var/log/nginx"
+		volumes: 
+           - name: workdir
+             emptyDir: {}	
+
+	Adaptor container 
+		- In this patter we use a sidecar container to feed the log data to a monotoring 
+		  tool.
+	
+	https://www.magalix.com/blog/kubernetes-patterns-the-ambassador-pattern
+	
+probes 
+	- probe is a periodic call to some applciation endpoints within a container.
+	- probes can track success or failure of the other applications.
+	- When there is a subsequent failure occures we can defie probe to get triggered.
+	- when subsequent success after a failure we can define probe to get triggered.
+	- probes works at container level.
+	
+	Common fields in probes 
+		initialDelaySeconds
+			- After the container has started the number of seconds to wait before the probe os triggered.
+		periodSeconds 
+			- The number of seconds interval the probe should be executed. (Default 10 seconds and minimum 1 second)
+		timeoutSeconds 
+			- Number of seconds after which probe timeouts. (default 1)
+			
+		failureThreshold
+			- When a probe fails this is the number of subsequent fail times the probe checks the status of application.
+			- After the number of subsequent failure then probe fails.
+			- Default value 3 
+		
+		successThreshold 
+			- minimum number of subsequent success for a probe. 
+			- Default value is 1
+			
+		Endpoints 
+			http probes (httpGet)
+				host - hostname to conenct and probe will check the status of this hostname 
+				     - Default is the IP of current pod 
+					 ex: www.google.com
+				path - exact path to access the application on the http server 
+					 ex: /gmail
+				httpHeaders
+					- can send custom header messages with the request.
+				port 
+					- Name or number of the port to access the application 
+					
+			TCP probes 
+				port 
+					- Name or number of the port to access the application
+			
+			exec 
+				commad 
+				  - we execute a command and check its status.
+		
+Liveness probe 
+		- The livenessprobe is used to determine if the applciation inside the container 
+		  is healthy or needs to be restarted.	
+		- If livenessprobe fails it will mark the container to be retarted by kubelet.
+		
+	1. LivenessPRobe with http 
+		
+		apiVersion: v1
+		kind: Pod 
+		metadata: 
+			name: liveness-http	
+		spec: 
+			containers:
+			   - name: liveness 
+				 image: k8s.gcr.io/liveness
+				 args:
+					- /server
+				 livenessProbe:
+				    httpGet:
+				  	   path: /healthz
+				  	   port: 8080
+				    initialDelaySeconds: 3
+				    periodSeconds: 3	
+		
+	2. TCP 
+		livenessProbe:
+			tcpSocket:
+			   port: 8080
+			initialDelaySeconds: 3
+			periodSeconds: 3
+	3. exec 
+		livenessProbe:
+			exec:
+			   command: ["",""]
+			initialDelaySeconds: 3
+			periodSeconds: 3
+	
+	4. named port 
+		ports: 
+			- name: liveness-port 
+			  containerPort: 8080
+              hostPort: 8080
+		livenessProbe:
+			httpGet:
+			   path: /healthz
+			   port: liveness-port
+			initialDelaySeconds: 3
+			periodSeconds: 3			
+	
+Readiness Probe 
+	- ReadinessProbe is used to determine that a application running inside a 
+	  container is in a state to accept the traffic.
+    - When this probe is successful, the traffic from the loadbalancer is allowed 
+	  to the application inside the conatiner.
+	- When this probe is fails, the traffic from the loadbalancer is halted
+	  to the application inside the conatiner.
+	readinessProbe: 
+		tcpSocket: 
+			port: 8080
+		initialDelaySeconds: 15
+		periodSeconds: 10
+		
+Startup Probe 
+	- This probe will run at the initial start of the container.
+	- This probe allows us to give maximum startup time for application before 
+	  running livenessProbe or readinessprobe.
+	  
+	startupProbe: 
+	    httpGet: 
+		   path: /healtz
+		   port: 8080
+		initialDelaySeconds: 3
+	    periodSeconds: 3   
+
+Assigment: create livenessProbe and readinessprobe with tcp, http, exec 	
+	
+RBAC 	
+	How user access is maintained in k8s ?
+	
+	Role-Based access control
+		- accounts 
+		- Roles 
+		- Binding of roles 
+		
+	Accounts 
+		There are 2 types accounts in k8s 
+		
+		1. USER ACCOUNT 
+		   It is used to for human users to control the access to k8s cluster.
+		
+		2. SERVICE ACCOUNT 
+		   - It is used to give access to k8s cluster to external tools/applications and 
+		     also to give access to other components inside the cluster.
+           - Any application running inside or outside the cluster need a service account 
+             to access API server.		   
+		   - When a SA is created, first k8s creates a token and keeps that token in a secret object 
+             and then the secret object is linked to the service account.
+		
+		To list service account 
+			kubectl get sa 
+			kubectl get serviceaccounts 
+
+		To create SA
+			kubectl create serviceaccount <service_account_name>
+				
+			Note: To check screte object of sa
+					kubectl describe secrets <secret_name>
+		
+		Attach a SA to pod
+				
+		apiVersion: v1
+		kind: Pod 
+		metadata: 
+			name: sa-pod	
+		spec: 
+			serviceAccountName: my-sa
+			containers:
+			   - name: liveness 
+				 image: k8s.gcr.io/liveness
+				 args:
+					- /server
+				 livenessProbe:
+				    httpGet:
+				  	   path: /healthz
+				  	   port: 8080
+				    initialDelaySeconds: 3
+				    periodSeconds: 3		
+		
+	Roles 
+		- For a user roles are the set of rules which defines the access level to 
+		  k8s resources. 
+		- Roles are always user defined to any type of account.
+		- Roles works at namespace level.
+		
+		comman fiels in roles 
+			apiGroups: List the api groups to control the access to a account.
+			Subject: Users, service_account or Groups
+			Resources: K8S objects on which we want to define this role 
+					ex: Pods, Deployments etc..
+			Verbs: The operations/actions that a user can perform in k8s cluster
+				["get","list","create","update","delete","watch","patch"]	
+		
+		Create a role 
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: Role
+			metadata:
+			  namespace: default
+			  name: pod-reader
+			rules:
+				- apiGroups: "*"
+				  resources: ["pods"]
+				  verbs: ["get", "watch", "list"]
+	
+		To create role in cli 
+			kubectl create role <role_name> --resource=pods --verb=list -n <namespace>
+	
+	ClusterRole 
+		- It is a cluster wide role which is a non-namespaced object.
+		- CR defines permissions on namesapce objects and it grants permissions across all the
+		  namespaces or individual namespace also.
+	
+		usage: 
+			If we need to define permissions inside a namesapce use Roles. 
+			If we need to define permissions at cluster wide use ClusterRole
+			
+		Create a role 
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: ClusterRole
+			metadata:
+			  name: cluste-role-pod-reader
+			rules:
+				- apiGroups: "*"
+				  resources: ["pods"]
+				  verbs: ["get", "watch", "list"]			
+	
+	
+	RoleBinding and ClusterRoleBinding 
+		- Role bindind as name indicates is used to bind roles to subjects (user, sa , groups)
+		- Cluster Role bindind is used to bind cluster roles to subjects (user, sa , groups)
+		
+		- we can user rolebinding to bind clusterrole to a role of a particular namespace.
+		
+		
+	RoleBinding
+		apiVersion: rbac.authorization.k8s.io/v1
+		kind: RoleBinding
+		metadata:
+		   name: my-role-binding
+		   namespace: default
+		roleRef:
+		   apiGroup: rbac.authorization.k8s.io
+		   kind: Role
+		   name: pod-reader # the name of role we want to attach the account.
+		subjects: 
+           - kind: ServiceAccount
+			 name: my-sa # the name of account need to attached to role 
+			 namespace: default 	
+	
+	To check the roles affect 
+		kubectl auth can-i list svc --as=system:serviceaccount:<namespace>:<service_account> -n <namepsace>
+		
+		ex: kubectl auth can-i list svc --as=system:serviceaccount:default:my-sa -n default
+
+	ClusterRoleBinding
+		apiVersion: rbac.authorization.k8s.io/v1
+		kind: ClusterRoleBinding
+		metadata:
+		   name: my-cluste-role-binding
+		roleRef:
+		   apiGroup: rbac.authorization.k8s.io
+		   kind: ClusterRole
+		   name: <cluster_role_name> # the name of cluster role we want to attach the account.
+		subjects: 
+           - kind: ServiceAccount
+			 name: my-sa # the name of account need to attached to role 
+			 namespace: default 	
+
+helm
+
+How to create/schedule a pod to a particualr work node? 
+How not to create a pod on a node ?
+
+node selector
+	- Node selector is a way of binding pods to a particular worker node based on labels given 
+	  to that node.
+	- Logical expresions type of selection cannot be achived in node selector.
+	
+	To label a node 
+		kubectl label node <node_name> <key>=<value>
+	
+Node Afinity and anti-afinity (Inter-pod affinity)
+	- Node selector with logical expresions is Affinity 
+	- Using node afinity we can spread pods accross worker nodes based on 
+	  CPU and RAM capacity (memory-intense mode), Availabilty zones (HA mode).
+	
+	- requiredDuringSchedulingIgnoredDuringExecution 
+		The scheduler can't schedule the Pod unless the rule is met.	
+	- preferredDuringSchedulingIgnoredDuringExecution 
+		The scheduler tries to find a node that meets the rule. If a matching node is not available, 
+		the scheduler still schedules the Pod in normal way.
+    - IgnoredDuringExecution 
+		if the node labels change after Kubernetes schedules the Pod, the Pod continues to run.	
+
+		
+	spec: 
+			containers: 
+			affinity: 
+			   podAntiAfinity: 
+	              preferredDuringSchedulingIgnoredDuringExecution: 
+				     labelSelector:
+					    - matchExpressions: 
+							 - key: env
+                               operator: in 
+                               values: 
+                                  - test
+                                  - prod								  
+
+									 
+Anti-Afinity (Inter-pod affinity)
+	- This is used to define whether a given pod should or should not be scheduled on a particular node 
+      based on labels.
+	  
+		spec: 
+			containers:
+			  ....
+			ifNotPresent: 
+                nodeSelector: 
+					env: test
+					
+		spec: 
+			containers: 
+				...
+			affinity: 
+				podAntiAfinity: 
+                 	requiredDuringSchedulingIgnoredDuringExecution:
+						- labelSelector:
+                            - matchExpressions: 
+                                - key: env 
+                                  operator: in 
+                                  values: 
+                                     - test 
+                                     - qa				
+
+Taints and Tolerations
+	- Taints are used to repel the pods from a specific worker node.
+    - We can apply taint ti worker nodes which tells scheduler to repel all pods expcet the pods 
+	  with toleration defind in it for the taint.
+	- only the pos with toleration define in it for the taint of worker node. 
+       
+	- 2 operators we can use Equal and Exists (If we use Exists, no value required)   
+	- Bellow are the effects we can use,
+		1) NoSchedule - This taint means unless a pod with toleration k8s won't be able 
+           to schedule a pod to tainted node.		
+		2) NoExecute - To delete all the pods except some required pods we can use this. 
+		
+		To taint a worker node 
+			kubectl taint nodes <node_name> <taint_key>=<taint_value>:<taint_effect>
+			
+		To remove the taint (use - at the end)
+			kubectl taint nodes <node_name> <taint_key>=<taint_value>:<taint_effect>-
+			
+		To add tolerations
+				(single toleration with Equal)
+			spec: 
+				tolerations: 
+					- key: "key1"    
+					  operator: "Equal"
+					  value: "value1"
+					  effect: "NoSchedule"
+			
+				(single toleration with Exists)
+			spec: 
+				tolerations: 
+					- key: "key1"    
+					  operator: "Exists"
+					  effect: "NoSchedule"
+					  
+				(multiple tolerations)
+			spec: 
+				tolerations: 
+					- key: "key1"    
+					  operator: "Equal"
+					  value: "value1"
+					  effect: "NoSchedule"
+					- key: "key2"    
+					  operator: "Equal"
+					  value: "value2"
+					  effect: "NoExecute"	
+					  
+configMap and secrets 
+	- Configmap are k8s object that allows us to separate the configuration data/files from the 
+	  image content of the pod.
+	- Using this we can keep the configurations of application portable and same configuration
+	  can be used in multiple pods.
+	- configmaps are used for non-confidential data.	
+		
+	Create a configmap 
+		1. Create a file by name "app.properties" 
+				environment=test
+				database_url="192.168.10.9"
+		2. Create configmaps 
+			a. load the single config file 
+				kubectl create configmap <configmap_name> --from-file configs/app.properties
+		
+			b. load the multiple config file
+				kubectl create configmap <configmap_name> --from-file configs/
+				
+		3. using configmaps in pod 
+			spec: 
+				containers: 
+				   - name: nginx 
+				     image: nginx 
+					 env: 
+					    - name: CURRENT_NAME
+						  valueFrom: 
+							  configMapKeyRef: 
+									name: <configmap_name>
+									key: environment
+
+Secrets 
+	- secrets are used for confidential data.
+	- k8s by default uses base-64 encoding method to encrypt the data.
+	
+	type 
+		Opaque - for user related data in base64 
+		service account token - kubernetes.io/service-account-token 
+		docker cofig - kubernetes.io/dockercfg 
+		
+			
+	1. get the encoded values 
+		echo "production" | base64	
+			output: cHJvZHVjdGlvbgo=
+	2. use the above encoded value in secret 
+		apiVersion: v1
+		kind: Secret
+		metadata:
+			name: my-secret
+		type: Opaque
+		data:
+			environment: cHJvZHVjdGlvbgo=
+	
+	3. using secrets in pod 
+			spec: 
+				containers: 
+				   - name: nginx 
+				     image: nginx 
+					 env: 
+					    - name: CURRENT_NAME
+						  valueFrom: 
+							  secretKeyRef: 
+									name: <secret_name>
+									key: environment	
+
+resource limits and quotas
+	How to limit the number of pod to a namespace ?
+	How to limit the memory to a pods ? 	
+
+	Count quota 
+		- we use k8s quotas to precisely specify the number of objects a user can work with.
+		- we can define quotas for the below objects 
+			count/persistentvolumeclaims
+			count/services
+			count/secrets
+			count/configmaps
+			count/replicationcontrollers
+			count/deployments.apps
+			count/replicasets.apps
+			count/statefulsets.apps
+			count/jobs.batch
+			count/cronjobs.batch
+			
+		Applying the resource quota for an object (count quota)
+			apiVersion: v1 
+			kind: ResourceQuota 
+			metadata: 
+			    name: count-quota 
+			spec: 
+				hard: 
+					pods: "2"
+					   or 
+					count/pods: "2"  
+					
+		Applying quotas for CPU, RAM, DISK SPACE
+			apiVersion: v1 
+			kind: ResourceQuota 
+			metadata: 
+			    name: ram-quota 
+			spec: 
+				hard: 
+					request.memory: "500Mi" 
+					limits.memory: "800Mi"
+
+	Limitations 
+		CPU 
+			- 1 cpu, in k8s is equal to 1 core/cpu 100%.
+			ex:  0.1 cpu - 10 % of 1 cpu - 1 gup - 1 hyperthread - 1 Nueral 
+		
+		Memory 
+			- It will be in terms of bytes 
+			- It should fixed numebrs always 
+			syntax: Ei, Pi, Ti, Gi, Mi, Ki
+			
+		using quotas in pod 
+			spec: 
+				containers: 
+				   - name: nginx 
+				     image: nginx 
+					 resources:
+					    requests: 
+						   memory: "500Mi"
+						   cpu: 0.5
+						limits:
+                           memory: "1Gi"
+                           cpu: 1		
+	
+	Note: In terms of cpu k8s doesnot go behind the limits (it never throttles).
+		  but in terms of memory (RAM) k8s allows the pods to go behind the limit of RAM.	
+	
+	
+Ingress
+	Cloud loadbalancer are costly as most of the times billing will be per requests so 
+	to avoid this the kubernetes solution is Ingress, we can run an external software based 
+	load balancer in our cluster.
+		
+	1. Ingress controller 
+		- This controller is used to execute the ingress resources which contains 
+		  routing rules and brings the external traffic based on routing rules to the 
+		  internal service.	
+	    - This controller will automatically monitors the exiting resources and also 
+		  identifies new ingress resources.
+		- This will be a third party controllers (tools) which we need to install it 
+          for one time in our cluster as controller.
+		- We are using nginx as ingress controller.
+
+	2. Ingress resources 
+		- In k8s Ingress resource is type of object which is used to define routing rules 
+		  based on path of incoming traffic to internal cluster service.
+		- api for ingress resource networking.k8s.io/v1 	
+		- Ingress can be used for revers proxy means to expose multiple services under same IP.
+		- Ingress can be used to apply ssl/tls certificates.
+
+		apiVersion: networking.k8s.io/v1	
+		kind: Ingress
+		metadata: 
+            name: my-ingress 
+        spec: 
+			rules: 
+				- host: example.com
+				    http: 
+					   paths: 
+					     - path: /
+						   backend
+				              serviceName: my-svc
+							  servicePort: 80
+						 - path: /login
+						   backend
+				              serviceName: my-login
+							  servicePort: 8090 	  
+							  
+		Note: / 	  -	 means the request from "http://www.example.com"
+			  /login  -	 means the request from "http://www.example.com/login"
+			  
+			  serviceName should be same as the name of the service metadata.
+			  
+network policy
+	- By default, In k8s any pod can communicate with each other within the cluster across 
+	  the different namespaces and worker node.
+	- The deafault netwrok of k8s is of open stack model this opens a huge risk for potential 
+	  security issues.
+    - We can use network polices to apply Deny all for the cluster and we can write polices 
+	  to allow only required requests to cluster.
+	- Network polices is defined for ingress and egress.
+	
+		apiVersion: networking.k8s.io/v1
+		kind: NetworkPolicy
+		metadata:
+			name: default-deny-all
+		spec: 
+		    podSelector: {} 
+			policyTypes: 
+			    - Ingress
+	
+	
+		apiVersion: networking.k8s.io/v1
+		kind: NetworkPolicy
+		metadata:
+			name: nginx-pod 
+		spec: 
+		    podSelector: 
+				matchLables:
+				     app: nginx
+			policyTypes: 
+			    - Ingress
+			ingress:
+				- from: 
+				   - podSelector: 
+				       matchLabels: 
+					       app: backend
+		          ports: 
+                    - port: 80
+                      protocol: TCP  					
+		
+	calico 
+		- Calico is created by a company called "Tigre". 
+		- Tigre is support a wide range od CNI for kubernetes only.
+		- Using this CNI plugin we can extend the usage of network policies and we can improve 
+		  the security over network.	
+		- Using calico we can define dynamic network policies susch auto calculated from many 
+		  sources of data is possible.
+		- multiple port mapping is supported in calico
+			
+	
+Assigment: overlay network type 
+		   Apply the network policy and try to ping/nc the between pods.	
+				
+				ping IP 
+				nc -v <private_ip> <port>
+
+cronjob and Jobs 
+	- The main function of a job is to create one or more pods and tracks the success 
+	  status of pods.
+	- Jobs ensure that the specified number of pods is completed successfully and 
+	  when the job is completed pods go to the shutdown state and Job goes to completed state. 
+    - Mainly we use jobs to run pod temporarily till the task is completed and to run 
+	  tasks parallely.	
+	  
+	  apiVersion: batch/v1
+	  kind: Job
+	  metadata:
+	    name: my-job
+	  spec:
+	    template:
+	  	spec:
+	  	  containers:
+	  	  - name: busybox
+	  		image: busybox
+	  		command: ["echo", "This is first job"]
+	  	  restartPolicy: Never
+
+	restartPolicy 
+		- This is applied to pod not for the Job.
+		- There are values,
+			1. Always 
+			   - This is the default restart policy containers will always be restarted if they stop, 
+			     even if they completed successfully. 
+			   - This policy should be used for applications that always needs to be running.
+			2. OnFailure
+			   	  - will always restart containers only if the container process exits with an error code.
+				  - If the container is determined to be unhealthy by a liveness probe it will be restarted.
+				  - we use this policy for applications that need to run successfully & then stop.
+			3. Never
+				  - The pod’s containers will never be restarted, even if the container exits with error code 
+				    or a liveness probe fails. 
+	The different type of jobs or common parameters are,
+	
+	Completions
+		- This is the number of times the job to run. default is 1.
+		- If, completions is 5 then job will run 5 times means 5 pods.
+	  apiVersion: batch/v1
+	  kind: Job
+	  metadata:
+	    name: my-job
+	  spec:
+	  completions: 5
+	    template:
+	  	spec:
+	  	  containers:
+	  	  - name: busybox
+	  		image: busybox
+	  		command: ["echo", "This is first job"]
+	  	  restartPolicy: Never	
+
+	parallelism
+		- By default jobs run serialy so to run jobs parallely we need to use the parallelism.
+		- parallelism is used to set the number of job that need to run prallely.
+		
+	  apiVersion: batch/v1
+	  kind: Job
+	  metadata:
+	    name: my-job
+	  spec:
+	  completions: 5
+	  parallelism: 2
+	    template:
+	  	spec:
+	  	  containers:
+	  	  - name: busybox
+	  		image: busybox
+	  		command: ["echo", "This is first job"]
+	  	  restartPolicy: Never
+
+	backoffLimit
+		- If the container is failing for some reason which affects the completion the job,
+		  then still job creates more pods one after another until it succeeds which will 
+		  simply put a load on the cluster, in this case backoffLimit is used.
+		-  backoffLimitlimit ensure the number pods to limit after failure.
+		- backoffLimit: 2, once pods fails for 2 times it won’t create more pods.
+	  
+	  apiVersion: batch/v1
+	  kind: Job
+	  metadata:
+	    name: my-job
+	  spec:
+	  backoffLimit: 2
+	    template:
+	  	spec:
+	  	  containers:
+	  	  - name: busybox
+	  		image: busybox
+	  		command: ["sleep", "60"]
+	  	  restartPolicy: Never	
+
+	activeDeadlineSecond
+		- This is used to set the execution time for pod and if pod takes more than this 
+		  deadline time then pods will be terminated automatically.
+
+	  apiVersion: batch/v1
+	  kind: Job
+	  metadata:
+	    name: my-job
+	  spec:
+	  activeDeadlineSecond: 20
+	    template:
+	  	spec:
+	  	  containers:
+	  	  - name: busybox
+	  		image: busybox
+	  		command: ["sleep", "60"]
+	  	  restartPolicy: Never
+		  
+	Scheduled / CronJob
+		apiVersion: batch/v1
+		kind: CronJob
+		metadata:
+		  name: hello
+		spec:
+		  schedule: "* * * * *"
+		  jobTemplate:
+			spec:
+			  template:
+				spec:
+				  containers:
+				  - name: hello
+					image: busybox:1.28
+					imagePullPolicy: IfNotPresent
+					command:
+					- /bin/sh
+					- -c
+					- date; echo Hello from the Kubernetes cluster
+				  restartPolicy: OnFailure
+		
+		1. SuccessfulJobHistoryLimit and FailedJobHistoryLimit
+			apiVersion: batch/v1
+			kind: CronJob
+			metadata:
+			  name: hello
+			spec:
+			  schedule: "* * * * *"
+			  successfulJobHistoryLimit: 2
+			  failedJobHistoryLimit: 1
+			  jobTemplate:
+				spec:
+				  template:
+					spec:
+					  containers:
+					  - name: hello
+						image: busybox:1.28
+						imagePullPolicy: IfNotPresent
+						command:
+						- /bin/sh
+						- -c
+						- date; echo Hello from the Kubernetes cluster
+					  restartPolicy: OnFailure
+					  
+Deployment stratergies.	
+	Rolling Update 
+		- By default deployment in k8s uses rolling update stratergy which means if I want use 
+		  this stratergy I don'nt need to specify any parameters in spec file. 
+		- Example: By default k8s automatically decides the percentage of keeing available pods.
+		  usually one out 4 it updates. 
+		
+		- To overrride the default behaviour 
+			spec: 
+				stratergy: 
+					type: RollingUpdate 
+					rollingUpdate: 
+						maxSurge: 1
+						maxUnavailable: 25%
+			
+	Recreate 
+		The Recreate stratergy will bring all the old pods down immediately and the creates 
+		new updated pods to match the replica count.
+			spec: 
+				stratergy: 
+					type: Recreate 
+					
+	Blue/Green deployment
+		- We keep 2 sets of similar environment in which one will be live called blue  
+		  environment and the one which is not live is called as green. 
+		- we update the new changes to blue environment first which is not live and we 
+		  swap/ redirect the traffic from blue to green environment.
+		- Finally blue environment with new updates will become live and we rename it as 
+		  the current new blue environment.
+	
+	Canary release 
+		- A canary release is a software testing technique used to reduce the risk of 
+		  introducing a new software version into production by gradually rolling out 
+		  the change to a small subgroup of users, before rolling it out to the entire 
+		  platform/infrastructure.
+
+Multi master cluster (quoram) 
+	What is the size of the k8s cluster. ? 
+		- always the count of master nodes should a odd number 
+		- we are using loadbalancer / multiple people are working they may dd the worker nodes 
+		  so I never kept exact count of nodes but on average we have 20 to 25 worker nodes.
+	
+	How many nunber of master nodes are there in you k8s cluster ? 
+		- Always tell odd number of nodes (any odd number starting with 3, 5, 7, 9)
+		- Based on the quorum value we choose only odd number of nodes starting with 3 to 
+		  achive better fault tollerance cluster.
+		  
+pod eviction 
+
+	- Kubernetes evict pods if the node resources are running out such as cpu, RAM and storage.
+	- Pod with failed state will be evicted first because they may not running but could still 
+	  be using cluster resources and then k8s runs decision making based.
+	  
+	  Kubernetes looks at two different reasons to make eviction decision: 
+			1. QoS (Quality of Service) class. 
+				For every container in the pod:
+				  - There must be a memory limit and a memory request.
+				  - The memory limit must equal the memory request.
+				  - There must be a CPU limit and a CPU request.
+				  - The CPU limit must equal the CPU request.
+			2. Priority class.
+				- A pod's priority class defines the importance of the pod compared to other 
+				  pods running in the cluster.
+				- based on the priority low to high pods will be evicted.  
+
+k8s AutoScale			
+	Horizontal autoscaler 
+		Horizontal Pod Auto-Scaler (HPA)
+			- HPA is used to automatically scale the number of pods based on deployments, replicasets, 
+			  statefulsets or other objects, based on CPU, Memory threshold.
+			- Automatic scaling of the horizontal pod does not apply to objects that cannot be scaled.
+			  ex: DaemonSets.
+			- We need metric server as a soruce for autoscalling.
+
+			Metric server 
+				- Metrics Server collects resource metrics from Kubelets and exposes them in Kubernetes 
+				  API server through Metrics API for use by Horizontal Pod Autoscaler and Vertical Pod Autoscaler.
+				- kubectl top command use Metrics API to list the resource utilization of all pods. 
+				- Metrics Server is not meant for non-autoscaling purposes like we wont forward these metrics 
+				  data to monitoring tools. 
+				  
+			apiVersion: autoscaling/v2beta2
+			kind: HorizontalPodAutoscaler
+			metadata:
+			  name: php-apache-hps
+			spec:
+			  scaleTargetRef:
+				apiVersion: apps/v1
+				kind: Deployment
+				name: php-apache
+			  minReplicas: 1
+			  maxReplicas: 10
+			  metrics:
+			  - type: Resource
+				resource:
+				  name: cpu
+				  target:
+					type: Utilization
+					averageUtilization: 50 
+					
+				---------------- or ----------------
+				
+			kubectl autoscale deployment php-apache — cpu-percent=50 — min=1 — max=10		
+			
+			To list HPA 
+				kubectl get hpa
+			
+			
+		Vertical Pod Auto-Scaler (VPA)	   
+		    - vpa automatically adjusts the CPU and Memory attributes for your Pods.
+			- basically vpa will recreate your pod with the suitable CPU and Memory attributes.
+			- when we describe vpa, it will show recommendations for the Memory/CPU requests, Limits and it can also automatically 
+			  update the limits.
+		  
+		apiVersion: autoscaling.k8s.io/v1
+		kind: VerticalPodAutoscaler
+		metadata:
+		  name: my-app-vpa
+		spec:
+		  targetRef:
+			apiVersion: "apps/v1"
+			kind:       Deployment
+			name:       my-app
+		  updatePolicy:
+			updateMode: "Auto"  
+			
+			
+		Horizontal / Vertical Cluster Auto-Scaler		
+		  - Cluster Autoscaler is a tool that automatically adjusts the size of the Kubernetes 
+			cluster when one of the following conditions is true:
+				1. some pods failed to run in the cluster due to insufficient resources,
+				2. some nodes in the cluster that have been overloaded for an 
+				   extended period and their pods can be placed on other existing nodes.
+				   
+		  - Cluster autoscaller tools are mostly provided by public cloud providers.	

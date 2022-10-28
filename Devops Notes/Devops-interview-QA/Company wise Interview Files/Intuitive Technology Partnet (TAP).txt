@@ -1,0 +1,28 @@
+Intuitive Technology Partnet (TAP)
+General questions 
+1) Tell me about your experience
+2) Based on your resume, which side do you have more experience on developer ? (or) infrastructure ? 
+3) How will you rate yourself in k8s 
+4) How will you rate yourself in Terraform 
+5) What kind of scripting languages you know
+Terraform -->
+1) How would you use Terraform for deploying resources in multiple AWS regions
+		(or)
+How will I deploy resources in different AWS accounts 
+2) You have QA, Dev, Prod, how would you seperately deploy the environment using Terraform 
+3) I want to deploy different resources like ec2, load-balancer, database to my cloud setup, how will you approach this (Design question)
+4) What is the module, which connects the child modules (or) how do you connect the modules -- something like that 
+
+K8s -->
+1) How will you restrict communication between pods in 2 different namespaces
+2) I have 2 worker nodes, i want critical application to go to critical worker node and non-critical application to non-critical worker node, how will i do this 
+3) I want to run a job/container on each worker node which does a specific job 
+4) Have you written Helm charts ? 
+
+AWS -->
+1) Have you written Golden images ? 
+2) I have users which have S3 all access, how do you restrict access to a specific s3 bucket to these users 
+
+Docker --> 
+1) For what applications have you written your docker file for ? 
+2) Difference between ADD and COPY

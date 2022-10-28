@@ -1,0 +1,20 @@
+                                       Questions(reltio)
+
+1) command to list the disks in ubuntu ?
+2) inbound  and outbound rule in route table ?
+3) explain ACL ?
+4) have u done encryption of root volume ? explain?
+5) k8s was it deployed on specific cloud or bormidies setup ?
+6) aws what is the services u used for k8s?
+7) what is EKS?
+8) command to check pods?
+9) in which namespace the pod will be listed?
+10) what are controllers in k8s?
+11) explain about replicaset?
+12) what r the resources u spined in terraform?
+13) what is null resource in terraform?
+14) what is terraform validate?
+15) statefullfile in terraform?
+16) any example with for loop in shell scripting?
+17) explain what r the pipelines u have written in jenkins?
+18) in ansible what r the playbooks u have written in ur project?

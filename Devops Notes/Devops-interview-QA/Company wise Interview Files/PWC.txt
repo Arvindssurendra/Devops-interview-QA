@@ -1,0 +1,24 @@
+PWC
+
+Introduce yourself
+Explain your roles and responsibility
+Explain your cicd
+Explain your application type?Which application you're using frontend or backend? 
+Explain your stages of cicd? 
+Why you're using build number for version instead of commit id ? 
+How developers pushing code to github? Which branch he's pushing? 
+How you're failing sonarqube stage if it didn't passes the threshold? 
+How many stages in dockerfile? Tell me the image size after building the dockerfile
+How many sizes of image you come across in docker? 
+Difference between cmd and entry point and which one you're using ? 
+Difference between RUN and Add
+How you're using jfrog repo? Is it single repo for all builds or you divide for daily, weekly builds? 
+What will happen if I delete chart.yaml file? 
+
+How to execute helm charts in loop? Say I've 4 charts and one should execute after other 
+I don't want to store secrets in jfrog repo. What's your approach for this? 
+How you're using dependencies in charts? 
+Explain your k8s cluster. How you're adding new worker nodes if you're using on prem servers? 
+Do you know to write jenkinsfile without using snippet generator? 
+How you're writing terraform scripts? 
+Without referring google can you write terraform scripts?

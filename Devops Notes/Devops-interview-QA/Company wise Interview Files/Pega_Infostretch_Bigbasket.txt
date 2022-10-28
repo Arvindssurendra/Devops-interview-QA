@@ -1,0 +1,223 @@
+ Company:: Pega Software Systems
+1) Tell me about your current organization and day-2-day activities
+2) Write terraform script for ASG (Auto Scaling Group) AWS with minimum 3 ec2 instances 
+
+Provider.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+-------------------
+resource "aws_instance" "my_first_ec2-1" {
+     ami = "ami-04505e74c0741db8d"
+        instance_type = "t2.micro"
+        count = 3
+
+        tags = {
+           Name = "my-first-terra-ec2"
+}
+
+}
+
+
+3) Write shell script to push a script/code to 5 target servers 
+
+
+shell script
++++++++++++++++++++++++++++++++++++++++++++++
+
+#!/bin/bash
+
+USERNAME=someUser
+HOSTS="host1 host2 host3"
+SCRIPT="pwd; ls"
+for HOSTNAME in ${HOSTS} ; do
+    ssh -l ${USERNAME} ${HOSTNAME} "${SCRIPT}"
+done
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ansible playbook
+- name: Ansible Copy Example Local to Remote
+  hosts: remoteserver
+  tasks:
+    - name: copying file with playbook
+      become: true 
+      copy:
+        src: ~/Downloads/index.html
+        dest: /var/www/html
+        owner: apache
+        group: apache        
+        mode: 0644
+
+4) What is ASG 
+An Auto Scaling group contains a collection of Amazon EC2 instances that are treated as a logical grouping
+ for the purposes of automatic scaling and management. 
+An Auto Scaling group also enables you to use Amazon EC2 Auto
+ Scaling features such as health check replacements and scaling policies
+ 
+ 
+5) Difference between Horizontal and Vertical autoscaling
+6) In vertical autoscaling can you increase resources without downtime ?
+No
+7) How do you increase resource in ec2 instance 
+horiontal auto scaling
+				8) How do you automate the log collection of docker container 
+
+Docker automatically aggregates container standard output and error streams (stdout/stderr) 
+into log feeds which are retained by the Docker daemon. 
+You can easily monitor logs to understand what’s going on in your containers.
+
+9) How do you automate the log collection on k8s pods 
+
+daemon set/sidecar container
+
+10) what is the command for k8s logs ?
+kubectl logs pod podname
+
+11) What are the states of docker container
+
+created
+running
+puase
+exited
+dead
+restart
+
+
+12) I have 2 images, one image is used to deploys one container, 2nd image is used to deploy 2nd container, 2nd container is failing, 
+what is the state of the 2nd container 
+Exited or terminated state
+
+13) How will you check the states of the containers 
+docker ps -a
+
+14) How will you identify pods based on the namespace 
+kubectl pod -n namespace
+
+15) Do you know Python 
+We use shell or Groovy or Yaml 
+
+16) How enthusiastic are you to learn scripting and python ? 
+Repeat
+17) You said you have worked on end-2-end automated deployment - can you explain one scenario where you deployed the application end-2-end 
+CI/CD Explain
+18) How will you deploy containers using Jenkins
+Installing Docker/K8s Plugins
+
+19) What is kubeconfig , what does it contain ? 
+		Me:	I answeres the token, username, password to connect to the cluster 
+		Inteviewer: Are you sure ? ??
+
+kubeconfig is a YAML file that contains either a username and password combination or 
+a secure token that when read programmatically removes the need 
+for the Kubernetes client to ask for interactive authentication. 
+
+kubeconfig is the secure and standard method to enable access to your Kubernetes clusters.
+
+
+
+
+company :Infostretch
+
+1.how to migrate on-premises to aws?
+https://www.youtube.com/watch?v=buzusNljpy4
+
+
+2.how you know the given IP adress is private subnet IP / public subnet IP.
+we use url's like below to see the ip is public/private
+https://whatismyipaddress.com/private-ip
+
+
+3.services you worked in AWS
+4.Diff b/w Arecord and Cname
+
+A record-Using route53 it converts the URL into IP Address.
+Cname-Domain name assigning antoher name.
+Ex.www.google.com,www.google.in all points to www.google.com
+5.Diff b/w ALB & Network loadbalancer
+6.CI/CD 
+7.How you push image to ECR
+
+docker push aws_account_id.dkr.ecr.eu-west-3.amazonaws.com/centos:6.6 (replace the aws_account_id by your account id)
+docker login along with aws credentials like un & pwd ,Aws accout id with region
+
+ECR works with regionwise?
+Yes
+
+8.Route 53
+DNS SERVER POINT TO ONE HOSTMACHINE TO OTHER 
+Explian routing policy
+	LATENCY ROUTING
+	Weighted routing
+A record-Using route53 it converts the URL into IP Address.
+Cname-Domain name assigning antoher name.
+
+
+9.Explain containerzation
+10.did you experince in any orchestration tools.explain
+11.20 linux commands 
+12.what are providers and provisioners
+13.how you integrate sonarqube in your pipeline
+14.did you configured artifactory.explain
+15.is it possible to change the instance type?how?
+Running instance stop & got to actions & change instance type
+
+16.what is ur experience on terraform
+17.do you have written a lambda code
+18.How you configure and authenticate ECR with your local machine
+https://blog.dbi-services.com/how-to-push-an-image-into-amazon-ecr-with-docker/
+19.Tell me your experince about EKS
+Using fargate(serverless compute service for the containers that can be used to deploy EKS & ECS)
+
+20.How you connect or access your private subnet to outside
+NATGATEWAY
+
+21.explain VPN and types
+
+virtual private network
+VPN: 
+Is mainly used to establish a secure and private tunnel from you network or device to aws network 
+ Aws site-to-site vpn: enables you to securely connect your on-premises network to your vpc. 
+ AWS client vpn : enables you to securely connect users to AWS or on premises network. 
+Do we have another way we can connect to the resources in a private subnet? 
+We can setup a vpn server in the public subnet and configure it to connect to resources residing 
+the private subnet
+
+It create a private tunnel & establish secure connection between client/several
+
+22.Why HELM chart
+
+
+big basket on 13/05/2022
+================================================
+1. introduce ur self?
+2. what is sticky bit in linux?
+
+chmod +t /directory
+drwxrwxrwt
+
+3. what is UMASK ?
+4. command for 50mb file in root directory?
+find . -type f -msize +50M size
+
+5. what are the services you workked on AWS?
+6. explain VPC components?
+7. what is statefull and stateless in VPC?
+8. i have a private instance with elastic ip, i am not able to ssh how to solve this issue?
+
+ssh -i ./sendy.pem ubuntu@52.5.229.252
+
+
+			9. what is multi pod upload in k8?
+
+			10. what is replication in RDS?
+			
+			its a backup of local to cloud (replication)
+			ITS like a mirror image of local to cloud
+			Amazon RDS replication entails replicating data from on-premises databases to the Amazon RDS cloud, 
+			and for some use cases may also involve replicating data from an RDS instance to another type of cloud-based system
+			
+11. i have 5 pods running, i want to scale to 8 pods what is the command?
+kubectl autoscale deployment.v1/apps --replicas=8
+
+12. what is replicaset and replication controller?
+13. explain ansible architecture?

@@ -1,0 +1,9 @@
+1.diff b/w scripted and declarative pipeline.
+2.how to migrate a microservice from on premmisis to cloud.
+3.alternative way to run terraform init when there is no internet
+4.cpu utilization of a root-volume of a ec2-instance has reached 90% and i have incresed the root volumn but still i am getting aler message 
+how to take out this alert message.
+5. there is one service running on all nodes and master name that.
+6.how to get/achieve DNS in K8S.
+7. which CI/CD tool you are familier with 
+8. tell me about youself

@@ -1,0 +1,876 @@
+c
+-------------example1.sh---------------------------------------
+#!/bin/bash           
+
+
+echo "Hi this is ABC and I am from Blore"
+
+echo "below is the list of current dirs"
+ls -lrt
+
+----------------------------------------------------------------------
+
+
+how to execute shell script
+
+./example1.sh
+or
+sh example1.sh
+or
+bash example1.sh
+
+what's first line of shell script?
+#!/bin/bash  --> shebang. it invokes bash shell. if i don't write. it uses default shell.
+
+-----------------------------------------------------
+------------------------------------example2.sh---------------------------------------
+#!/bin/bash
+
+var=ABC
+var1=Blore
+var2="xyz 1234"
+
+echo "This is $var and I am from $var1"
+--------------------------------------------------------------------------------------------------
+
+-------------------------------example3.sh-----------------------------------------------
+#!/bin/bash
+
+echo "This is $1 and I am from $2"
+
+------------------------------------------------------------------------
+how do you read arguements in shell script?
+
+we can pass arguements to shell script separated by spaces 
+
+we can read them using $1 $2 $3... inside shell script
+
+$1 ---> 1st arguement 
+$2----> 2nd arguement 
+.
+.
+${10} ---> 10th agruemnt 
+.
+.
+------------------------------------------------------------------------------
+
+$# --> total number of args passed to script
+$* --> All args passed to script
+$? --> used to check status of last executed command, 0 means success and non-zero is failure
+$@ --> all args paased to script but stored in array format
+$! ---> PID of last command went into background
+$$  --> PID of current running 
+$0 --> name of the script itself 
+
+----------------------------------------------------------------------------------
+how do you run script in background?
+
+use & at end of script.
+
+./script1 &
+
+------------------------------------------------------------------
+
+ps -ef | grep "script name"
+
+how do you bring it back to foreground?
+
+fg PID
+
+----------------------------------------------------------
+simple if statement
+
+if [ condition ]
+then
+statment
+fi
+----------------------------------------
+write a script to check given number is 5 or not
+#!/bin/bash
+
+if [ $1 -eq 5 ]
+then
+        echo "$1 is five"
+fi
+--------------------------------------------------------------------------
+numeric comparison
+-eq  --> equals
+-ne --> not equal to
+-gt --> greater than
+-ge --> greater than or equal to
+-lt --> less than 
+-le  --> less than or equal to
+--------------------------------------------------------------
+
+if.... else....
+--------------------------------------------------------------
+if [ condition ]
+then
+statment1
+else
+statement2
+fi
+----------------------------------------
+#!/bin/bash
+
+if [ $1 -eq 5 ]
+then
+        echo "$1 is five"
+else
+        echo "$1 is not five"
+fi
+-----------------------------------------------------------------------------------------
+
+write a script to find biggest of two numbers 
+#!/bin/bash
+
+if [ $1 -gt $2 ];then
+        echo "$1 is big"  # 1st arguemnt
+else
+        echo "$2 is big"
+fi
+------------------------------------------------------------------------------------------------------------
+
+restrict users to pass only two args 
+
+#!/bin/bash
+
+if [ $# -ne 2 ];then
+        echo "pass 2 args only"
+        exit 1
+fi
+
+if [ $1 -gt $2 ];then
+        echo "$1 is big"  # 1st arguemnt
+else
+        echo "$2 is big"
+fi
+-----------------------------------------------------------------------------------------------
+if [ condition ];then
+statement
+elif [ condition1 ];then
+statement
+elif [ condtion2];then
+statement
+else
+default statement
+fi
+--------------------------------------------------------
+&& --> AND
+|| ---> OR
+!  --> NOT
+--------------------------------------------------------------------
+environment variable --> variable which can be exported to subshell
+----------------------------------------------------------------------
+how do you set env varaibles? export myname=Arvind  to unset  unset myname
+-----------------------------------------------------------------------
+
+write a script to find biggest of 3 numbers and also restrict users to pass only 3 args
+
+#!/bin/bash
+
+if [ $# -ne 3 ];then
+    echo "pass 3 args"
+    exit 1
+fi
+
+if [ $1 -gt $2 ] && [ $1 -gt $3 ];then
+        echo "$1 is big"
+elif [ $2 -gt $1 ] && [  $2 -gt $3 ];then
+        echo "$2 is big"
+else
+        echo "$3 is big"
+fi
+-------------------------------------------------------------------------------------------------------------
+while loop
+
+while [ condition ]; do
+statement
+done
+--------------------------------------
+------------------------print5.sh---------------------------
+#!/bin/bash
+
+num=$1
+while [ $num -gt 0 ];do
+echo $num
+num=`expr $num - 1`
+done
+---------------------------------------------------------------
+string comparison
+
+== --> equal to
+>= --> greater than or equal to
+<= --> less than or equal to
+!= --> not equal to
+
+-------------------------------------------------
+write a script to find factorial of a number 
+
+#!/bin/bash
+
+num=$1
+fact=1
+
+while [ $num -gt 1 ];do
+fact=`expr $fact \* $num`
+num=`expr $num - 1`
+done
+echo "fact of $1 is $fact"
+------------------------------------------------------------
+
+special characters ---> special characters have special meaning to shell.. special characters are * $* $$ etc...
+
+escape character (\): escape special meaning to shell
+
+echo "\$?"
+echo "\$$"
+
+----------------------------------------------------------------------------------------
+write a script to check given name is a file or dir or link
+
+#!/bin/bash
+
+echo "enter name to check"
+read name 
+
+if [ -f $name ];then
+echo "$name is a file"
+elif [ -d $name ];then
+echo "$name is a dir"
+elif [ -L $name ];then
+echo "$name is a link"
+else
+echo "$name does not exist"
+fi
+
+----------------------------------------------------------------------------------------
+-f  --> file
+-d --> directory
+-e --> exist or not
+-r --> read permission
+-w --> write permission
+-x --> execute permission
+how to file empty or not
+
+------------------------------------------------------------------------------------------------
+how do read file line by line??
+
+while read line
+do
+echo $line
+done < filename
+------------------------------------------------------------------
+write a script to find number of words in each line of a file
+
+#!/bin/bash
+
+number=1
+while read line
+do
+    words=`echo "$line" | wc -w` # assigining output of command to varaible
+    echo "$number : $words"
+    number=`expr $number + 1`
+done < $1
+--------------------------------------------------------------------------------------------------
+
+write  script to add line number to each line of a file
+
+#!/bin/bash
+
+line_num=1
+while read line;do
+        echo "$line_num.$line"
+        line_num=`expr $line_num + 1`
+done < $1
+
+----------------------------------------------------------------------------------------------------------
+
+write a script to segrate only odd lines and store in file called log_odd and even lines in a fille called log_even
+
+#!/bin/bash
+
+number=1
+
+while read line;do
+         status=`expr $number % 2`
+        if [  $status -eq 0 ];then
+                echo "$line" >> log_even
+        else
+                echo "$line" >> log_odd
+        fi
+        number=`expr $number + 1`
+
+done < $1
+echo "==============odd lines============"
+cat log_odd
+echo "====================even lines============"
+cat log_even
+rm log_odd log_even
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+write a script to find employees if thier age is more than 50 from given data file
+
+NAME EMPID AGE
+ABCD 20005 036
+XYZA 20006 056
+AJAY 20007 034
+VIJI 20008 054
+---------------
+
+#!/bin/bash
+
+sed '1d' $1 > temp
+
+while read line;do
+      age=`echo "$line" | awk -F " " '{print $3}'`
+       if [ $age -gt 50 ];then
+          echo "$line" | awk -F " " '{print $1}'
+       fi
+
+done < temp
+------------------------------------------------------------------------------------------------------------------------------------
+
+write a script to find employees if thier age is between 30 and 50
+
+write a sript to find  employees for given age
+--------------------------------------------------------------------------------------------------------
+write a script to reverse a file, 1st line should be printed as last line, 2nd line as 2nd last line and so on...
+#!/bin/bash
+
+lines=`cat $1 | wc -l`
+
+while [ $lines -gt 0 ];do
+
+        head -$lines $1 | tail -1 >> rev-log
+       lines=`expr $lines - 1`
+   done
+   cat rev-log
+   rm rev-log
+-----------------------------------------------------------------------------------------------------
+tac filename ---> will print file in reverse order 
+-------------------------------------------------------------------------------------------------------
+for loop
+
+for i in val1 val2 val3
+do
+statement
+done
+---------------------------------------------------------------
+-----------------------------------------add-number.sh-----------------------------------------------
+#!/bin/bash
+
+sum=0
+for i in 2 4 6 7
+do
+ sum=`expr $sum + $i`
+done
+echo "sum is $sum"
+-------------------------------------------------------------------------------------------------------
+#!/bin/bash
+var="2 5 7 9 10"
+sum=0
+for i in $var
+do
+ sum=`expr $sum + $i`
+done
+echo "sum is $sum"
+-----------------------------------------------------------------------------------------------------------
+
+write a script to add n number
+#!/bin/bash
+#var="2 5 7 9 10"
+sum=0
+for i in $*
+do
+ sum=`expr $sum + $i`
+done
+echo "sum is $sum"
+-------------------------------------------------------------------------------------------------------
+
+how do you debug shell script 
+
+set -x 
+-------------------------------------------------------------------------------------
+write a script to find factorial for given set of numbers 
+
+#!/bin/bash
+
+for i in $*; do  #read one value at a time
+
+        num=$i
+        fact=1
+        while [ $num -gt 0 ];do
+                fact=`expr $fact \* $num`
+                num=`expr $num - 1`
+        done
+        echo "fact of $i is $fact"
+done
+------------------------------------------------------------------------------ 
+
+interview script
+
+I have written a script to check disk size. if disk size is more than 90%, send email notification saying disk  size is 90%. 
+please take approriate action
+
+
+#!/bin/bash
+
+size=`df -h . | awk -F " " '{print $(NF-1)}' | tail -1 | sed 's/%//g'`
+
+if [ $size -gt 90 ];then
+
+cat filename | mail -s "subject" -c "abc@gmail.com" xyz@gmail.com,ajay@gmail.com
+
+fi 
+----------------------------------------------------
+schedule this in crontab
+
+* * * * * /home/ec2-user/disk-size.sh
+--------------------------------------------------------------------------------------------
+crontab ---> scheduler which is used to schedule scripts
+
+crontab -e ---> edit crontab
+
+contab -l --> list cron jobs
+
+crontab -r [ username ] --delete the crone tabs as per user
+
+00 --> sunday
+01 --> monday
+02 --> Tuesday
+03 --> wed
+04 --> Thur
+05 --> Fri
+06 --> Sat
+-----------------------------------------------------
+schedule script to run at 4.30PM on 16th Dec
+
+min hr date month day of week
+
+30 16 16 12 04 /home/ec-user/script.sh
+
+----------------------------------------------------------------------
+schedule script saturday at 10.15pm on 18th dec
+
+15 22 18 12 06 /home/ec2-user/script.sh
+
+------------------------------------------------------------------------------
+schedule script to run every monday at 3.15PM
+
+15 15 * * 01 /home/ec2-user/script.sh
+------------------------------------------------------------------------
+
+schedule script to run on monday and Thursday at  4.45PM
+
+45 16 * * 01,04 /home/scrippath
+---------------------------------------------------------------
+schedule script to run on monday to friday at 6.15pm
+
+15 18 * * 01-05 /home/scriptpath
+------------------------------------------------------------------------------
+schedule script to run on wed every 30mins 
+
+*/30 * * * 03 /home/scriptpath
+
+every 5mins everyday 
+*/5 * * * * /home/scriptpath
+------------------------------------------------------------
+schedule script to run every min eevry day
+* * * * * /home/scriptpath
+--------------------------------------------------------
+schedule script to run 1st of every month at 12.30PM
+30 12 01 * * /home/scriptpath
+
+------------------------------------------------------------------
+
+schedule script to run last day of every month at 6.45PM
+
+45 18 
+
+------------------------------------------------------------------------
+
+mail or mailx
+
+
+cat filename | mail -s "subject" -c "abc@gmail.com" xyz@gmail.com,ajay@gmail.com
+
+or
+
+mail -s "subject" -c "abc@gmail.com" xyz@gmail.com,ajay@gmail.com < filename 
+
+or 
+
+echo -e "Hi,\n body of the mail" | mail -s "subject" -c "abc@gmail.com" xyz@gmail.com,ajay@gmail.com
+
+---------------------------------------------------------------------------------------------------------------------
+
+interview script2
+
+I have written a script to monitor tomcat services. 
+if any of these services stoppped, we should get email notification saying tomcat service stopped, pls take appropriate action
+
+#/bin/bash
+
+services="ser1 ser2 ser3....."
+
+
+for i in $services;do
+
+ IP= hostname -I | awk '{print $1}'   ps  | grep "$i"
+
+
+if [ $? -ne 0 ];then
+
+ping $IP >> ping_detains.txt
+
+   echo "$i" >> stopped-services
+fi
+done
+
+cat bodymail|  mail -s "subject" abc@gmail.com,xyz@gmail.com
+----------------------------------------------------------------------------------------------------
+
+case $var in 
+
+value1) statement1
+         ;;
+value2) statement2
+         ;;
+value3) statement3
+         ;;
+*) statement4 
+         ;;
+esac
+----------------------------------------------------------------
+#!/bin/bash
+
+case $1 in
+        1|5|7|9) echo "this is odd number"
+                ;;
+        2|4|6|8|10) echo "this is even number"
+                ;;
+        16) echo "this is  sixteen"
+                ;;
+        *) echo "Invalid number"
+                ;;
+esac
+---------------------------------------------------------------------------------
+#!/bin/bash
+
+case $1 in
+        1|5|7|9) echo "this is odd number"
+                ;;
+        2|4|6|8|10) echo "this is even number"
+                ;;
+        mon) echo "this is monday"
+                ;;
+        'tue'|'wed') echo "this is tuesday or wednesday"
+                ;;
+        *) echo "Invalid number"
+                ;;
+esac
+-----------------------------------------------------------------------------------------
+
+write a menu based script to do followings
+
+1) monday, create a file log1 and log2
+2) Tuesday, rename files log1 to log_1 and log2 to log_2
+3) wednesday, copy file log_1 to log1_backup and log_2 to log2_backup
+4) Thursday, redirect output of l-lrt to log-list
+5) friday, delete  log1_backup and log1_backup
+6) sat and sun, holiday
+------------------------------------------------------------------------------------
+
+
+#!/bin/bash
+
+case $1 in 
+   'mon'|'monday') echo "creating files"
+                    touch log1 log2
+                      ;;
+   'tue'| 'tuesday') echo "rename files"
+                  mv log1 log_1 
+                  mv log2 log_2
+                      ;;
+   'wed'|'wednesday') echo "take backup of files"
+                   mv log_1 log1-backup
+                   mv log_2 log2-backup
+                     ;;
+    'thu'|'thursday') echo "redirect list files to file "
+                    ls -lrt > log-list
+                      ;;
+    'fri'|'friday') echo "remove files"
+                    rm log1-backup log2-backup
+                     ;;
+     *) echo "today is holiday"
+                  ;;
+esac
+-----------------------------------------------------------------------------------------------------
+
+write menu based script for followings
+
+./menu.sh
+
+1) searchword  
+2) checkname 
+3) find file
+4) create link
+5) edit file
+6) exit
+-----------------------------------------------------------------------------------
+#!/bin/bash
+
+echo "below is the menu"
+
+echo -e "1)searchword\n2)checkname\n3)find file\n4)create link\n5)Edit file\n6)Exit\n"
+
+echo "select option from above menu"
+read opt
+
+   case $opt in
+        1)  echo "enter word to serach in files"
+            read word
+             grep -R -l "$word" * > log-word
+             if [ $? -eq 0 ];then
+            echo "$word is found in below files"
+             cat log-word; rm log-word
+             else
+             echo "$word is not found in any files"
+             fi
+              ;;
+         2) /home/ec2-user/scripts/checkname.sh
+              ;;
+         3) echo "enter file name to find its path"
+               read file
+                find . -iname "$file" > log-file
+                if [ $? -eq 0 ];then
+                  echo "$file is found in below locations"
+                    cat log-file;rm log-file
+                 else
+                  echo "$file is not  found anywhere "
+                 fi            
+                  ;;
+
+           4) echo "enter file name to create link"
+                read file
+                  if [ !-f $file ];then
+                   echo "$file does not exist. please give correct filename"
+                   exit 1
+                  fi
+ 
+                  echo "enter link name"
+                   read link
+                   if [ -L $link ];then
+                   echo "$link already exists"
+                    exit 1
+                   fi
+               ln -s $file $link
+                  ;;
+            5) echo "enter file name to edit"
+                read file
+                   if [ -f $file ];then
+                        vim $file
+                    else
+                     echo "$file does not exist"
+                      exit 1
+                    fi
+                    ;;
+             *) echo "you selected to exit from script"
+                     exit 0
+                    ;;
+esac
+------------------------------------------------------------------------------------------------
+this assinment is mandotory
+
+if choose any option, script should not exit after executing that particular option. 
+it should keep display menu again and again till I select exit button explicitly
+
+-----------------------------------------------------------------------------------------------------------------------
+hotel.sh
+
+menu should be displayed
+
+1) idli
+2) dosa
+3) samosa
+4) Pallav
+5) coffee/tea
+6) exit 
+---------------------------------------------------------------------------------------------------------------------------------------
+
+funtions in shell script
+-----------------------------------------
+#!/bin/bash
+
+funtion funation_name {
+
+
+}
+
+#main script here 
+function_name
+----------------------------------
+write a shell script to check odd or even number
+
+#!/bin/bash
+
+function odd_even {
+ num=$1
+   status=`expr $num % 2`
+   if [ $status -eq 0 ];then
+       echo "$1 is even number "
+   else
+     echo "$1 is odd number"    
+   fi
+}
+
+
+
+for i in $*;do
+
+ odd_even $i
+
+done
+------------------------------------------------------------
+write a script to find factorial for given set of numbers using function
+
+
+#!/bin/bash
+
+function fact_fun {
+   num=$1
+        fact=1
+        while [ $num -gt 0 ];do
+                fact=`expr $fact \* $num`
+                num=`expr $num - 1`
+        done
+        echo "fact of $i is $fact"
+}
+
+
+
+for i in $*; do  #read one value at a time
+fact_fun $i    
+done
+-------------------------------------------------------------------------------------------
+
+sort --> used to sort data.. ascending order
+sort -r --> descending order
+
+uniq --> print unique values . it removes duplicates 
+
+------------------------------------------------------------------------------------ 
+
+
+
+
+
+
+                    
+                          
+
+
+
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

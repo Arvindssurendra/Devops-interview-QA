@@ -1,0 +1,23 @@
+Company:: Pega Software Systems
+
+1) Tell me about your current organization and day-2-day activities
+2) Write terraform script for ASG (Auto Scaling Group) AWS with minimum 3 ec2 instances 
+3) Write shell script to push a script/code to 5 target servers 
+4) What is ASG 
+5) Difference between Horizontal and Vertical autoscaling
+6) In vertical autoscaling can you increase resources without downtime ?
+7) How do you increase resource in ec2 instance 
+8) How do you automate the log collection of docker container 
+9) How do you automate the log collection on k8s pods 
+10) what is the command for k8s logs ?
+11) What are the states of docker container 
+12) I have 2 images, one image is used to deploys one container, 2nd image is used to deploy 2nd container, 2nd container is failing, what is the state of the 2nd container 
+13) How will you check the states of the containers 
+14) How will you identify pods based on the namespace 
+15) Do you know Python 
+16) How enthusiastic are you to learn scripting and python ? 
+17) You said you have worked on end-2-end automated deployment - can you explain one scenario where you deployed the application end-2-end 
+18) How will you deploy containers using Jenkins
+19) What is kubeconfig , what does it contain ? 
+		Me:	I answeres the token, username, password to connect to the cluster 
+		Inteviewer: Are you sure ? ??

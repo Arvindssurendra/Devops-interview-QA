@@ -1,0 +1,13 @@
+Maven
+	- Maven is a software project management tool which can manage the complete build lifecycle.
+	- The default steps that maven provide are: 
+		   validate - validate the project and all necessary information is available in POM.xml
+		   compile - compile the source code 
+		   test - test the complied source code using a unit testing.
+		   package - take the complied code and package it in its ditridutable format such jar, war and ear. 
+		   integration-test 
+		   verify 
+           install 
+           deploy 
+  		   
+		 	

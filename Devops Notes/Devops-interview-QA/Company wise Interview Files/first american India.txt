@@ -1,0 +1,22 @@
+first american India
+
+1. roles and responsibilities 
+2. what is the services u hv used in aws
+3. what are the types lb in aws and difference between then
+4. what is the purpose of application lb
+5. what is the purose of using target groups
+6. when u will go for IAM
+7. i hv a ec2 instance in private subnet what are the posibities developer can connect that ec2 which is in private subnet
+8. what is the difference between public n private subnet
+9. what is the advantages and disadvantages of bastion host 
+10. what is workspace in terraform 
+11. what are things u did in terraform
+12. how do you maintain a state in terrafrom
+13. i have two three environment how do i segregate my environment using terraform 
+14. what is the monitoring to u have used
+15. whcih scripting ur familiour 
+16. how do you setup cicd set up from beggining
+17. what do you mean by git stash
+18. what is git rebase
+19. how do setup cicd for the conatiners
+20. differnce between docker and k8s

@@ -1,0 +1,239 @@
+1)tell me about ur self and roles and resonsibilities
+
+2) git clone and git pull
+	3)how to use third party plugins in jenkins 
+4) load balancers in AWS and types
+5)jenkins featues 
+     
+	 Jenkins is an open source continuous integration/continuous delivery and deployment (CI/CD) 
+	  automation software DevOps tool written in the Java programming language.
+
+6)etcd
+7)kubectls
+8)deaonset
+9. k8s services
+10.vpc peering
+11. SNS
+12. how to check the memory usage in linux
+Top or free
+	13. simple image service
+14. ECS and EKs
+	15.how to take the docker image into the AWS
+We use ECR DUE TO SECURITY reasons
+16.jekins process
+explain pipeline job
+	17. we three working container and how to login one container
+Docker ps
+docker exec -it containerid /bin/bash
+
+	18. doker compose 
+Its a tool for defining & running multiple containers applicaiton with a single command
+docker-compose is a tool for defining and running multile container docker application with 
+	  a single command
+
+	19. docker swarm
+we use k8s service becuase it has more services
+20. how to terminate the running prcess
+
+21.kubeadm, minikube
+run n maintain clusters
+Kubeadm
+
+Kubeadm is a tool built to provide kubeadm init and kubeadm join as best-practice "fast paths" for creating Kubernetes clusters. 
+kubeadm performs the actions necessary to get a minimum viable cluster up and running. By design, it cares only about bootstrapping, 
+not about provisioning machines
+
+Minikube
+
+Minikube is a utility you can use to run Kubernetes (k8s) on your local machine. 
+It creates a single node cluster contained in a virtual machine (VM). 
+This cluster lets you demo Kubernetes operations without requiring 
+the time and resource-consuming installation of full-blown K8s.
+
+
+	22. storage classes of s3 buscket
+23. git stash
+24.git rebase
+25. .gitignore
+26. expalin the jenkins pipeline block
+Declaratie block
+
+pipleline
+	agent
+	 	stages
+			stage
+				steps
+
+
+27. how to deploy the new features with Zero down time 
+BlueGreen deployent
+
+	28. RDS data base--
+Relational database service
+used data storage
+db mgmt tool allows to create db thats required for dev team
+1.Relational ex.mysql,postgre,amazon arora
+data is in tables
+2.Non relateional
+mango db,reddish,apache hbs
+non structural
+
+
+29. diffrence between docker and k8s 
+	30. how to migrate a one instance form one region to another region
+Aws...cross region replication
+
+With cross-region replication, every object uploaded to an S3 bucket is automatically 
+replicated to a destination bucket in a different AWS region that you choose. 
+For example, you can use cross-region replication to provide lower-latency data access 
+in different geographic regions
+
+
+	40. what is the key pair linux
+
+A key pair consists of a private key and public key. 
+You keep the private key on your computer and provide the public key when
+you create an instance. When you connect to the instance using SSH,
+you provide the path to the private key in the SSH command.
+
+41. how to connect with one server to another server
+ssh command
+
+	42. how to deploy static ip in load balancer
+
+To create a LoadBalancer service with the static public IP address, add the loadBalancerIP property
+and the value of the static public IP address 
+to the YAML manifest. Create a file named load-balancer-service. 
+yaml and copy in the following YAML.
+
+Provide your own public IP address created in the previous step.
+
+
+	43. how to create a shotcuts in linux
+Links
+	softlinks-Not connected to inode
+	Hardlinks-points to inode
+
+44. have you work with any other clouds 
+AWS
+
+45. dockerfile
+46. how to create a container in k8s with docker image
+CREATE Yml file 
+spec:	
+	container
+	image name
+
+
+47. aws registry
+ECR
+	48. how to list the aws s3 buckets 
+AWS S3API LIST-BUCKETS
+
+	49. on demand instance and spot instance
+
+ONDEMAND-
+	Pricing
+
+spot-
+	buy via Bidding
+
+
+50. r u holding any certificates WRT AWS etc..
+	51.  in linux expalin  break and continue command
+
+Shell scripts
+
+STOP ANY Looping we use break
+continue is used to execute the block /to jump to next job & come back to the same job
+
+Sr. No.	break	continue
+1	It terminates the execution of the loop for all the remaining iterations.	It skips the execution of the loop for only the current iteration. 
+2	It allows early termination of the loop.	                      It allows early execution of the next iteration.
+3	It stops the execution of loops.	It stops the execution of the loop only for the current iteration.
+4	The code after the loop which was terminated is continued.	The code in the loop continues its execution skipping the current iteration.
+
+
+	52. how to you pass the environmental variables in linux scripting
+
+ENV
+EXPORT
+PATH
+
+
+
+
+
+	53. what all are pipelines used in jenkins 
+
+Declarative--jenkinsfile 
+scripted-will be inside the node block
+
+	54. what is domain and host machine
+
+Domain-has dns host names 
+Host- on which your docker is running
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Msys company interview questions
+
+1. Roles and responsibilities
+2. Which type of issues u faced
+
+
+Docker images optimize the size
+Multistage dockerfile
+Migration from monolithic to microservices
+Jenkins 
+
+
+3. Difference between EFS and S3
+
+Elastic file service-
+simple storage service-
+
+4. Difference between NACL and  SG
+nacl is stateless,refers to subnet level
+sg is stateful,instance level
+
+5. Explain what and all u done in terraform
+orchestration /provisining your cloud infra
+Created ec2 instance
+s3 buckets
+dyanmo db
+planning & execution of infra.
+we import/refresh aws into terraform
+commands-->init,plan,validate,apply
+created main & (child modules) for creation of services
+taints 
+modules
+resources
+Provisioners-used to copy files from host machine
+ 		file,local & remote
+
+6. How do u stop particular jenkins job manually
+in progress bar 
+
+Abort the job by clicking the red X next to the build progress bar Click
+ on "Pause/resume" on the build to pause Click on "Pause/resume" again to 
+resume the build Jenkins will realize that the job
+ should be terminated and stops the build
+
+7. Different ways to trigger jenkins job
+
+webhooks-thrught git hub
+build periodicaly-cron tab
+poll scm- 
+
+8. Cloudfront on aws
+
+Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data,
+videos, applications, and APIs to customers globally with low latency, high transfer speeds,
+all within a developer-friendly environment
+
+9. How do u rate urself in linux 
+9/10
+
+10. Any idea about RHEL
+RedHat enterprise limited  a flovour of linux
+PACKAGE MANAGER YUM
