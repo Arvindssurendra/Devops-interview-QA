@@ -32,6 +32,8 @@ Hi How are you
 			○ Dynamo DB
 			○ CloudFront
 			○ CloudFormation 
+			○ ECS 
+			○ EKS
 		
 	4  * How can you make any S3 bucket as private ?
 			Bydefault S3 bucket is private 
